@@ -1,0 +1,9 @@
+.smallScreen {
+  color: 'blue';
+}
+
+@media (min-width: 500px) {
+  .smallScreen {
+    display: none;
+  }
+}

@@ -1,13 +1,14 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class Navbar extends React.Component {
   render() {
     return (
       <nav className='navbar navbar-expand-md navbar-dark bg-dark'>
         <div className='container'>
-          <a className='navbar-brand' href='/'>
+          <Link className='navbar-brand' to='/'>
             Navbar
-          </a>
+          </Link>
           <button
             className='navbar-toggler'
             type='button'
@@ -21,23 +22,23 @@ class Navbar extends React.Component {
           </button>
           <div className='collapse navbar-collapse' id='navbarNavAltMarkup'>
             <div className='navbar-nav'>
-              <a className='nav-link active' href='/'>
-                Home <span className='sr-only'>(current)</span>
-              </a>
-              <a className='nav-link' href='/'>
-                Features
-              </a>
-              <a className='nav-link' href='/'>
+              <Link className='nav-link active' to='/'>
+                Dieta <span className='sr-only'>(current)</span>
+              </Link>
+              <Link className='nav-link' to='/posilki'>
+                Posiłki
+              </Link>
+              <Link className='nav-link' to='/'>
                 Pricing
-              </a>
-              <a
+              </Link>
+              <Link
                 className='nav-link disabled'
-                href='/'
+                to='/'
                 tabIndex='-1'
                 aria-disabled='true'
               >
                 Disabled
-              </a>
+              </Link>
             </div>
           </div>
         </div>
