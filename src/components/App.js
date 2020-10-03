@@ -21,11 +21,9 @@ const App = () => {
   return (
     <div>
       <Navbar />
-      <div className='container text-center'>
-        <button onClick={onClickHandler}>Test database</button>
-        <Route path='/' exact component={Diet} />
-        <Route path='/posilki' component={Recipes} />
-      </div>
+      {/* <button onClick={onClickHandler}>Test database</button> */}
+      <Route path='/' exact component={Diet} />
+      <Route path='/posilki' component={Recipes} />
     </div>
   );
 };
