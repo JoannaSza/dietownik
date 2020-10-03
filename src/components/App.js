@@ -22,12 +22,9 @@ const App = () => {
     <div>
       <Navbar />
       <div className='container text-center'>
-        {/* <div className={styles.test}>TEST ME</div>
         <button onClick={onClickHandler}>Test database</button>
         <Route path='/' exact component={Diet} />
-        <Route path='/posilki' component={Recipes} /> */}
-        <h1 className='mt-5'>Dietownik dopiero powstaje</h1>
-        <h4 className='text-secondary'>Czekaj na update!</h4>
+        <Route path='/posilki' component={Recipes} />
       </div>
     </div>
   );
