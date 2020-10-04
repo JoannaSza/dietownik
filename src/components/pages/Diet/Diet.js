@@ -51,7 +51,7 @@ class Diet extends React.Component {
               <span className='sr-only'>Next</span>
             </a>
 
-            <ul class='carousel-indicators'>
+            <ul class='carousel-indicators bg-danger mb-0'>
               <li
                 data-target='#carouselExampleControls'
                 data-slide-to='0'
