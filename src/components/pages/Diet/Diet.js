@@ -7,7 +7,7 @@ import styles from './Diet.module.css';
 class Diet extends React.Component {
   render() {
     return (
-      <div>
+      <div className={styles.Diet}>
         <div className={styles.smallScreen}>
           <div
             id='carouselExampleControls'
@@ -26,6 +26,7 @@ class Diet extends React.Component {
                 <div className='w-100 h-100 bg-secondary'>PAGE 3</div>
               </div>
             </div>
+            {/* Arrows left right to control carousel, not used in mobile 
             <a
               className='carousel-control-prev bg-secondary'
               href='#carouselExampleControls'
@@ -49,13 +50,13 @@ class Diet extends React.Component {
                 aria-hidden='true'
               ></span>
               <span className='sr-only'>Next</span>
-            </a>
+            </a> */}
 
-            <ul class='carousel-indicators bg-danger mb-0'>
+            <ul className='carousel-indicators mb-0'>
               <li
                 data-target='#carouselExampleControls'
                 data-slide-to='0'
-                class='active'
+                className='active'
               ></li>
               <li data-target='#carouselExampleControls' data-slide-to='1'></li>
               <li data-target='#carouselExampleControls' data-slide-to='2'></li>
