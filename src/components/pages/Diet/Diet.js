@@ -5,6 +5,33 @@ import Card from './Card';
 import styles from './Diet.module.css';
 
 class Diet extends React.Component {
+  state = {
+    cardsAmount: 0,
+    areCardsCollapsed: false,
+    cards: [
+      {
+        day: {
+          name: 'Poniedziałek',
+          date: '28.09.2020',
+        },
+      },
+      {
+        day: {
+          name: 'Wtorek',
+          date: '29.09.2020',
+        },
+      },
+      {
+        day: {
+          name: 'Środa',
+          date: '30.09.2020',
+        },
+      },
+    ],
+  };
+
+  //if collapse = false show carousel, if collapse = true show all cards on one view
+
   render() {
     return (
       <div className={styles.Diet}>
@@ -17,13 +44,25 @@ class Diet extends React.Component {
           >
             <div className='carousel-inner'>
               <div className='carousel-item active'>
-                <Card />
+                <Card
+                  day={this.state.cards[0].day}
+                  collapse={this.state.areCardsCollapsed}
+                  onCollapse={() => this.setState({ areCardsCollapsed: true })}
+                />
               </div>
               <div className='carousel-item'>
-                <div className='w-100 h-100 bg-secondary'>PAGE 2</div>
+                <Card
+                  day={this.state.cards[1].day}
+                  collapse={this.state.areCardsCollapsed}
+                  onCollapse={() => this.setState({ areCardsCollapsed: true })}
+                />
               </div>
               <div className='carousel-item'>
-                <div className='w-100 h-100 bg-secondary'>PAGE 3</div>
+                <Card
+                  day={this.state.cards[2].day}
+                  collapse={this.state.areCardsCollapsed}
+                  onCollapse={() => this.setState({ areCardsCollapsed: true })}
+                />
               </div>
             </div>
             {/* Arrows left right to control carousel, not used in mobile 
