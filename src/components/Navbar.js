@@ -1,14 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 class Navbar extends React.Component {
   render() {
     return (
       <nav className='navbar navbar-expand-md navbar-dark bg-dark'>
         <div className='container'>
-          <Link className='navbar-brand' to='/'>
-            Navbar
-          </Link>
           <button
             className='navbar-toggler'
             type='button'
@@ -18,8 +17,11 @@ class Navbar extends React.Component {
             aria-expanded='false'
             aria-label='Toggle navigation'
           >
-            <span className='navbar-toggler-icon'></span>
+            <FontAwesomeIcon icon={faBars} />
           </button>
+          <Link className='navbar-brand' to='/'>
+            Navbar
+          </Link>
           <div className='collapse navbar-collapse' id='navbarNavAltMarkup'>
             <div className='navbar-nav'>
               <Link className='nav-link active' to='/'>

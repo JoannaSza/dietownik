@@ -1,8 +1,12 @@
 import React from 'react';
 
 import Card from './Card';
+import Carousel from '../../UI/Carousel';
 
 import styles from './Diet.module.css';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 class Diet extends React.Component {
   state = {
@@ -33,74 +37,25 @@ class Diet extends React.Component {
   //if collapse = false show carousel, if collapse = true show all cards on one view
 
   render() {
+    const renderCards = this.state.cards.map((card, index) => (
+      <Card
+        key={index}
+        day={card.day}
+        collapse={this.state.areCardsCollapsed}
+        onCollapse={() => this.setState({ areCardsCollapsed: true })}
+      />
+    ));
+
+    const renderCarousel = <Carousel>{renderCards}</Carousel>;
+    const renderCollapsed = <div>{renderCards}</div>;
+
     return (
       <div className={styles.Diet}>
         <div className={styles.smallScreen}>
-          <div
-            id='carouselExampleControls'
-            className='carousel slide'
-            data-ride='carousel'
-            data-interval='false'
-          >
-            <div className='carousel-inner'>
-              <div className='carousel-item active'>
-                <Card
-                  day={this.state.cards[0].day}
-                  collapse={this.state.areCardsCollapsed}
-                  onCollapse={() => this.setState({ areCardsCollapsed: true })}
-                />
-              </div>
-              <div className='carousel-item'>
-                <Card
-                  day={this.state.cards[1].day}
-                  collapse={this.state.areCardsCollapsed}
-                  onCollapse={() => this.setState({ areCardsCollapsed: true })}
-                />
-              </div>
-              <div className='carousel-item'>
-                <Card
-                  day={this.state.cards[2].day}
-                  collapse={this.state.areCardsCollapsed}
-                  onCollapse={() => this.setState({ areCardsCollapsed: true })}
-                />
-              </div>
-            </div>
-            {/* Arrows left right to control carousel, not used in mobile 
-            <a
-              className='carousel-control-prev bg-secondary'
-              href='#carouselExampleControls'
-              role='button'
-              data-slide='prev'
-            >
-              <span
-                className='carousel-control-prev-icon'
-                aria-hidden='true'
-              ></span>
-              <span className='sr-only'>Previous</span>
-            </a>
-            <a
-              className='carousel-control-next bg-secondary'
-              href='#carouselExampleControls'
-              role='button'
-              data-slide='next'
-            >
-              <span
-                className='carousel-control-next-icon'
-                aria-hidden='true'
-              ></span>
-              <span className='sr-only'>Next</span>
-            </a> */}
-
-            <ul className='carousel-indicators mb-0'>
-              <li
-                data-target='#carouselExampleControls'
-                data-slide-to='0'
-                className='active'
-              ></li>
-              <li data-target='#carouselExampleControls' data-slide-to='1'></li>
-              <li data-target='#carouselExampleControls' data-slide-to='2'></li>
-            </ul>
-          </div>
+          {/* <div className='px-1 mt-2 fixed-top text-light'>
+            <FontAwesomeIcon icon={faBars} />
+          </div> */}
+          {this.state.areCardsCollapsed ? renderCollapsed : renderCarousel}
         </div>
       </div>
     );

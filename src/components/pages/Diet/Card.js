@@ -1,5 +1,6 @@
 import React from 'react';
 import Meal from './Meal';
+import styles from './Card.module.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -29,7 +30,7 @@ const Card = (props) => {
   };
 
   const cardClasses = props.collapse
-    ? 'd-flex flex-column overflow-auto'
+    ? `d-flex flex-column overflow-auto ${styles.smallCard}`
     : 'vh-100 d-flex flex-column overflow-auto';
 
   return (
@@ -42,11 +43,7 @@ const Card = (props) => {
 
       <div className='container px-2 py-2 bg-dark text-light border'>
         <div className='row no-gutters align-items-center'>
-          <div className='col'>
-            <div className='px-1'>
-              <FontAwesomeIcon icon={faBars} />
-            </div>
-          </div>
+          <div className='col'></div>
           <div className='col text-center'>
             <h5 className='mb-0'>{props.day.name}</h5>
             <h6 className='text-muted m-0'>
