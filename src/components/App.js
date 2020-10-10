@@ -20,7 +20,7 @@ const App = () => {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       {/* <button onClick={onClickHandler}>Test database</button> */}
       <Route path='/' exact component={Diet} />
       <Route path='/posilki' component={Recipes} />

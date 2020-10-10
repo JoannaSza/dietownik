@@ -6,12 +6,23 @@ import Carousel from '../../UI/Carousel';
 import styles from './Diet.module.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
+const weekDaysPl = [
+  'Poniedziałek',
+  'Wtorek',
+  'Środa',
+  'Czwartek',
+  'Piątek',
+  'Sobota',
+  'Niedziela',
+];
 
 class Diet extends React.Component {
   state = {
     cardsAmount: 0,
-    areCardsCollapsed: false,
+    activeCard: 0,
+    areCardsCollapsed: true,
     cards: [
       {
         day: {
@@ -34,7 +45,35 @@ class Diet extends React.Component {
     ],
   };
 
-  //if collapse = false show carousel, if collapse = true show all cards on one view
+  deleteCardHandler = (index) => {
+    const newCards = this.state.cards.filter((el, idx) => {
+      return idx !== index;
+    });
+    this.setState({ cards: newCards });
+  };
+
+  addCardHandler = (event) => {
+    event.stopPropagation();
+    const today = new Date();
+    let day = today.getDay().toString();
+    if (day.length === 1) day = `0${day}`;
+    let month = today.getMonth().toString();
+    if (month.length === 1) month = `0${month}`;
+    const newCards = [
+      ...this.state.cards,
+      {
+        day: {
+          name: weekDaysPl[today.getDay() - 1],
+          date: `${day}.${month}.${today.getFullYear()}`,
+        },
+      },
+    ];
+    this.setState({ cards: newCards });
+  };
+
+  showCardHandler = (index) => {
+    this.setState({ activeCard: index });
+  };
 
   render() {
     const renderCards = this.state.cards.map((card, index) => (
@@ -43,18 +82,39 @@ class Diet extends React.Component {
         day={card.day}
         collapse={this.state.areCardsCollapsed}
         onCollapse={() => this.setState({ areCardsCollapsed: true })}
+        onDelete={() => this.deleteCardHandler(index)}
+        onShow={() => this.showCardHandler(index)}
       />
     ));
 
-    const renderCarousel = <Carousel>{renderCards}</Carousel>;
-    const renderCollapsed = <div>{renderCards}</div>;
+    const renderCarousel = (
+      <Carousel active={this.state.activeCard}>{renderCards}</Carousel>
+    );
+    const renderCollapsed = (
+      <div
+        className='vh-100 d-flex flex-column justify-content-center'
+        onClick={() => this.setState({ areCardsCollapsed: false })}
+      >
+        {renderCards}
+        <Card
+          day={{
+            name: (
+              <FontAwesomeIcon
+                icon={faPlus}
+                size='lg'
+                onClick={this.addCardHandler}
+              />
+            ),
+            date: '',
+          }}
+          collapse={this.state.areCardsCollapsed}
+        />
+      </div>
+    );
 
     return (
       <div className={styles.Diet}>
         <div className={styles.smallScreen}>
-          {/* <div className='px-1 mt-2 fixed-top text-light'>
-            <FontAwesomeIcon icon={faBars} />
-          </div> */}
           {this.state.areCardsCollapsed ? renderCollapsed : renderCarousel}
         </div>
       </div>
