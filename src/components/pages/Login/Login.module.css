@@ -1,0 +1,23 @@
+.Background {
+  background-image: url('../../../IMG/LoginPage.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.CardBackground {
+  background-color: #0e1116;
+}
+
+.AddHover {
+  color: #cbd4c2;
+}
+
+.AddHover:hover {
+  color: #999999;
+  cursor: pointer;
+}
+
+.SubmitBtn {
+  background-color: #247ba0;
+}

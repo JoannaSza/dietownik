@@ -7,6 +7,7 @@ import styles from './App.module.css';
 import Navbar from './Navbar';
 import Diet from './pages/Diet/Diet';
 import Recipes from './pages/Recipes';
+import Login from './pages/Login/Login';
 
 const App = () => {
   const onClickHandler = async () => {
@@ -24,6 +25,7 @@ const App = () => {
       {/* <button onClick={onClickHandler}>Test database</button> */}
       <Route path='/' exact component={Diet} />
       <Route path='/posilki' component={Recipes} />
+      <Route path='/login' component={Login} />
     </div>
   );
 };
