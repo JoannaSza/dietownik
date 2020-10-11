@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Card from './Card';
-import Carousel from '../../UI/Carousel';
+import Carousel from '../../UI/Carousel/Carousel';
 
 import styles from './Diet.module.css';
 
@@ -9,20 +9,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const weekDaysPl = [
+  'Niedziela',
   'Poniedziałek',
   'Wtorek',
   'Środa',
   'Czwartek',
   'Piątek',
   'Sobota',
-  'Niedziela',
 ];
 
 class Diet extends React.Component {
   state = {
     cardsAmount: 0,
     activeCard: 0,
-    areCardsCollapsed: true,
+    areCardsCollapsed: false,
     cards: [
       {
         day: {
@@ -55,15 +55,15 @@ class Diet extends React.Component {
   addCardHandler = (event) => {
     event.stopPropagation();
     const today = new Date();
-    let day = today.getDay().toString();
+    let day = today.getDate().toString();
     if (day.length === 1) day = `0${day}`;
-    let month = today.getMonth().toString();
+    let month = (today.getMonth() + 1).toString();
     if (month.length === 1) month = `0${month}`;
     const newCards = [
       ...this.state.cards,
       {
         day: {
-          name: weekDaysPl[today.getDay() - 1],
+          name: weekDaysPl[today.getDay()],
           date: `${day}.${month}.${today.getFullYear()}`,
         },
       },
