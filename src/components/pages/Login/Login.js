@@ -1,10 +1,13 @@
 import React from 'react';
-import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCarrot, faUser, faKey } from '@fortawesome/free-solid-svg-icons';
 import { faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { connect } from 'react-redux';
+import * as actions from '../../../actions';
+
 import styles from './Login.module.css';
+import GoogleAuth from './GoogleAuth';
 
 class Login extends React.Component {
   state = {
@@ -12,6 +15,7 @@ class Login extends React.Component {
     inputs: {
       email: '',
       password: '',
+      id: '',
     },
   };
 
@@ -24,6 +28,21 @@ class Login extends React.Component {
   passwordChangeHandler = (event) => {
     this.setState({
       inputs: { ...this.state.inputs, password: event.target.value },
+    });
+  };
+
+  submitHandler = (event) => {
+    event.preventDefault();
+    this.props.onAuth(
+      this.state.inputs.email,
+      this.state.inputs.password,
+      'login'
+    );
+  };
+
+  onReturnToken = (token) => {
+    this.setState({
+      inputs: { ...this.state.inputs, id: token },
     });
   };
 
@@ -52,7 +71,11 @@ class Login extends React.Component {
                 <h6 className='card-subtitle mb-3' style={{ color: '#CBD4C2' }}>
                   Zaloguj się do dietownika, aby rozpocząć
                 </h6>
-                <form className='container no-gutters'>
+
+                <form
+                  onSubmit={this.submitHandler}
+                  className='container no-gutters'
+                >
                   <div className='row mb-2'>
                     <div className='col-1 pl-0 pr-1 my-auto text-muted'>
                       <FontAwesomeIcon icon={faUser} />
@@ -78,12 +101,17 @@ class Login extends React.Component {
                     />
                   </div>
                   <div className='row text-right'>
-                    <div className={`w-100 py-1 pr-2 ${styles.AddHover}`}>
+                    <div
+                      className={`w-100 py-1 pr-2 ${styles.AddHover}`}
+                      onClick={() =>
+                        this.props.onResetPassword(this.state.inputs.email)
+                      }
+                    >
                       <small>Zresetuj hasło</small>
                     </div>
                   </div>
 
-                  <div className={`row text-center mb-5 ${styles.AddHover}`}>
+                  <div className={`row text-center mb-4 ${styles.AddHover}`}>
                     <div
                       className='w-100'
                       onClick={() =>
@@ -101,6 +129,21 @@ class Login extends React.Component {
                     </div>
                   </div>
 
+                  <h6 className='mb-2' style={{ color: '#CBD4C2' }}>
+                    Nie masz konta?{' '}
+                    <u
+                      className={`pl-2 ${styles.AddHover}`}
+                      onClick={() =>
+                        this.props.onAuth(
+                          this.state.inputs.email,
+                          this.state.inputs.password,
+                          'signup'
+                        )
+                      }
+                    >
+                      Zarejestruj się
+                    </u>
+                  </h6>
                   <button
                     type='submit'
                     className={`btn w-100 text-light mb-3 ${styles.SubmitBtn}`}
@@ -108,12 +151,11 @@ class Login extends React.Component {
                     Zaloguj
                   </button>
                 </form>
-                <div className='container'>
-                  <button type='button' className='btn w-100 btn-primary'>
-                    <FontAwesomeIcon icon={faGoogle} />
-                    <span className='pl-2'>Zaloguj przez Google</span>
-                  </button>
-                </div>
+                <GoogleAuth
+                  onLogIn={(id_token) =>
+                    this.props.onAuth(id_token, null, 'google')
+                  }
+                />
               </div>
             </div>
           </div>
@@ -122,4 +164,12 @@ class Login extends React.Component {
     );
   }
 }
-export default Login;
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAuth: (user, password, method) =>
+      dispatch(actions.auth(user, password, method)),
+    onResetPassword: (email) => dispatch(actions.resetPswd(email)),
+  };
+};
+export default connect(null, mapDispatchToProps)(Login);
