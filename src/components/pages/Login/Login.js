@@ -112,8 +112,8 @@ class Login extends React.Component {
 
     return (
       <div className='d-flex no-gutters'>
-        <div className={`col-5 vh-100 bigScreen ${styles.Background}`} />
-        <div className='col d-flex vh-100 bg-rich-black'>
+        <div className={`col-5 min-vh-100 bigScreen ${styles.Background}`} />
+        <div className='col d-flex min-vh-100 bg-rich-black'>
           <div className='card mx-auto my-auto p-3'>
             <div className='card-body text-center'>
               <Logo />
@@ -166,7 +166,7 @@ class Login extends React.Component {
                     onClick={(e) => {
                       e.preventDefault();
                       this.props.onAuth(
-                        this.state.inputs.email,
+                        this.state.inputs.email.value,
                         this.state.inputs.password.value,
                         'signup'
                       );
