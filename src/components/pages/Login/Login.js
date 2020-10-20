@@ -1,175 +1,199 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCarrot, faUser, faKey } from '@fortawesome/free-solid-svg-icons';
-import { faSquare, faCheckSquare } from '@fortawesome/free-regular-svg-icons';
-import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { connect } from 'react-redux';
-import * as actions from '../../../actions';
+import React from "react";
+import {
+	faUser,
+	faKey,
+	faEye,
+	faEyeSlash,
+} from "@fortawesome/free-solid-svg-icons";
+import { connect } from "react-redux";
+import * as actions from "../../../actions";
 
-import styles from './Login.module.css';
-import GoogleAuth from './GoogleAuth';
+import styles from "./Login.module.css";
+import GoogleAuth from "./GoogleAuth";
+import Input from "../../UI/Input";
+import Checkbox from "../../UI/Checkbox";
+import Logo from "../../UI/Logo";
 
 class Login extends React.Component {
-  state = {
-    stayLoggedIn: false,
-    inputs: {
-      email: '',
-      password: '',
-      id: '',
-    },
-  };
+	state = {
+		stayLoggedIn: false,
+		inputs: {
+			email: {
+				icon: faUser,
+				value: "",
+				type: "email",
+				placeholder: "Email",
+				onChange: (event) => this.emailChangeHandler(event),
+			},
+			password: {
+				icon: faKey,
+				value: "",
+				type: "password",
+				placeholder: "Hasło",
+				onChange: (event) => this.passwordChangeHandler(event),
+				append: faEyeSlash,
+				appendOnClick: () => this.toggleEye(),
+			},
+		},
+	};
 
-  emailChangeHandler = (event) => {
-    this.setState({
-      inputs: { ...this.state.inputs, email: event.target.value },
-    });
-  };
+	emailChangeHandler = (event) => {
+		this.setState((prevState) => ({
+			...prevState,
+			inputs: {
+				...prevState.inputs,
+				email: { ...prevState.inputs.email, value: event.target.value },
+			},
+		}));
+	};
 
-  passwordChangeHandler = (event) => {
-    this.setState({
-      inputs: { ...this.state.inputs, password: event.target.value },
-    });
-  };
+	passwordChangeHandler = (event) => {
+		this.setState((prevState) => ({
+			...prevState,
+			inputs: {
+				...prevState.inputs,
+				password: { ...prevState.inputs.password, value: event.target.value },
+			},
+		}));
+	};
 
-  submitHandler = (event) => {
-    event.preventDefault();
-    this.props.onAuth(
-      this.state.inputs.email,
-      this.state.inputs.password,
-      'login'
-    );
-  };
+	checkboxClickHandler = () => {
+		this.setState((prevState) => ({
+			stayLoggedIn: !prevState.stayLoggedIn,
+		}));
+	};
 
-  onReturnToken = (token) => {
-    this.setState({
-      inputs: { ...this.state.inputs, id: token },
-    });
-  };
+	toggleEye = () => {
+		this.setState((prevState) => {
+			const newType =
+				prevState.inputs.password.type === "password" ? "text" : "password";
+			const newAppendIcon = newType === "password" ? faEyeSlash : faEye;
+			return {
+				...prevState,
+				inputs: {
+					...prevState.inputs,
+					password: {
+						...prevState.inputs.password,
+						type: newType,
+						append: newAppendIcon,
+					},
+				},
+			};
+		});
+	};
 
-  render() {
-    return (
-      <div className='d-flex no-gutters'>
-        <div className='col-5'>
-          <div className={`vh-100 ${styles.Background}`} />
-        </div>
-        <div className='col'>
-          <div className={`d-flex h-100 ${styles.CardBackground}`}>
-            <div className='card mx-auto my-auto p-3'>
-              <div className='card-body text-center'>
-                <div className='m-4 display-4 text-warning'>
-                  <span className='border border-dark rounded-circle p-3'>
-                    <FontAwesomeIcon icon={faCarrot} size='lg' />
-                  </span>
-                </div>
+	submitHandler = (event) => {
+		event.preventDefault();
+		this.props.onAuth(
+			this.state.inputs.email,
+			this.state.inputs.password.value,
+			"login"
+		);
+	};
 
-                <h4
-                  className='card-title font-weight-bold font-italic mt-4 mb-5'
-                  style={{ color: '#247ba0' }}
-                >
-                  Dietownik
-                </h4>
-                <h6 className='card-subtitle mb-3' style={{ color: '#CBD4C2' }}>
-                  Zaloguj się do dietownika, aby rozpocząć
-                </h6>
+	onReturnToken = (token) => {
+		this.setState({
+			inputs: { ...this.state.inputs, id: token },
+		});
+	};
 
-                <form
-                  onSubmit={this.submitHandler}
-                  className='container no-gutters'
-                >
-                  <div className='row mb-2'>
-                    <div className='col-1 pl-0 pr-1 my-auto text-muted'>
-                      <FontAwesomeIcon icon={faUser} />
-                    </div>
-                    <input
-                      className='form-control col'
-                      type='email'
-                      placeholder='Email'
-                      value={this.state.inputs.email}
-                      onChange={this.emailChangeHandler}
-                    />
-                  </div>
-                  <div className='row mb-0'>
-                    <div className='col-1 pl-0 pr-1 my-auto text-muted'>
-                      <FontAwesomeIcon icon={faKey} />
-                    </div>
-                    <input
-                      className='form-control col'
-                      type='password'
-                      placeholder='Hasło'
-                      value={this.state.inputs.password}
-                      onChange={this.passwordChangeHandler}
-                    />
-                  </div>
-                  <div className='row text-right'>
-                    <div
-                      className={`w-100 py-1 pr-2 ${styles.AddHover}`}
-                      onClick={() =>
-                        this.props.onResetPassword(this.state.inputs.email)
-                      }
-                    >
-                      <small>Zresetuj hasło</small>
-                    </div>
-                  </div>
+	render() {
+		const renderInput = (input) => (
+			<Input
+				icon={input.icon}
+				type={input.type}
+				placeholder={input.placeholder}
+				value={input.value}
+				onChange={input.onChange}
+				append={input.append}
+				appendOnClick={input.appendOnClick}
+			/>
+		);
 
-                  <div className={`row text-center mb-4 ${styles.AddHover}`}>
-                    <div
-                      className='w-100'
-                      onClick={() =>
-                        this.setState({
-                          stayLoggedIn: !this.state.stayLoggedIn,
-                        })
-                      }
-                    >
-                      {this.state.stayLoggedIn ? (
-                        <FontAwesomeIcon icon={faCheckSquare} />
-                      ) : (
-                        <FontAwesomeIcon icon={faSquare} />
-                      )}
-                      <span className='pl-2'>Nie wylogowuj mnie</span>
-                    </div>
-                  </div>
+		return (
+			<div className="d-flex no-gutters">
+				<div className={`col-5 vh-100 bigScreen ${styles.Background}`} />
+				<div className="col d-flex vh-100 bg-rich-black">
+					<div className="card mx-auto my-auto p-3">
+						<div className="card-body text-center">
+							<Logo />
+							<h4 className="card-title font-weight-bold font-italic mt-4 mb-5 text-celadon-blue">
+								Dietownik
+							</h4>
+							<h6 className="card-subtitle mb-3 text-ash-gray">
+								Zaloguj się do dietownika, aby rozpocząć
+							</h6>
 
-                  <h6 className='mb-2' style={{ color: '#CBD4C2' }}>
-                    Nie masz konta?{' '}
-                    <u
-                      className={`pl-2 ${styles.AddHover}`}
-                      onClick={() =>
-                        this.props.onAuth(
-                          this.state.inputs.email,
-                          this.state.inputs.password,
-                          'signup'
-                        )
-                      }
-                    >
-                      Zarejestruj się
-                    </u>
-                  </h6>
-                  <button
-                    type='submit'
-                    className={`btn w-100 text-light mb-3 ${styles.SubmitBtn}`}
-                  >
-                    Zaloguj
-                  </button>
-                </form>
-                <GoogleAuth
-                  onLogIn={(id_token) =>
-                    this.props.onAuth(id_token, null, 'google')
-                  }
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+							<form
+								onSubmit={this.submitHandler}
+								className="container no-gutters"
+							>
+								<div className="mb-2 p-0">
+									{renderInput(this.state.inputs.email)}
+								</div>
+								{renderInput(this.state.inputs.password)}
+								<div className="w-100 text-right">
+									<a
+										className={`btn p-0 text-ash-gray`}
+										onClick={() =>
+											this.props.onResetPassword(this.state.inputs.email)
+										}
+									>
+										<small>Zresetuj hasło</small>
+									</a>
+								</div>
+
+								<a
+									className={`row text-center mb-3 mt-2 p-0 btn text-ash-gray`}
+								>
+									<Checkbox
+										onClick={this.checkboxClickHandler}
+										checked={this.state.stayLoggedIn}
+									>
+										Nie wylogowuj mnie
+									</Checkbox>
+								</a>
+
+								<h6 className="mb-2 text-ash-gray">
+									Nie masz konta?{" "}
+									<a
+										className={`pl-2 py-0 btn text-ash-gray`}
+										onClick={() =>
+											this.props.onAuth(
+												this.state.inputs.email,
+												this.state.inputs.password.value,
+												"signup"
+											)
+										}
+									>
+										<u>Zarejestruj się</u>
+									</a>
+								</h6>
+								<button
+									type="submit"
+									className="btn w-100 text-light mb-3 btn-celadon-blue"
+								>
+									Zaloguj
+								</button>
+							</form>
+							<GoogleAuth
+								onLogIn={(id_token) =>
+									this.props.onAuth(id_token, null, "google")
+								}
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    onAuth: (user, password, method) =>
-      dispatch(actions.auth(user, password, method)),
-    onResetPassword: (email) => dispatch(actions.resetPswd(email)),
-  };
+	return {
+		onAuth: (user, password, method) =>
+			dispatch(actions.auth(user, password, method)),
+		onResetPassword: (email) => dispatch(actions.resetPswd(email)),
+	};
 };
 export default connect(null, mapDispatchToProps)(Login);

@@ -1,0 +1,14 @@
+/* import only the necessary Bootstrap files */
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+/* -------begin customization-------- */
+/* change the primary theme color to red */
+$theme-colors: (
+	light: #fffcff,
+	celadon-blue: #247ba0,
+	ash-gray: #cbd4c2,
+	rich-black: #0e1116,
+);
+/* -------end customization-------- */
+/* finally, import Bootstrap to set the changes! */
+@import "node_modules/bootstrap/scss/bootstrap";
