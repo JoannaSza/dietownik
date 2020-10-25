@@ -2,8 +2,10 @@ import {
   AUTH_START,
   AUTH_FAIL,
   AUTH_SUCCESS,
+  RESET_PSWD_START,
   RESET_PSWD_FAIL,
   RESET_PSWD_SUCCESS,
+  CLEAR_ERROR,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -12,6 +14,7 @@ const initialState = {
   userId: null,
   error: null,
   loading: false,
+  actionSuccess: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -29,7 +32,29 @@ const reducer = (state = initialState, action) => {
       };
     case AUTH_FAIL:
       return { ...state, error: action.error, loading: false };
-
+    case RESET_PSWD_START:
+      return { ...state, error: null, loading: true, actionSuccess: false };
+    case RESET_PSWD_SUCCESS:
+      return {
+        ...state,
+        error: null,
+        loading: false,
+        actionSuccess: true,
+      };
+    case RESET_PSWD_FAIL:
+      return {
+        ...state,
+        error: action.error,
+        loading: false,
+        actionSuccess: false,
+      };
+    case CLEAR_ERROR:
+      return {
+        ...state,
+        error: '',
+        loading: false,
+        actionSuccess: false,
+      };
     default:
       return state;
   }

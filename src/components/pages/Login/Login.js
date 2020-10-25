@@ -13,48 +13,68 @@ import GoogleAuth from './GoogleAuth';
 import Input from '../../UI/Input';
 import Checkbox from '../../UI/Checkbox';
 import Logo from '../../UI/Logo';
+import RstPswdModal from './RstPswdModal';
+import { Spinner } from 'reactstrap';
+import Modal from '../../UI/Modal/Modal';
+
+import { updateObject, checkValidity } from '../../../shared/utility';
 
 class Login extends React.Component {
   state = {
+    showResetPswd: false,
+    showLoginError: false,
     stayLoggedIn: false,
+    isGoogleAuth: false,
+    inputsAreValid: false,
+    submitted: false,
     inputs: {
       email: {
-        icon: faUser,
+        prepend: faUser,
         value: '',
-        type: 'email',
-        placeholder: 'Email',
-        onChange: (event) => this.emailChangeHandler(event),
+        elementConfig: {
+          type: 'email',
+          placeholder: 'Email',
+        },
+        validation: {
+          required: true,
+          isEmail: true,
+        },
+        valid: false,
+        errorMsg: '',
       },
       password: {
-        icon: faKey,
+        prepend: faKey,
         value: '',
-        type: 'password',
-        placeholder: 'Hasło',
-        onChange: (event) => this.passwordChangeHandler(event),
+        elementConfig: { type: 'password', placeholder: 'Hasło' },
         append: faEyeSlash,
         appendOnClick: () => this.toggleEye(),
+        validation: {
+          required: true,
+          minLength: 6,
+        },
+        valid: false,
+        errorMsg: '',
       },
     },
   };
 
-  emailChangeHandler = (event) => {
-    this.setState((prevState) => ({
-      ...prevState,
-      inputs: {
-        ...prevState.inputs,
-        email: { ...prevState.inputs.email, value: event.target.value },
-      },
-    }));
-  };
+  inputChangedHandler = (event, inputId) => {
+    const updatedInputElement = updateObject(this.state.inputs[inputId], {
+      value: event.target.value,
+      ...checkValidity(
+        event.target.value,
+        this.state.inputs[inputId].validation
+      ),
+    });
+    const updatedInputs = updateObject(this.state.inputs, {
+      [inputId]: updatedInputElement,
+    });
 
-  passwordChangeHandler = (event) => {
-    this.setState((prevState) => ({
-      ...prevState,
-      inputs: {
-        ...prevState.inputs,
-        password: { ...prevState.inputs.password, value: event.target.value },
-      },
-    }));
+    let inputsAreValid = true;
+    for (let inputId in updatedInputs) {
+      inputsAreValid = updatedInputs[inputId].valid && inputsAreValid;
+    }
+    this.setState({ inputs: updatedInputs, inputsAreValid });
   };
 
   checkboxClickHandler = () => {
@@ -64,129 +84,187 @@ class Login extends React.Component {
   };
 
   toggleEye = () => {
-    this.setState((prevState) => {
-      const newType =
-        prevState.inputs.password.type === 'password' ? 'text' : 'password';
-      const newAppendIcon = newType === 'password' ? faEyeSlash : faEye;
-      return {
-        ...prevState,
-        inputs: {
-          ...prevState.inputs,
-          password: {
-            ...prevState.inputs.password,
-            type: newType,
-            append: newAppendIcon,
-          },
-        },
-      };
+    const newType =
+      this.state.inputs.password.elementConfig.type === 'password'
+        ? 'text'
+        : 'password';
+    const newAppendIcon = newType === 'password' ? faEyeSlash : faEye;
+    const updatedInputConfig = updateObject(
+      this.state.inputs.password.elementConfig,
+      { type: newType }
+    );
+    const updatedInputElement = updateObject(this.state.inputs.password, {
+      append: newAppendIcon,
+      elementConfig: updatedInputConfig,
     });
+    const updatedInputs = updateObject(this.state.inputs, {
+      password: updatedInputElement,
+    });
+    this.setState({ inputs: updatedInputs });
   };
 
   submitHandler = (event) => {
     event.preventDefault();
-    this.props.onAuth(
-      this.state.inputs.email.value,
-      this.state.inputs.password.value,
-      'login'
-    );
+    if (this.state.inputsAreValid) {
+      this.props.onAuth(
+        this.state.inputs.email.value,
+        this.state.inputs.password.value,
+        'login'
+      );
+    } else this.setState({ submitted: true });
   };
 
-  onReturnToken = (token) => {
-    this.setState({
-      inputs: { ...this.state.inputs, id: token },
-    });
+  googleAuthHandler = (id_token) => this.props.onAuth(id_token, null, 'google');
+
+  onShowResetPswd = () => {
+    this.setState((prevState) => ({ showResetPswd: !prevState.showResetPswd }));
   };
 
   render() {
-    const renderInput = (input) => (
-      <Input
-        icon={input.icon}
-        type={input.type}
-        placeholder={input.placeholder}
-        value={input.value}
-        onChange={input.onChange}
-        append={input.append}
-        appendOnClick={input.appendOnClick}
-      />
-    );
+    const formInputsArray = [];
+    for (let key in this.state.inputs) {
+      formInputsArray.push({
+        id: key,
+        config: this.state.inputs[key],
+      });
+    }
+    const renderInputs = (className) =>
+      formInputsArray.map((input) => (
+        <Input
+          className={className}
+          key={input.id}
+          prepend={input.config.prepend}
+          elementConfig={input.config.elementConfig}
+          value={input.config.value}
+          append={input.config.append}
+          appendOnClick={input.config.appendOnClick}
+          changed={(event) => this.inputChangedHandler(event, input.id)}
+          valid={input.config.valid}
+          errorText={input.config.errorMsg}
+          touched={this.state.submitted}
+        />
+      ));
+
+    let errorMessage = '';
+    switch (this.props.error) {
+      case 'EMAIL_NOT_FOUND':
+        errorMessage = 'Podany adres email nie istnieje.';
+        break;
+      case 'INVALID_PASSWORD':
+        errorMessage = 'Nieprawidłowe hasło.';
+        break;
+      case 'USER_DISABLED':
+        errorMessage = 'Użytkownik zablokowany przez administratora.';
+        break;
+      default:
+        errorMessage = 'Error';
+        break;
+    }
 
     return (
-      <div className='d-flex no-gutters'>
-        <div className={`col-5 min-vh-100 bigScreen ${styles.Background}`} />
-        <div className='col d-flex min-vh-100 bg-rich-black'>
-          <div className='card mx-auto my-auto p-3'>
-            <div className='card-body text-center'>
-              <Logo />
-              <h4 className='card-title font-weight-bold font-italic mt-4 mb-5 text-celadon-blue'>
-                Dietownik
-              </h4>
-              <h6 className='card-subtitle mb-3 text-ash-gray'>
-                Zaloguj się do dietownika, aby rozpocząć
-              </h6>
-
-              <form
-                onSubmit={this.submitHandler}
-                className='container no-gutters'
-              >
-                <div className='mb-2 p-0'>
-                  {renderInput(this.state.inputs.email)}
-                </div>
-                {renderInput(this.state.inputs.password)}
-                <div className='w-100 text-right'>
-                  <a
-                    className={`btn p-0 text-ash-gray`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      this.props.onResetPassword(this.state.inputs.email);
-                    }}
-                    href='/'
-                  >
-                    <small>Zresetuj hasło</small>
-                  </a>
-                </div>
-
-                <a
-                  className={`row text-center mb-3 mt-2 p-0 btn text-ash-gray`}
-                  onClick={(e) => e.preventDefault()}
-                  href='/'
-                >
-                  <Checkbox
-                    onClick={this.checkboxClickHandler}
-                    checked={this.state.stayLoggedIn}
-                  >
-                    Nie wylogowuj mnie
-                  </Checkbox>
-                </a>
-
-                <h6 className='mb-2 text-ash-gray'>
-                  Nie masz konta?{' '}
-                  <a
-                    href='/'
-                    className={`pl-2 py-0 btn text-ash-gray`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      this.props.onAuth(
-                        this.state.inputs.email.value,
-                        this.state.inputs.password.value,
-                        'signup'
-                      );
-                    }}
-                  >
-                    <u>Zarejestruj się</u>
-                  </a>
+      <div>
+        {/* ---------------------- MODALS ------------------------------ */}
+        {/* reset password */}
+        <RstPswdModal
+          isOpen={this.state.showResetPswd}
+          toggle={this.onShowResetPswd}
+          onReject={this.onShowResetPswd}
+        />
+        <Modal
+          isOpen={Boolean(this.props.error)}
+          toggle={this.props.onClearError}
+          onReject={this.props.onClearError}
+          onSubmit={this.props.onClearError}
+          btn1='OK'
+          title='Błąd'
+        >
+          <div
+            className={`container no-gutters mx-auto text-center ${styles.Modal}`}
+          >
+            {errorMessage}
+          </div>
+        </Modal>
+        <div className='d-flex no-gutters'>
+          <div className={`col-5 min-vh-100 bigScreen ${styles.Background}`} />
+          <div className='col d-flex min-vh-100 bg-rich-black'>
+            <div className='card mx-auto my-auto p-3'>
+              <div className='card-body text-center'>
+                <Logo />
+                <h4 className='card-title font-weight-bold font-italic mt-4 mb-5 text-celadon-blue'>
+                  Dietownik
+                </h4>
+                <h6 className='card-subtitle mb-3 text-ash-gray'>
+                  Zaloguj się do dietownika, aby rozpocząć
                 </h6>
-                <button
-                  type='submit'
-                  className='btn w-100 text-light mb-3 btn-celadon-blue'
+
+                <form
+                  onSubmit={this.submitHandler}
+                  className='container no-gutters'
+                  noValidate
                 >
-                  Zaloguj
-                </button>
-              </form>
-              <GoogleAuth
-                onLogIn={(id_token) =>
-                  this.props.onAuth(id_token, null, 'google')
-                }
-              />
+                  {renderInputs()}
+
+                  <div className='w-100 text-right'>
+                    <a
+                      className={`btn btn-sm p-0 text-ash-gray`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        this.onShowResetPswd();
+                      }}
+                      href='/'
+                    >
+                      Zresetuj hasło
+                    </a>
+                  </div>
+
+                  <a
+                    className='row text-center mb-3 mt-2 p-0 btn text-ash-gray'
+                    onClick={(e) => e.preventDefault()}
+                    href='/'
+                  >
+                    <Checkbox
+                      onClick={this.checkboxClickHandler}
+                      checked={this.state.stayLoggedIn}
+                    >
+                      Nie wylogowuj mnie
+                    </Checkbox>
+                  </a>
+
+                  <h6 className='mb-2 text-ash-gray'>
+                    Nie masz konta?{' '}
+                    <a
+                      href='/'
+                      className={`pl-2 py-0 btn text-ash-gray`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        this.props.onAuth(
+                          this.state.inputs.email.value,
+                          this.state.inputs.password.value,
+                          'signup'
+                        );
+                      }}
+                    >
+                      <u>Zarejestruj się</u>
+                    </a>
+                  </h6>
+                  <button
+                    type='submit'
+                    className='btn w-100 text-light mb-3 btn-celadon-blue'
+                  >
+                    {this.props.loading && !this.state.isGoogleAuth ? (
+                      <Spinner size='sm' color='text-light' />
+                    ) : (
+                      'Zaloguj'
+                    )}
+                  </button>
+                </form>
+                <GoogleAuth
+                  onLogIn={(token) => {
+                    this.setState({ isGoogleAuth: true });
+                    this.googleAuthHandler(token);
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -200,6 +278,14 @@ const mapDispatchToProps = (dispatch) => {
     onAuth: (user, password, method) =>
       dispatch(actions.auth(user, password, method)),
     onResetPassword: (email) => dispatch(actions.resetPswd(email)),
+    onClearError: () => dispatch(actions.clearError()),
   };
 };
-export default connect(null, mapDispatchToProps)(Login);
+
+const mapStateToProps = (state) => ({
+  loading: state.auth.loading,
+  error: state.auth.error,
+  actionSuccess: state.auth.actionSuccess,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

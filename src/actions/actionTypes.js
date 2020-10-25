@@ -4,3 +4,4 @@ export const AUTH_FAIL = 'AUTH_FAIL';
 export const RESET_PSWD_START = 'RESET_PSWD_START';
 export const RESET_PSWD_SUCCESS = 'RESET_PSWD_SUCCESS';
 export const RESET_PSWD_FAIL = 'RESET_PSWD_FAIL';
+export const CLEAR_ERROR = 'CLEAR_ERROR';

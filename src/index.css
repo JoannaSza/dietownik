@@ -1,26 +1,32 @@
 body {
-	font-family: "Roboto", sans-serif;
-	line-height: 110%;
+  font-family: 'Roboto', sans-serif;
+  line-height: 110%;
 }
 
 .carousel .carousel-indicators li {
-	width: 10px;
-	height: 10px;
-	border-radius: 100%;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
 }
 
 .smallScreen {
-	display: contents;
+  display: contents;
 }
 
 @media (min-width: 500px) {
-	.smallScreen {
-		display: none;
-	}
+  .smallScreen {
+    display: none;
+  }
 }
 
-@media (max-width: 500px) {
-	.bigScreen {
-		display: none;
-	}
+@media (max-width: 499px) {
+  .bigScreen {
+    display: none;
+  }
+}
+.input-group > .input-group-append {
+  flex: 0 0 18%;
+}
+.input-group .input-group-text {
+  width: 100%;
 }

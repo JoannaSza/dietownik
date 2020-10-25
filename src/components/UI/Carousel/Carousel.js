@@ -15,6 +15,7 @@ const Carousel = (props) => {
       );
       indicators.push(
         <li
+          key={index}
           data-target='#carouselExampleControls'
           data-slide-to={`${index}`}
           className={`${index === props.active ? 'active' : ''}`}

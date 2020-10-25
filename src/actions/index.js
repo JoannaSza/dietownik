@@ -1,1 +1,1 @@
-export { auth, resetPswd } from './auth';
+export { auth, resetPswd, clearError } from './auth';

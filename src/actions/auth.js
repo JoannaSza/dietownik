@@ -2,8 +2,10 @@ import {
   AUTH_START,
   AUTH_FAIL,
   AUTH_SUCCESS,
+  RESET_PSWD_START,
   RESET_PSWD_FAIL,
   RESET_PSWD_SUCCESS,
+  CLEAR_ERROR,
 } from './actionTypes';
 import { methods, authAPI } from '../apis/auth';
 
@@ -31,6 +33,7 @@ export const authFail = (error) => {
 
 export const auth = (user, password, method) => {
   return (dispatch) => {
+    dispatch(authStart());
     let authData = {};
     switch (method) {
       case 'login':
@@ -67,8 +70,14 @@ export const auth = (user, password, method) => {
       })
       .catch((err) => {
         console.log(err.response.data.error.message);
-        dispatch(authFail(err));
+        dispatch(authFail(err.response.data.error.message));
       });
+  };
+};
+
+export const resetPswdStart = () => {
+  return {
+    type: RESET_PSWD_START,
   };
 };
 
@@ -88,6 +97,7 @@ export const resetPswdFail = (error) => {
 
 export const resetPswd = (email) => {
   return (dispatch) => {
+    dispatch(resetPswdStart());
     const resetPswdData = {
       requestType: 'PASSWORD_RESET',
       email: email,
@@ -96,12 +106,16 @@ export const resetPswd = (email) => {
     authAPI
       .post(methods.resetPassword, resetPswdData)
       .then((response) => {
-        console.log(response);
         dispatch(resetPswdSuccess(response.data));
       })
       .catch((err) => {
-        console.log(err.response.data.error.message);
-        dispatch(resetPswdFail(err));
+        dispatch(resetPswdFail(err.response.data.error.message));
       });
+  };
+};
+
+export const clearError = () => {
+  return {
+    type: CLEAR_ERROR,
   };
 };
