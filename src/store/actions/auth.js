@@ -2,12 +2,14 @@ import {
   AUTH_START,
   AUTH_FAIL,
   AUTH_SUCCESS,
+  AUTH_LOGOUT,
+  AUTH_LOGOUT_END,
   RESET_PSWD_START,
   RESET_PSWD_FAIL,
   RESET_PSWD_SUCCESS,
   CLEAR_ERROR,
 } from './actionTypes';
-import { methods, authAPI } from '../apis/auth';
+import { methods, authAPI } from '../../apis/auth';
 
 export const authStart = () => {
   return {
@@ -28,6 +30,24 @@ export const authFail = (error) => {
   return {
     type: AUTH_FAIL,
     error: error,
+  };
+};
+
+export const logout = () => {
+  return {
+    type: AUTH_LOGOUT,
+  };
+};
+
+export const logoutEnd = () => {
+  return { type: AUTH_LOGOUT_END };
+};
+
+export const checkAuthTimeout = (expirationTime) => {
+  return (dispatch) => {
+    setTimeout(() => {
+      dispatch(logout());
+    }, expirationTime);
   };
 };
 
@@ -60,6 +80,12 @@ export const auth = (user, password, method) => {
       .post(methods[method], authData)
       .then((response) => {
         console.log(response);
+        const expirationDate = new Date(
+          new Date().getTime() + response.data.expiresIn * 1000
+        );
+        localStorage.setItem('token', response.data.idToken);
+        localStorage.setItem('expirationDate', expirationDate);
+
         dispatch(
           authSuccess(
             response.data.idToken,

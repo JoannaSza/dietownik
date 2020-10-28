@@ -6,7 +6,7 @@ import {
   faEyeSlash,
 } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
-import * as actions from '../../../actions';
+import * as actions from '../../../store/actions';
 
 import styles from './Login.module.css';
 import GoogleAuth from './GoogleAuth';
@@ -114,7 +114,10 @@ class Login extends React.Component {
     } else this.setState({ submitted: true });
   };
 
-  googleAuthHandler = (id_token) => this.props.onAuth(id_token, null, 'google');
+  googleAuthHandler = (id_token) => {
+    console.log('googleAuthHandler');
+    this.props.onAuth(id_token, null, 'google');
+  };
 
   onShowResetPswd = () => {
     this.setState((prevState) => ({ showResetPswd: !prevState.showResetPswd }));
@@ -263,6 +266,8 @@ class Login extends React.Component {
                     this.setState({ isGoogleAuth: true });
                     this.googleAuthHandler(token);
                   }}
+                  logout={this.props.logout}
+                  onLogout={this.props.onLogoutEnd}
                 />
               </div>
             </div>
@@ -279,6 +284,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.auth(user, password, method)),
     onResetPassword: (email) => dispatch(actions.resetPswd(email)),
     onClearError: () => dispatch(actions.clearError()),
+    onLogoutEnd: () => dispatch(actions.logoutEnd()),
   };
 };
 
@@ -286,6 +292,7 @@ const mapStateToProps = (state) => ({
   loading: state.auth.loading,
   error: state.auth.error,
   actionSuccess: state.auth.actionSuccess,
+  logout: state.auth.logout,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

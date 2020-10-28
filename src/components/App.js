@@ -21,7 +21,7 @@ const App = (props) => {
   };
   return (
     <div>
-      {/* <Navbar /> */}
+      <Navbar />
       {/* <button onClick={onClickHandler}>Test database</button> */}
       <Route path='/' exact component={props.isAuth ? Diet : Login} />
       <Route path='/posilki' component={Recipes} />

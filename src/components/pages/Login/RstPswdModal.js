@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Spinner } from 'reactstrap';
 import Modal from '../../UI/Modal/Modal';
 import { connect } from 'react-redux';
-import * as actions from '../../../actions';
+import * as actions from '../../../store/actions';
 import styles from './Login.module.css';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import Input from '../../UI/Input';

@@ -1,7 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faUserCog } from '@fortawesome/free-solid-svg-icons';
+import {
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from 'reactstrap';
+
+import { connect } from 'react-redux';
+import * as actions from '../store/actions';
 
 class Navbar extends React.Component {
   render() {
@@ -41,6 +50,16 @@ class Navbar extends React.Component {
               >
                 Disabled
               </Link>
+              <UncontrolledDropdown nav inNavbar>
+                <DropdownToggle nav caret>
+                  <FontAwesomeIcon icon={faUserCog} />
+                </DropdownToggle>
+                <DropdownMenu right>
+                  <DropdownItem onClick={this.props.onLogout}>
+                    Wyloguj
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
             </div>
           </div>
         </div>
@@ -49,4 +68,10 @@ class Navbar extends React.Component {
   }
 }
 
-export default Navbar;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onLogout: () => dispatch(actions.logout()),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Navbar);
