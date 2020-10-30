@@ -1,1 +1,9 @@
-export { auth, logout, logoutEnd, resetPswd, clearError } from './auth';
+export {
+	authInitStart,
+	auth,
+	gauth,
+	logout,
+	logoutEnd,
+	resetPswd,
+	clearError,
+} from "./auth";
