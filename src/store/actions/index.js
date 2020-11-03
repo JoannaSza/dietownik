@@ -1,9 +1,8 @@
 export {
-	authInitStart,
-	auth,
-	gauth,
-	logout,
-	logoutEnd,
-	resetPswd,
-	clearError,
-} from "./auth";
+  authInitStart,
+  auth,
+  gauth,
+  logout,
+  resetPswd,
+  clearError,
+} from './auth';
