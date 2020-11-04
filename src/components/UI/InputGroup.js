@@ -1,19 +1,24 @@
 import React from 'react';
+import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const Input = (props) => {
+const completeInput = (props) => {
   const prepend = props.prepend ? (
-    <div className='col-1 pl-0 pr-1 my-auto text-muted'>
-      <FontAwesomeIcon icon={props.prepend} />
-    </div>
+    <InputGroupAddon addonType='prepend'>
+      <InputGroupText className='bg-white text-secondary btn'>
+        <FontAwesomeIcon style={{ width: '22px' }} icon={props.prepend} />
+      </InputGroupText>
+    </InputGroupAddon>
   ) : null;
+
   const append = props.append ? (
-    <div className='input-group-append' onClick={() => props.appendOnClick()}>
-      <div className={`input-group-text bg-white text-secondary btn`}>
+    <InputGroupAddon addonType='append' onClick={() => props.appendOnClick()}>
+      <InputGroupText className='bg-white text-secondary btn'>
         <FontAwesomeIcon style={{ width: '22px' }} icon={props.append} />
-      </div>
-    </div>
+      </InputGroupText>
+    </InputGroupAddon>
   ) : null;
+
   const errorText =
     props.errorText && props.touched ? (
       <div className='row text-danger text-center'>
@@ -29,20 +34,20 @@ const Input = (props) => {
   return (
     <div className={`mb-2 ${props.className}`}>
       <div className='row'>
-        {prepend}
-        <div className='input-group col p-0'>
-          <input
+        <InputGroup>
+          {prepend}
+          <Input
             className={`form-control ${validityClass}`}
             {...props.elementConfig}
             value={props.value}
             onChange={props.changed}
           />
           {append}
-        </div>
+        </InputGroup>
       </div>
       {errorText}
     </div>
   );
 };
 
-export default Input;
+export default completeInput;

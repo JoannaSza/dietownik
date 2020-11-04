@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
 
 import styles from './Login.module.css';
-import Input from '../../UI/Input';
+import Input from '../../UI/InputGroup';
 import Checkbox from '../../UI/Checkbox';
 import RstPswdModal from './RstPswdModal';
 import { Spinner } from 'reactstrap';
@@ -151,7 +151,7 @@ class Login extends React.Component {
         />
       ));
 
-    const additionalData = (
+    const additionalDataLogin = (
       <div>
         <div className='w-100 text-right'>
           <a
@@ -195,6 +195,20 @@ class Login extends React.Component {
       </div>
     );
 
+    const additionalDataSignup = (
+      <div className='w-100 text-right'>
+        <a
+          className={`btn btn-sm p-0 text-ash-gray`}
+          onClick={(e) => {
+            e.preventDefault();
+            this.setState({ method: 'login' });
+          }}
+          href='/'
+        >
+          <u>Wróć do logowania</u>
+        </a>
+      </div>
+    );
     const gAuthButton = (
       <button
         type='button'
@@ -243,7 +257,7 @@ class Login extends React.Component {
               cardTitle='Zaloguj się do dietownika, aby rozpocząć'
               inputs={renderInputs()}
               onSubmit={(e) => this.submitHandler(e, this.state.method)}
-              additionalData={additionalData}
+              additionalData={additionalDataLogin}
               submitText='Zaloguj'
               googleAuth={gAuthButton}
             />
@@ -253,6 +267,7 @@ class Login extends React.Component {
               inputs={renderInputs()}
               onSubmit={(e) => this.submitHandler(e, this.state.method)}
               submitText='Utwórz konto'
+              additionalData={additionalDataSignup}
             />
           )}
         </div>
