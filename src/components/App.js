@@ -31,6 +31,8 @@ class App extends React.Component {
         <Navbar />
         {/* <button onClick={onClickHandler}>Test database</button> */}
         <Route path='/' exact component={this.props.isAuth ? Diet : Login} />
+        {/* comment login window for tests */}
+        {/* <Route path='/' exact component={Diet} /> */}
         <Route path='/posilki' component={Recipes} />
       </div>
     );

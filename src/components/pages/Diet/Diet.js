@@ -23,6 +23,7 @@ class Diet extends React.Component {
     cardsAmount: 0,
     activeCard: 0,
     areCardsCollapsed: false,
+    date: new Date(),
     cards: [
       {
         day: {
@@ -88,8 +89,14 @@ class Diet extends React.Component {
     ));
 
     const renderCarousel = (
-      <Carousel active={this.state.activeCard}>{renderCards}</Carousel>
+      //<Carousel active={this.state.activeCard}>{renderCards}</Carousel>
+      <Carousel
+        items={renderCards}
+        onIndexChange={(index) => this.setState({ activeCard: index })}
+        activeIndex={this.state.activeCard}
+      />
     );
+
     const renderCollapsed = (
       <div
         className='vh-100 d-flex flex-column justify-content-center'
@@ -114,6 +121,8 @@ class Diet extends React.Component {
 
     return (
       <div className={styles.Diet}>
+        <div className='container bg-light'></div>
+
         <div className={styles.smallScreen}>
           {this.state.areCardsCollapsed ? renderCollapsed : renderCarousel}
         </div>
