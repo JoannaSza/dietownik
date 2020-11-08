@@ -30,9 +30,9 @@ class App extends React.Component {
       <div className='p-0 d-flex flex-column vh-100'>
         <Navbar />
         {/* <button onClick={onClickHandler}>Test database</button> */}
-        <Route path='/' exact component={this.props.isAuth ? Diet : Login} />
+        {/* <Route path='/' exact component={this.props.isAuth ? Diet : Login} /> */}
         {/* comment login window for tests */}
-        {/* <Route path='/' exact component={Diet} /> */}
+        <Route path='/' exact component={Diet} />
         <Route path='/posilki' component={Recipes} />
       </div>
     );

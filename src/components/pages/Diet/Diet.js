@@ -1,6 +1,8 @@
 import React from 'react';
+import { format } from 'date-fns';
+import { pl } from 'date-fns/locale';
 
-import Card from './Card';
+import Card from './Card2';
 import Carousel from '../../UI/Carousel/Carousel';
 
 import styles from './Diet.module.css';
@@ -53,22 +55,25 @@ class Diet extends React.Component {
     this.setState({ cards: newCards });
   };
 
+  formatDate = (date) => {
+    return {
+      day: {
+        name: weekDaysPl[date.getDay()],
+        date: date ? format(date, 'dd.MM.yyyy', { locale: pl }) : '',
+      },
+    };
+  };
+
   addCardHandler = (event) => {
     event.stopPropagation();
     const today = new Date();
-    let day = today.getDate().toString();
-    if (day.length === 1) day = `0${day}`;
-    let month = (today.getMonth() + 1).toString();
-    if (month.length === 1) month = `0${month}`;
-    const newCards = [
-      ...this.state.cards,
-      {
-        day: {
-          name: weekDaysPl[today.getDay()],
-          date: `${day}.${month}.${today.getFullYear()}`,
-        },
-      },
-    ];
+    const newCards = [...this.state.cards, this.formatDate(today)];
+    this.setState({ cards: newCards });
+  };
+
+  dayChangeHandler = (day, index) => {
+    const newCards = [...this.state.cards];
+    newCards[index] = this.formatDate(day);
     this.setState({ cards: newCards });
   };
 
@@ -81,12 +86,31 @@ class Diet extends React.Component {
       <Card
         key={index}
         day={card.day}
+        dayChange={(day) => this.dayChangeHandler(day, index)}
         collapse={this.state.areCardsCollapsed}
         onCollapse={() => this.setState({ areCardsCollapsed: true })}
         onDelete={() => this.deleteCardHandler(index)}
         onShow={() => this.showCardHandler(index)}
       />
     ));
+
+    if (this.state.areCardsCollapsed)
+      renderCards.push(
+        <Card
+          key={renderCards.length}
+          day={{
+            name: (
+              <FontAwesomeIcon
+                icon={faPlus}
+                size='lg'
+                onClick={this.addCardHandler}
+              />
+            ),
+            date: '',
+          }}
+          collapse={this.state.areCardsCollapsed}
+        />
+      );
 
     const renderCarousel = (
       //<Carousel active={this.state.activeCard}>{renderCards}</Carousel>
@@ -120,12 +144,18 @@ class Diet extends React.Component {
     );
 
     return (
-      <div className={styles.Diet}>
-        <div className='container bg-light'></div>
-
-        <div className={styles.smallScreen}>
+      <div
+        className={`flex-grow-1 d-flex flex-wrap  justify-content-around align-items-center ${styles.Diet}`}
+      >
+        <div className='smallScreen'>
           {this.state.areCardsCollapsed ? renderCollapsed : renderCarousel}
         </div>
+
+        {/* <div className='bigScreen>'> */}
+        {/* <div className='container d-flex flex-wrap  justify-content-around align-items-center'> */}
+        {renderCards}
+        {/* </div> */}
+        {/* </div> */}
       </div>
     );
   }

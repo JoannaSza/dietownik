@@ -92,12 +92,12 @@ class Card extends React.Component {
               className='container bg-light p-5'
               style={{ ...defaultStyle, ...transitionStyles[state] }}
             >
-              <DatePickerCalendar
+              {/* <DatePickerCalendar
                 key='calendar'
                 date={new Date()}
                 onDateChange={(date) => dateChangeHandler(date)}
                 locale={pl}
-              />
+              /> */}
             </div>
           );
         }}
@@ -105,15 +105,12 @@ class Card extends React.Component {
     );
 
     return (
-      <div className={cardClasses} onClick={this.props.onShow}>
-        {/* W widoku komórkowym - nazwa dnia tygodnia 
-      wędruje na środek, navbar zwija sie do burger 
-      button po lewej stronie - wtedy znika problem height=100 - navbar
-            
-      Pomyśleć nad menu 3 kropkowym zamiast kalendarza*/}
-
+      <div
+        className='container rounded m-2 p-0 bg-light d-flex flex-column overflow-auto'
+        style={{ width: '350px', height: '550px' }}
+      >
         <div
-          className={`container px-2 py-2 bg-dark text-light border ${
+          className={` container px-2 py-2 bg-dark border-dark rounded text-light border ${
             this.props.collapse ? 'rounded' : ''
           }`}
           style={{ zIndex: 2 }}
@@ -136,6 +133,38 @@ class Card extends React.Component {
           </div>
         )}
       </div>
+
+      // <div className={cardClasses} onClick={this.props.onShow}>
+      //   {/* W widoku komórkowym - nazwa dnia tygodnia
+      // wędruje na środek, navbar zwija sie do burger
+      // button po lewej stronie - wtedy znika problem height=100 - navbar
+
+      // Pomyśleć nad menu 3 kropkowym zamiast kalendarza*/}
+
+      //   <div
+      //     className={`container px-2 py-2 bg-dark text-light border ${
+      //       this.props.collapse ? 'rounded' : ''
+      //     }`}
+      //     style={{ zIndex: 2 }}
+      //   >
+      //     <div className='row no-gutters align-items-center'>
+      //       <div className='col'></div>
+      //       <div className='col text-center'>
+      //         <h5 className='mb-0'>{this.props.day.name}</h5>
+      //         <h6 className='text-muted m-0'>
+      //           <small>{this.props.day.date}</small>
+      //         </h6>
+      //       </div>
+      //       {cardButtons}
+      //     </div>
+      //   </div>
+      //   {this.props.collapse ? null : (
+      //     <div className='py-4 px-2 flex-grow-1 d-flex flex-column justify-content-around position-relative'>
+      //       {calendar}
+      //       {renderMeals()}
+      //     </div>
+      //   )}
+      // </div>
     );
   }
 }
