@@ -14,7 +14,13 @@ import Login from './pages/Login/Login';
 class App extends React.Component {
   componentDidMount = () => {
     this.props.initGoogleAuth();
+    this.props.handleResize();
+    window.addEventListener('resize', this.props.handleResize);
   };
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.props.handleResize);
+  }
 
   onClickHandler = async () => {
     const response = await axios.get('/przepisy/obiady.json', {
@@ -46,6 +52,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     initGoogleAuth: () => dispatch(actions.authInitStart()),
+    handleResize: () => dispatch(actions.handleResize()),
   };
 };
 

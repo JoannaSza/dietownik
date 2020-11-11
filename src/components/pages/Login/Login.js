@@ -250,7 +250,11 @@ class Login extends React.Component {
             {getErrorMsg(this.props.error)}
           </div>
         </Modal>
-        <div className={`col-5  bigScreen ${styles.Background}`} />
+        {this.props.isBigScreen ? (
+          <div className={`col-5 ${styles.Background}`} />
+        ) : (
+          ''
+        )}
         <div className='col d-flex bg-rich-black'>
           {this.state.method === 'login' ? (
             <LoginCard
@@ -292,6 +296,7 @@ const mapStateToProps = (state) => ({
   error: state.auth.error,
   actionSuccess: state.auth.actionSuccess,
   logout: state.auth.logout,
+  isBigScreen: !state.window.isSmall,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

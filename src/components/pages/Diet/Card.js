@@ -1,5 +1,6 @@
 import React from 'react';
 import { Transition } from 'react-transition-group';
+import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faCalendarAlt,
@@ -48,7 +49,7 @@ class Card extends React.Component {
     let cardClasses, cardButtons;
 
     if (this.props.collapse) {
-      cardClasses = `d-flex flex-column overflow-auto ${styles.smallCard}`;
+      cardClasses = `container p-0 d-flex flex-column overflow-auto ${styles.collapsedCard}`;
       if (this.props.day.date) {
         cardButtons = (
           <div className='col text-right pr-2 d-flex justify-content-end'>
@@ -59,7 +60,9 @@ class Card extends React.Component {
         );
       } else cardButtons = <div className='col'></div>;
     } else {
-      cardClasses = 'vh-100 d-flex flex-column overflow-auto';
+      cardClasses = this.props.isSmallScreen
+        ? 'vh-100 d-flex flex-column overflow-auto'
+        : `container rounded m-2 p-0 bg-light d-flex flex-column overflow-auto ${styles.bigScreenCard}`;
       cardButtons = (
         <div className='col text-right pr-2 d-flex justify-content-end'>
           <div className='pr-4' onClick={this.toggleCalendar}>
@@ -74,7 +77,7 @@ class Card extends React.Component {
 
     const defaultStyle = {
       transitionProperty: 'top',
-      transitionDuration: '2000ms',
+      transitionDuration: '500ms',
     };
 
     const transitionStyles = {
@@ -85,27 +88,28 @@ class Card extends React.Component {
     };
 
     const calendar = (
-      <Transition in={this.state.showCalendar} timeout={2000}>
-        {(state) => {
-          return (
-            <div
-              className='container bg-light p-5'
-              style={{ ...defaultStyle, ...transitionStyles[state] }}
-            >
-              <DatePickerCalendar
-                key='calendar'
-                date={new Date()}
-                onDateChange={(date) => dateChangeHandler(date)}
-                locale={pl}
-              />
-            </div>
-          );
-        }}
+      <Transition in={this.state.showCalendar} timeout={500}>
+        {(state) => (
+          <div
+            className='container bg-light p-5'
+            style={{ ...defaultStyle, ...transitionStyles[state] }}
+          >
+            <DatePickerCalendar
+              key='calendar'
+              date={new Date()}
+              onDateChange={(date) => dateChangeHandler(date)}
+              locale={pl}
+            />
+          </div>
+        )}
       </Transition>
     );
 
     return (
-      <div className={cardClasses} onClick={this.props.onShow}>
+      <div
+        className={cardClasses}
+        onClick={this.props.collapse ? () => this.props.onShow() : null}
+      >
         {/* W widoku komórkowym - nazwa dnia tygodnia 
       wędruje na środek, navbar zwija sie do burger 
       button po lewej stronie - wtedy znika problem height=100 - navbar
@@ -140,4 +144,10 @@ class Card extends React.Component {
   }
 }
 
-export default Card;
+const mapStateToProps = (state) => {
+  return {
+    isSmallScreen: state.window.isSmall,
+  };
+};
+
+export default connect(mapStateToProps)(Card);

@@ -1,29 +1,9 @@
-.smallCard {
+.collapsedCard {
+  max-width: 450px;
   transform: scale(0.7);
 }
 
-.calendar {
-}
-
-.calendarHidden {
-  display: none;
-  height: 100%;
-}
-
-.MyClass {
-  opacity: 0;
-}
-.MyClassEnterActive {
-  opacity: 1;
-  transition: opacity 1000ms;
-}
-.MyClassEnterDone {
-  opacity: 1;
-}
-.MyClassExitDone {
-  opacity: 0;
-}
-.MyClassExitActive {
-  opacity: 0;
-  transition: opacity 1000ms;
+.bigScreenCard {
+  width: 350px;
+  height: 550px;
 }

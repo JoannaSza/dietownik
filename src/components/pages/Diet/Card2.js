@@ -92,12 +92,12 @@ class Card extends React.Component {
               className='container bg-light p-5'
               style={{ ...defaultStyle, ...transitionStyles[state] }}
             >
-              {/* <DatePickerCalendar
+              <DatePickerCalendar
                 key='calendar'
                 date={new Date()}
                 onDateChange={(date) => dateChangeHandler(date)}
                 locale={pl}
-              /> */}
+              />
             </div>
           );
         }}

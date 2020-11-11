@@ -6,3 +6,5 @@ export {
   resetPswd,
   clearError,
 } from './auth';
+
+export { handleResize } from './window';

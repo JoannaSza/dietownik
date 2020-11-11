@@ -10,3 +10,12 @@
   background-position: center;
   background-size: cover;
 }
+
+.renderCollapsed {
+  left: 0%;
+}
+
+.hide {
+  left: 100%;
+  display: none;
+}

@@ -1,8 +1,10 @@
 import React from 'react';
 import { format } from 'date-fns';
 import { pl } from 'date-fns/locale';
+import { Transition } from 'react-transition-group';
+import { connect } from 'react-redux';
 
-import Card from './Card2';
+import Card from './Card';
 import Carousel from '../../UI/Carousel/Carousel';
 
 import styles from './Diet.module.css';
@@ -82,83 +84,123 @@ class Diet extends React.Component {
   };
 
   render() {
-    const renderCards = this.state.cards.map((card, index) => (
-      <Card
-        key={index}
-        day={card.day}
-        dayChange={(day) => this.dayChangeHandler(day, index)}
-        collapse={this.state.areCardsCollapsed}
-        onCollapse={() => this.setState({ areCardsCollapsed: true })}
-        onDelete={() => this.deleteCardHandler(index)}
-        onShow={() => this.showCardHandler(index)}
-      />
-    ));
-
-    if (this.state.areCardsCollapsed)
-      renderCards.push(
+    const renderCards = (collapsed) => {
+      const cards = this.state.cards.map((card, index) => (
         <Card
-          key={renderCards.length}
-          day={{
-            name: (
-              <FontAwesomeIcon
-                icon={faPlus}
-                size='lg'
-                onClick={this.addCardHandler}
-              />
-            ),
-            date: '',
-          }}
-          collapse={this.state.areCardsCollapsed}
+          key={`${collapsed}-${index}`}
+          day={card.day}
+          dayChange={(day) => this.dayChangeHandler(day, index)}
+          collapse={collapsed}
+          onCollapse={() => this.setState({ areCardsCollapsed: true })}
+          onDelete={() => this.deleteCardHandler(index)}
+          onShow={() => this.showCardHandler(index)}
         />
-      );
+      ));
+      if (collapsed)
+        cards.push(
+          <Card
+            key={renderCards.length}
+            day={{
+              name: (
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  size='lg'
+                  onClick={this.addCardHandler}
+                />
+              ),
+              date: '',
+            }}
+            collapse={true}
+          />
+        );
+      return cards;
+    };
 
-    const renderCarousel = (
-      //<Carousel active={this.state.activeCard}>{renderCards}</Carousel>
-      <Carousel
-        items={renderCards}
-        onIndexChange={(index) => this.setState({ activeCard: index })}
-        activeIndex={this.state.activeCard}
-      />
+    const defaultStyle = {
+      position: 'static',
+      opacity: '100%',
+      transitionProperty: 'opacity',
+      transitionDuration: '1000ms',
+    };
+
+    const transitionStyles = {
+      entering: { opacity: '100%' },
+      entered: { opacity: '100%' },
+      exiting: { opacity: '0%' },
+      exited: { opacity: '0%', position: 'absolute', top: '-100%' },
+    };
+
+    const renderNotCollapsed = (
+      <Transition in={!this.state.areCardsCollapsed} timeout={1000}>
+        {(state) => (
+          <div
+            className={
+              !this.props.isSmallScreen
+                ? 'flex-grow-1 d-flex flex-wrap  justify-content-around align-items-center'
+                : ''
+            }
+            key='carousel'
+            style={{ ...defaultStyle, ...transitionStyles[state] }}
+          >
+            {this.props.isSmallScreen ? (
+              <Carousel
+                items={renderCards(false)}
+                onIndexChange={(index) => this.setState({ activeCard: index })}
+                activeIndex={this.state.activeCard}
+              />
+            ) : (
+              renderCards(false)
+            )}
+          </div>
+        )}
+      </Transition>
     );
 
+    const defaultStyle2 = {
+      position: 'absolute',
+      top: '0%',
+      opacity: '0%',
+      transitionProperty: 'opacity',
+      transitionDuration: '1000ms',
+    };
+
+    const transitionStyles2 = {
+      entering: { opacity: '100%' },
+      entered: { opacity: '100%' },
+      exiting: { opacity: '0%' },
+      exited: { opacity: '0%', top: '-100%' },
+    };
+
     const renderCollapsed = (
-      <div
-        className='vh-100 d-flex flex-column justify-content-center'
-        onClick={() => this.setState({ areCardsCollapsed: false })}
-      >
-        {renderCards}
-        <Card
-          day={{
-            name: (
-              <FontAwesomeIcon
-                icon={faPlus}
-                size='lg'
-                onClick={this.addCardHandler}
-              />
-            ),
-            date: '',
-          }}
-          collapse={this.state.areCardsCollapsed}
-        />
-      </div>
+      <Transition in={this.state.areCardsCollapsed} timeout={1000}>
+        {(state) => (
+          <div
+            key='renderCollapsed'
+            style={{ ...defaultStyle2, ...transitionStyles2[state] }}
+            className={`container vh-100 d-flex flex-column justify-content-center`}
+            onClick={() => this.setState({ areCardsCollapsed: false })}
+          >
+            {renderCards(true)}
+          </div>
+        )}
+      </Transition>
     );
 
     return (
       <div
-        className={`flex-grow-1 d-flex flex-wrap  justify-content-around align-items-center ${styles.Diet}`}
+        className={`flex-grow-1 d-flex flex-wrap justify-content-around align-items-center ${styles.Diet}`}
       >
-        <div className='smallScreen'>
-          {this.state.areCardsCollapsed ? renderCollapsed : renderCarousel}
-        </div>
-
-        {/* <div className='bigScreen>'> */}
-        {/* <div className='container d-flex flex-wrap  justify-content-around align-items-center'> */}
-        {renderCards}
-        {/* </div> */}
-        {/* </div> */}
+        {renderNotCollapsed}
+        {renderCollapsed}
       </div>
     );
   }
 }
 
-export default Diet;
+const mapStateToProps = (state) => {
+  return {
+    isSmallScreen: state.window.isSmall,
+  };
+};
+
+export default connect(mapStateToProps)(Diet);
