@@ -1,21 +1,21 @@
 .Diet {
-  background-image: rgba(255, 255, 255, 0.6); /* fallback for older browsers */
-  background-image: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.6) 0%,
-      rgba(255, 255, 255, 0.6) 100%
-    ),
-    url('../../../IMG/frontMobile.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+	background-image: rgba(255, 255, 255, 0.6); /* fallback for older browsers */
+	background-image: linear-gradient(
+			to bottom,
+			rgba(255, 255, 255, 0.6) 0%,
+			rgba(255, 255, 255, 0.6) 100%
+		),
+		url("../../../IMG/frontMobile.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
 }
 
 .renderCollapsed {
-  left: 0%;
+	left: 0%;
 }
 
 .hide {
-  left: 100%;
-  display: none;
+	left: 100%;
+	display: none;
 }
