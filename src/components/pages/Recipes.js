@@ -1,5 +1,4 @@
 import React from 'react';
-import Fade from './Diet/test';
 
 class Diet extends React.Component {
   state = { showComp: true };
@@ -17,7 +16,6 @@ class Diet extends React.Component {
         >
           show
         </button>
-        <Fade inProp={this.state.showComp} />
       </div>
     );
   }

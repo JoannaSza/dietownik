@@ -1,6 +1,4 @@
 import React from 'react';
-import { format } from 'date-fns';
-import { pl } from 'date-fns/locale';
 import { Transition } from 'react-transition-group';
 import { connect } from 'react-redux';
 
@@ -58,10 +56,15 @@ class Diet extends React.Component {
   };
 
   formatDate = (date) => {
+    let day = date.getDate().toString();
+    if (day.length === 1) day = `0${day}`;
+    let month = (date.getMonth() + 1).toString();
+    if (month.length === 1) month = `0${month}`;
+
     return {
       day: {
         name: weekDaysPl[date.getDay()],
-        date: date ? format(date, 'dd.MM.yyyy', { locale: pl }) : '',
+        date: date ? `${day}.${month}.${date.getFullYear()}` : '',
       },
     };
   };
@@ -136,7 +139,7 @@ class Diet extends React.Component {
           <div
             className={
               !this.props.isSmallScreen
-                ? 'flex-grow-1 d-flex flex-wrap  justify-content-around align-items-center'
+                ? 'container my-5 flex-grow-1 d-flex flex-wrap  justify-content-around align-items-center'
                 : ''
             }
             key='carousel'
@@ -188,7 +191,9 @@ class Diet extends React.Component {
 
     return (
       <div
-        className={`flex-grow-1 d-flex flex-wrap justify-content-around align-items-center ${styles.Diet}`}
+        className={`flex-grow-1 d-flex flex-wrap justify-content-around align-items-center ${
+          this.props.isSmallScreen ? styles.DietMobile : styles.Diet
+        }`}
       >
         {renderNotCollapsed}
         {renderCollapsed}

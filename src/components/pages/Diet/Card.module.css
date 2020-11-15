@@ -1,9 +1,15 @@
+.collapsedCardMobile {
+  transform: scale(0.7);
+  padding: 0;
+}
+
 .collapsedCard {
   max-width: 450px;
-  transform: scale(0.7);
+  padding: 0.5rem;
 }
 
 .bigScreenCard {
   width: 350px;
   height: 550px;
+  opacity: 0.85;
 }
