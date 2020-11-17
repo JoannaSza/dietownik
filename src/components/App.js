@@ -8,7 +8,7 @@ import styles from './App.module.css';
 
 import Navbar from './UI/Navbar/Navbar';
 import Diet from './pages/Diet/Diet';
-import Recipes from './pages/Recipes';
+import Recipes from './pages/Recipes/Recipes';
 import Login from './pages/Login/Login';
 
 class App extends React.Component {
