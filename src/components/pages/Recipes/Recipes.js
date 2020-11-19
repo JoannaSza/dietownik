@@ -5,6 +5,9 @@ import {
   faSearch,
   faTimesCircle,
   faThumbtack,
+  faSnowflake,
+  faFire,
+  faSwatchbook,
 } from '@fortawesome/free-solid-svg-icons';
 
 import InputGroup from '../../UI/InputGroup';
@@ -25,6 +28,11 @@ const MealButtonsData = [
   { src: Soup, alt: 'Podwieczorek' },
   { src: Supper, alt: 'Kolacja' },
   { src: Cheescake, alt: 'Inne' },
+];
+
+const TempButtonsData = [
+  { src: faFire, alt: 'Na ciepło' },
+  { src: faSnowflake, alt: 'Na zimno' },
 ];
 
 class Diet extends React.Component {
@@ -62,8 +70,20 @@ class Diet extends React.Component {
         {...data}
         isActive={this.state.activeCategory === data.alt}
         onClick={() => this.setState({ activeCategory: data.alt })}
+        isImage={true}
       />
     ));
+
+    const renderTempButtons = TempButtonsData.map((data, index) => (
+      <MealButton
+        id={`mealButton-${index}`}
+        key={`mealButton-${index}`}
+        {...data}
+        isActive={this.state.activeCategory === data.alt}
+        onClick={() => this.setState({ activeCategory: data.alt })}
+      />
+    ));
+
     return (
       <div className='d-flex flex-grow-1 no-gutters bg-rich-black flex-column '>
         <Container className='my-3 border border-secondary rounded bg-ash-gray'>
@@ -90,7 +110,9 @@ class Diet extends React.Component {
               <div className='border border-secondary rounded mb-1 d-flex justify-content-center flex-wrap'>
                 {renderMealButtons}
               </div>
-              <div className='border border-secondary rounded mb-1'>3</div>
+              <div className='border border-secondary rounded mb-1 d-flex justify-content-center flex-wrap'>
+                {renderTempButtons}
+              </div>
               <div className='border border-secondary rounded mb-1'>4</div>
             </Col>
             <Col className='border border-secondary rounded' xs='8'>
@@ -103,7 +125,7 @@ class Diet extends React.Component {
         {/* breakfast: Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */}
         {/* dinner: Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */}
         {/* supper: Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */}
-        {/* smoothie: Icons made by <a href="https://www.flaticon.com/authors/iconixar" title="iconixar">iconixar</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */}
+        {/* smoothie: Icons made by <a href="https://www.flaticon.com/authors/monkik" title="monkik">monkik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */}
         {/* cheescake: Icons made by <a href="https://www.flaticon.com/authors/photo3idea-studio" title="photo3idea_studio">photo3idea_studio</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */}
         {/* soup: Icons made by <a href="https://www.flaticon.com/free-icon/soup_1981014" title="Nhor Phai">Nhor Phai</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */}
       </div>
