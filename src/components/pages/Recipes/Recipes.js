@@ -10,6 +10,9 @@ import {
   faSwatchbook,
 } from '@fortawesome/free-solid-svg-icons';
 
+import { connect } from 'react-redux';
+import * as actions from '../../../store/actions';
+
 import InputGroup from '../../UI/InputGroup';
 import MealButton from './MealButton';
 import { updateObject } from '../../../shared/utility';
@@ -20,19 +23,21 @@ import Dinner from '../../../IMG/dinner.svg';
 import Soup from '../../../IMG/soup.svg';
 import Supper from '../../../IMG/supper.svg';
 import Cheescake from '../../../IMG/cheesecake.svg';
+import Hot from '../../../IMG/hot.svg';
+import Cold from '../../../IMG/cold.svg';
 
 const MealButtonsData = [
-  { src: Breakfast, alt: 'Śniadanie' },
-  { src: Smoothie, alt: 'II Śniadanie' },
-  { src: Dinner, alt: 'Obiad' },
-  { src: Soup, alt: 'Podwieczorek' },
-  { src: Supper, alt: 'Kolacja' },
+  { src: Breakfast, alt: 'śniadanie' },
+  { src: Smoothie, alt: 'II śniadanie' },
+  { src: Dinner, alt: 'obiad' },
+  { src: Soup, alt: 'podwieczorek' },
+  { src: Supper, alt: 'kolacja' },
   { src: Cheescake, alt: 'Inne' },
 ];
 
 const TempButtonsData = [
-  { src: faFire, alt: 'Na ciepło' },
-  { src: faSnowflake, alt: 'Na zimno' },
+  { src: Hot, alt: 'Na ciepło' },
+  { src: Cold, alt: 'Na zimno' },
 ];
 
 class Diet extends React.Component {
@@ -45,7 +50,11 @@ class Diet extends React.Component {
         placeholder: 'Szukaj',
       },
     },
-    activeCategory: 'Śniadanie',
+    activeCategory: 'śniadanie',
+  };
+
+  componentDidUpdate = () => {
+    this.props.onGetMeals(this.state.activeCategory);
   };
 
   clearSearchbar = () => {
@@ -76,11 +85,12 @@ class Diet extends React.Component {
 
     const renderTempButtons = TempButtonsData.map((data, index) => (
       <MealButton
-        id={`mealButton-${index}`}
-        key={`mealButton-${index}`}
+        id={`temperatureButton-${index}`}
+        key={`temperatureButton-${index}`}
         {...data}
         isActive={this.state.activeCategory === data.alt}
         onClick={() => this.setState({ activeCategory: data.alt })}
+        isImage={true}
       />
     ));
 
@@ -128,9 +138,17 @@ class Diet extends React.Component {
         {/* smoothie: Icons made by <a href="https://www.flaticon.com/authors/monkik" title="monkik">monkik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */}
         {/* cheescake: Icons made by <a href="https://www.flaticon.com/authors/photo3idea-studio" title="photo3idea_studio">photo3idea_studio</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */}
         {/* soup: Icons made by <a href="https://www.flaticon.com/free-icon/soup_1981014" title="Nhor Phai">Nhor Phai</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */}
+        {/* hot: Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */}
+        {/* cold: Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a> */}
       </div>
     );
   }
 }
 
-export default Diet;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onGetMeals: (activeCategory) => dispatch(actions.getMeals(activeCategory)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Diet);

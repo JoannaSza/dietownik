@@ -8,3 +8,5 @@ export {
 } from './auth';
 
 export { handleResize } from './window';
+
+export { getMeals } from './meals';

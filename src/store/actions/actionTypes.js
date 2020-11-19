@@ -10,3 +10,7 @@ export const RESET_PSWD_FAIL = 'RESET_PSWD_FAIL';
 export const CLEAR_ERROR = 'CLEAR_ERROR';
 
 export const WINDOW_RESIZE = 'WINDOW_RESIZE';
+
+export const GET_MEALS_START = 'GET_MEALS_START';
+export const GET_MEALS_SUCCESS = 'GET_MEALS_SUCCESS';
+export const GET_MEALS_FAIL = 'GET_MEALS_FAIL';
