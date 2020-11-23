@@ -7,14 +7,14 @@ import {
 const initialState = {
   isLoading: false,
   meals: [],
-  errorMessage: null,
+  errorMessage: '',
 };
 
 const getMealsStart = (state, action) => ({
   ...state,
   isLoading: true,
   meals: [],
-  errorMessage: null,
+  errorMessage: '',
 });
 
 const getMealsSuccess = (state, action) => ({
