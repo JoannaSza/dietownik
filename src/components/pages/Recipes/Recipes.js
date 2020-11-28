@@ -34,7 +34,14 @@ class Diet extends React.Component {
   };
 
   componentDidMount = () => {
-    this.props.onGetMeals(this.state.filters.meal);
+    const category = this.props.match.params.category;
+    if (category) {
+      this.props.onGetMeals(category);
+      this.setState({
+        filters: updateObject(this.state.filters, { meals: category }),
+      });
+    } else this.props.onGetMeals(this.state.filters.meal);
+    console.log(category);
   };
 
   clearSearchbar = () => {
@@ -44,18 +51,23 @@ class Diet extends React.Component {
   };
 
   inputChangedHandler = (event) => {
+    const value = event.target.value;
     this.setState({
       searchbar: updateObject(this.state.searchbar, {
-        value: event.target.value,
+        value: value,
       }),
     });
+    this.props.onGetMeals(this.state.activeCategory, value);
   };
 
   filterChangeHandler = (filter, value) => {
     this.setState({
       filters: updateObject(this.state.filters, { [filter]: value }),
     });
-    if (filter === 'meal') this.props.onGetMeals(value);
+    if (filter === 'meal') {
+      this.props.onGetMeals(value);
+      this.props.history.push(`/posilki/${value}`);
+    }
     console.log(this.props);
   };
 
@@ -104,7 +116,8 @@ class Diet extends React.Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onGetMeals: (activeCategory) => dispatch(actions.getMeals(activeCategory)),
+    onGetMeals: (activeCategory, query) =>
+      dispatch(actions.getMeals(activeCategory, query)),
   };
 };
 

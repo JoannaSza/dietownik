@@ -13,22 +13,17 @@ const MealsList = (props) => {
   const renderMeals = () => {
     if (props.isLoading)
       return (
-        <div
-          className='m-auto pt-5 text-center'
-          style={{ transform: 'scale(2.5)' }}
-        >
-          <Spinner color='celadon-blue' size='xl' />
+        <div className='m-auto pt-5 text-center'>
+          <Spinner
+            style={{ width: '5rem', height: '5rem' }}
+            color='celadon-blue'
+            size='xl'
+          />
         </div>
       );
     else if (props.meals.length >= 1) {
       return props.meals.map((meal, index) => (
         <Meal key={'meal' + index} meal={meal} />
-        // <div key={'meal' + index} className='p-2 my-1 rounded'>
-        //   <Toast>
-        //     <ToastHeader>test</ToastHeader>
-        //     <ToastBody>{meal}</ToastBody>
-        //   </Toast>
-        // </div>
       ));
     } else if (props.errorMessage)
       return (

@@ -19,11 +19,17 @@ export const getMealsSuccess = (mealsData) => {
   return { type: GET_MEALS_SUCCESS, mealsData };
 };
 
-export const getMeals = (category) => {
+export const getMeals = (category, query) => {
   return (dispatch) => {
     dispatch(getMealsStart());
+    let apiQuery;
+
+    if (query)
+      apiQuery = `/przepisy/${category}.json?orderBy="$key"&startAt="${query}"`;
+    else apiQuery = `/przepisy/${category}.json?shallow=true`;
+
     dietsApi //here add config to choose records from data for pagination
-      .get(`/przepisy/${category}.json?shallow=true`)
+      .get(apiQuery)
       //startAt, limit, orderBy
       .then((response) => {
         const titles = Object.keys(response.data);

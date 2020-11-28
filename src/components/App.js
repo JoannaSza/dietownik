@@ -46,6 +46,7 @@ class App extends React.Component {
         <Route path='/' exact component={this.props.isAuth ? Diet : Login} />
         {/* comment login window for tests */}
         {/* <Route path='/' exact component={Diet} /> */}
+        <Route path='/posilki/:category' component={Recipes} />
         <Route path='/posilki' component={Recipes} />
       </div>
     );
