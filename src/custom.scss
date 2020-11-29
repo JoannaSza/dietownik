@@ -2,13 +2,21 @@
 @import "node_modules/bootstrap/scss/functions";
 @import "node_modules/bootstrap/scss/variables";
 /* -------begin customization-------- */
-/* change the primary theme color to red */
+/* change colors */
 $theme-colors: (
 	light: #fffcff,
 	celadon-blue: #247ba0,
 	ash-gray: #cbd4c2,
 	rich-black: #0e1116,
 );
+
+$celadon-blue: #247ba0;
+
+/* change pagination colors */
+$pagination-color: $celadon-blue;
+$pagination-active-bg: $celadon-blue;
+$pagination-active-border-color: $celadon-blue;
+
 /* -------end customization-------- */
 /* finally, import Bootstrap to set the changes! */
 @import "node_modules/bootstrap/scss/bootstrap";
