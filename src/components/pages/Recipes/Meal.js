@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./Meal.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { correctEndOfLineWords } from "../../../shared/utility";
 
 const Meal = (props) => {
 	return (
@@ -9,7 +10,7 @@ const Meal = (props) => {
 			className={`py-2 px-4 my-2 rounded bg-light border-ash-gray border-rounded w-100 text-justify ${styles.MealTitle}`}
 		>
 			<h5 className="mb-1">
-				<small>{props.meal}</small>
+				<small>{correctEndOfLineWords(props.meal)}</small>
 			</h5>
 			<div className="border-top border-rich-black text-right pt-1">
 				<a
