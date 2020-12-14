@@ -1,18 +1,33 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { Spinner } from 'reactstrap';
-
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 import { connect } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
+import mealStyle from './Meal.module.css';
 
 import Meal from './Meal';
+import ErrorText from '../../UI/ErrorText';
 
 const MealsList = (props) => {
   const viewClickHandler = (meal) => {
     const oldPath = props.history.location.pathname;
     props.history.push(`${oldPath}/${meal}`);
   };
+  const renderAddMeal = (
+    <div
+      onClick={() => props.history.push('/posilki/nowy')}
+      className={`py-2 px-4 my-2 card-link rounded bg-light border-ash-gray border-rounded w-100 text-justify ${mealStyle.AddButton} ${mealStyle.MealTitle}`}
+    >
+      <h5 className='mb-1 text-center border-bottom border-rich-black'>
+        <small>Dodaj nowy posiłek </small>
+        <a href='#' className='px-2 py-0 btn text-celadon-blue'>
+          <FontAwesomeIcon icon={faPlus} size='sm' />
+        </a>
+      </h5>
+    </div>
+  );
   const renderMeals = () => {
     if (props.isLoading)
       return (
@@ -33,19 +48,14 @@ const MealsList = (props) => {
         />
       ));
     } else if (props.errorMessage)
-      return (
-        <h3 className='mt-5 mx-auto p-2 w-75 text-center border border-ash-gray rounded'>
-          <div className='py-2 '>
-            <FontAwesomeIcon
-              className='text-danger'
-              icon={faExclamationTriangle}
-            />
-            <p className='text-light mb-0'>{props.errorMessage}</p>
-          </div>
-        </h3>
-      );
+      return <ErrorText errorMessage={props.errorMessage} />;
   };
-  return <div>{renderMeals()}</div>;
+  return (
+    <div>
+      {renderAddMeal}
+      {renderMeals()}
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => ({

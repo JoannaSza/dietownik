@@ -10,7 +10,8 @@ import {
 const initialState = {
   isLoading: false,
   meals: [],
-  errorMessage: '',
+  errorMessage: null,
+  meal: null,
 };
 
 const getMealsStart = (state, action) => ({
@@ -34,8 +35,8 @@ const getMealsFail = (state, action) => ({
 const getMealStart = (state, action) => ({
   ...state,
   isLoading: true,
-  meal: {},
-  errorMessage: '',
+  meal: null,
+  errorMessage: null,
 });
 
 const getMealSuccess = (state, action) => ({

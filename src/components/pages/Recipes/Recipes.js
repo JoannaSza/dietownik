@@ -1,10 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Spinner } from 'reactstrap';
-import {
-  faSearch,
-  faTimesCircle,
-  faExclamationTriangle,
-} from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
@@ -16,7 +12,6 @@ import MealsList from './MealsList';
 import Pagination from '../../UI/PaginationEl';
 
 import { updateObject } from '../../../shared/utility';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class Diet extends React.Component {
   state = {
@@ -44,7 +39,7 @@ class Diet extends React.Component {
     //set meal category
     if (category) {
       this.props.onGetMeals(category);
-      filters = updateObject(this.state.filters, { meals: category });
+      filters = updateObject(this.state.filters, { meal: category });
     } else this.props.onGetMeals(this.state.filters.meal);
 
     //set page for pagination

@@ -1,6 +1,16 @@
 import React from 'react';
-import { InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  Input,
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 const completeInput = (props) => {
   const prepend = props.prepend ? (
@@ -31,20 +41,44 @@ const completeInput = (props) => {
   else if (props.valid & props.touched) validityClass = 'is-valid';
   else validityClass = 'is-invalid';
 
+  let renderInputBasedOnType;
+  if (props.elementConfig.type === 'dropdown') {
+    const dropdownItems = props.elementConfig.items.map((item) => (
+      <DropdownItem className='text-capitalize' key={item}>
+        {item}
+      </DropdownItem>
+    ));
+    renderInputBasedOnType = (
+      <UncontrolledDropdown className='w-100 p-0'>
+        <DropdownToggle
+          color='white'
+          className='w-100 text-right d-flex justify-content-between'
+        >
+          <div className='text-left text-capitalize'>{props.value}</div>
+          <div>
+            <FontAwesomeIcon icon={faCaretDown} />
+          </div>
+        </DropdownToggle>
+        <DropdownMenu className='w-100'>{dropdownItems}</DropdownMenu>
+      </UncontrolledDropdown>
+    );
+  } else
+    renderInputBasedOnType = (
+      <InputGroup>
+        {prepend}
+        <Input
+          className={`form-control ${validityClass}`}
+          {...props.elementConfig}
+          value={props.value}
+          onChange={props.changed}
+        />
+        {append}
+      </InputGroup>
+    );
+
   return (
     <div className={`mb-2 ${props.className}`}>
-      <div className='row'>
-        <InputGroup>
-          {prepend}
-          <Input
-            className={`form-control ${validityClass}`}
-            {...props.elementConfig}
-            value={props.value}
-            onChange={props.changed}
-          />
-          {append}
-        </InputGroup>
-      </div>
+      <div className='row'>{renderInputBasedOnType}</div>
       {errorText}
     </div>
   );

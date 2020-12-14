@@ -1,4 +1,10 @@
 import React from 'react';
+import {
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+} from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Input = (props) => {
@@ -21,13 +27,25 @@ const Input = (props) => {
       </div>
     ) : null;
 
+  let renderInputBasedOnType;
+
   let validityClass = '';
   if (!props.touched) validityClass = '';
   else if (props.valid & props.touched) validityClass = 'is-valid';
   else validityClass = 'is-invalid';
 
-  return (
-    <div className={`mb-2 ${props.className}`}>
+  if (props.elementConfig.type === 'dropdown') {
+    const dropdownItems = props.elementConfig.items.map((item) => (
+      <DropdownItem key={item}>{item}</DropdownItem>
+    ));
+    renderInputBasedOnType = (
+      <UncontrolledDropdown className='w-100 p-0'>
+        <DropdownToggle>{props.value}</DropdownToggle>
+        <DropdownMenu>{dropdownItems}</DropdownMenu>
+      </UncontrolledDropdown>
+    );
+  } else
+    renderInputBasedOnType = (
       <div className='row'>
         {prepend}
         <div className='input-group col p-0'>
@@ -40,6 +58,11 @@ const Input = (props) => {
           {append}
         </div>
       </div>
+    );
+
+  return (
+    <div className={`mb-2 ${props.className}`}>
+      {renderInputBasedOnType}
       {errorText}
     </div>
   );

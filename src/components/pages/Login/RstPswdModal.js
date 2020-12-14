@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
 import styles from './Login.module.css';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
-import Input from '../../UI/Input';
+import Input from '../../UI/InputGroup';
 import { updateObject, checkValidity } from '../../../shared/utility';
 
 class RstPswdModal extends Component {

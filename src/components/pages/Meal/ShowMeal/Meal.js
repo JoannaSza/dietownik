@@ -1,30 +1,54 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { Container, Row, Col, Button, Spinner } from 'reactstrap';
-import { correctEndOfLineWords } from '../../../shared/utility';
+import { correctEndOfLineWords } from '../../../../shared/utility';
 
 import { connect } from 'react-redux';
-import * as actions from '../../../store/actions';
+import * as actions from '../../../../store/actions';
+
 import Ingredients from './Ingredients';
+import ErrorText from '../../../UI/ErrorText';
 
 class Meal extends React.Component {
+  state = {
+    category: '',
+    mealTitle: '',
+  };
   componentDidMount = () => {
     const mealTitle = this.props.match.params.title;
     const category = this.props.match.params.category;
     this.props.onGetMeal(category, mealTitle);
+    this.setState({ mealTitle, category });
   };
   render() {
     const mealTitle = this.props.match.params.title;
-    const ingredientsList = this.props.isLoading ? (
-      <Spinner />
-    ) : this.props.meal ? (
-      <Ingredients data={this.props.meal.produkty} />
-    ) : null;
+    let ingredientsList = null;
+    if (this.props.isLoading)
+      ingredientsList = (
+        <div className='text-center text-light'>
+          <h6>Trwa ładowanie składników...</h6>
+          <h6>
+            <Spinner />
+          </h6>
+        </div>
+      );
+    else if (this.props.meal)
+      ingredientsList = <Ingredients data={this.props.meal.produkty} />;
+    else if (this.props.errorMessage)
+      ingredientsList = <ErrorText errorMessage={this.props.errorMessage} />;
     return (
       <div className='flex-grow-1 bg-rich-black'>
         <Container>
           <Row className='mb-5'>
             <Col className='text-right'>
-              <Button className='mt-2' color='ash-gray' size='sm'>
+              <Button
+                className='mt-2'
+                color='ash-gray'
+                size='sm'
+                onClick={() =>
+                  this.props.history.push(`/posilki/${this.state.category}`)
+                }
+              >
                 Wróć do listy posiłków
               </Button>
             </Col>
@@ -50,6 +74,7 @@ const mapStateToProps = (state) => {
   return {
     meal: state.meals.meal,
     isLoading: state.meals.isLoading,
+    errorMessage: state.meals.errorMessage,
   };
 };
 
@@ -59,4 +84,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Meal);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Meal));
