@@ -44,7 +44,11 @@ const completeInput = (props) => {
   let renderInputBasedOnType;
   if (props.elementConfig.type === 'dropdown') {
     const dropdownItems = props.elementConfig.items.map((item) => (
-      <DropdownItem className='text-capitalize' key={item}>
+      <DropdownItem
+        className='text-capitalize'
+        onClick={() => props.changed({ target: { value: item } })}
+        key={item}
+      >
         {item}
       </DropdownItem>
     ));
