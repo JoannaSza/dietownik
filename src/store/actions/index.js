@@ -9,6 +9,6 @@ export {
 
 export { handleResize } from './window';
 
-export { getMeals, getMeal } from './meals';
+export { getMeals, getMeal, addMeal } from './meals';
 
 export { getIngred } from './ingredients';

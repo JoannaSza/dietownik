@@ -21,3 +21,7 @@ export const GET_MEAL_FAIL = 'GET_MEAL_FAIL';
 export const GET_INGRED_START = 'GET_INGRED_START';
 export const GET_INGRED_SUCCESS = 'GET_INGRED_SUCCESS';
 export const GET_INGRED_FAIL = 'GET_INGRED_FAIL';
+
+export const ADD_MEAL_START = 'ADD_MEAL_START';
+export const ADD_MEAL_SUCCESS = 'ADD_MEAL_SUCCESS';
+export const ADD_MEAL_FAIL = 'ADD_MEAL_FAIL';

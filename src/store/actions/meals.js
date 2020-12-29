@@ -5,6 +5,9 @@ import {
   GET_MEAL_START,
   GET_MEAL_SUCCESS,
   GET_MEAL_FAIL,
+  ADD_MEAL_START,
+  ADD_MEAL_SUCCESS,
+  ADD_MEAL_FAIL,
 } from './actionTypes';
 import dietsApi from '../../apis/diets';
 
@@ -72,6 +75,38 @@ export const getMeal = (category, title) => {
       .catch((err) => {
         if (err.response) dispatch(getMealFail(err.response.data));
         else dispatch(getMealFail('Coś poszło nie tak'));
+      });
+  };
+};
+
+export const addMealStart = () => {
+  return {
+    type: ADD_MEAL_START,
+  };
+};
+
+export const addMealFail = (error) => {
+  return { type: ADD_MEAL_FAIL, error };
+};
+
+export const addMealSuccess = (mealData) => {
+  return { type: ADD_MEAL_SUCCESS, mealData };
+};
+
+export const addMeal = (category, data, title) => {
+  return (dispatch) => {
+    dispatch(addMealStart());
+
+    dietsApi
+      .put(`/przepisy/${category}/${title}.json?`, data)
+      //startAt, limit, orderBy
+      .then((response) => {
+        console.log(response);
+        dispatch(addMealSuccess(response.data));
+      })
+      .catch((err) => {
+        if (err.response) dispatch(addMealFail(err.response.data));
+        else dispatch(addMealFail('Coś poszło nie tak'));
       });
   };
 };
