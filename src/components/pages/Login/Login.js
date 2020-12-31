@@ -81,7 +81,7 @@ class Login extends React.Component {
 	};
 
 	checkboxClickHandler = () => {
-		const stayLoggedInVal = !this.state.stayLoggedIn;
+		const stayLoggedInVal = !this.props.notLogout;
 		this.setState({ stayLoggedIn: stayLoggedInVal });
 		this.props.onSetNotLogout(stayLoggedInVal);
 	};
@@ -173,7 +173,7 @@ class Login extends React.Component {
 				>
 					<Checkbox
 						onClick={this.checkboxClickHandler}
-						checked={this.state.stayLoggedIn}
+						checked={this.props.notLogout}
 					>
 						Nie wylogowuj mnie
 					</Checkbox>
@@ -296,7 +296,7 @@ const mapStateToProps = (state) => ({
 	loading: state.auth.loading,
 	error: state.auth.error,
 	actionSuccess: state.auth.actionSuccess,
-	logout: state.auth.logout,
+	notLogout: state.auth.notLogout,
 	isBigScreen: !state.window.isSmall,
 });
 

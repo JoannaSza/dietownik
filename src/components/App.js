@@ -63,6 +63,7 @@ class App extends React.Component {
 						<Route path="/posilki/nowy" exact component={AddMeal} />
 						<Route path="/posilki/:category" exact component={Recipes} />
 						<Route path="/posilki" exact component={Recipes} />
+						<Route path="/posilki/:category/:title/edit" component={AddMeal} />
 						<Route path="/posilki/:category/:title" component={Meal} />
 					</Switch>
 				)}

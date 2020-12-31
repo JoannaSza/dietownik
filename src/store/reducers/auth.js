@@ -30,6 +30,7 @@ const authInit = (state, action) =>
 		gAuth: action.gAuth,
 		token: action.authData.token,
 		expDate: action.authData.expirationDate,
+		notLogout: action.authData.notLogout,
 	});
 
 const setNotLogout = (state, action) =>

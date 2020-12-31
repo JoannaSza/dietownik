@@ -19,8 +19,13 @@ import {
 
 export const authInitStart = () => {
 	return (dispatch) => {
-		const authData = browserStorageGet(["token", "expirationDate"], "local");
-		console.log(authData);
+		const storageData = browserStorageGet(["notLogout"], "local");
+		const browserStorageArea = storageData.notLogout ? "local" : "session";
+		const authData = browserStorageGet(
+			["token", "expirationDate"],
+			browserStorageArea
+		);
+		authData["notLogout"] = storageData.notLogout === "true";
 		let gAuth;
 		window.gapi.load("client:auth2", () => {
 			window.gapi.client
@@ -45,8 +50,7 @@ export const authInit = (gAuth, authData) => {
 };
 
 export const setNotLogout = (value) => {
-	console.log(value);
-	browserStorageSave({ notLogout: value });
+	browserStorageSave({ notLogout: value }, "local");
 	return {
 		type: SET_NOTLOGOUT,
 		value,
@@ -78,6 +82,7 @@ export const authFail = (error) => {
 export const logout = () => {
 	return (dispatch, getState) => {
 		browserStorageRemove(["token", "expirationDate"], "local");
+		browserStorageRemove(["token", "expirationDate"], "session");
 		const state = getState("auth");
 		state.auth.gAuth.signOut();
 		dispatch(logoutCont());
@@ -99,7 +104,7 @@ export const checkAuthTimeout = (expirationTime) => {
 };
 
 export const auth = (user, password, method) => {
-	return (dispatch) => {
+	return (dispatch, getState) => {
 		dispatch(authStart());
 		let authData = {};
 		switch (method) {
@@ -131,12 +136,14 @@ export const auth = (user, password, method) => {
 				const expirationDate = new Date(
 					new Date().getTime() + response.data.expiresIn * 1000
 				);
+				const state = getState("auth");
+				const browserStorageArea = state.auth.notLogout ? "local" : "session";
 				browserStorageSave(
 					{
 						token: response.data.idToken,
 						expirationDate: expirationDate,
 					},
-					"local"
+					browserStorageArea
 				);
 				dispatch(
 					authSuccess(
