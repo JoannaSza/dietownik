@@ -10,12 +10,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { connect } from "react-redux";
 import * as actions from "../../../store/actions";
 
+import { getErrorMsg } from "./getErrorMsg";
+
 import InputGroup from "../../UI/InputGroup";
 import Filters from "./Filters";
 import Footer from "./Footer";
 import MealsList from "./MealsList";
 import mealStyle from "./Meal.module.css";
 import Pagination from "../../UI/PaginationEl";
+import Modal from "../../UI/Modal/Modal";
 
 import { updateObject } from "../../../shared/utility";
 
@@ -34,7 +37,9 @@ class Diet extends React.Component {
 			temp: "",
 		},
 		activePage: 1,
-		pagesNumber: 5,
+		recordsPerPage: 15,
+		showDeleteConfirm: false,
+		mealToDelete: null,
 	};
 
 	componentDidMount = () => {
@@ -91,9 +96,24 @@ class Diet extends React.Component {
 		}
 	};
 
+	rejectDeleteHandler = () => {
+		this.setState({ showDeleteConfirm: false });
+	};
+
+	setMealToDeleteHandler = (title) => {
+		this.setState({ mealToDelete: title, showDeleteConfirm: true });
+	};
+
+	deleteMealHandler = () => {
+		this.props.onDeleteMeal(this.state.filters.meal, this.state.mealToDelete);
+		this.setState({ showDeleteConfirm: false });
+	};
+
 	pageClickHandler = (cmd, target) => {
 		let newActivePage;
-
+		const pagesNumber = Math.ceil(
+			this.props.recordsNumber / this.state.recordsPerPage
+		);
 		switch (cmd) {
 			case "page":
 				newActivePage = target;
@@ -104,9 +124,9 @@ class Diet extends React.Component {
 					: (newActivePage = 0);
 				break;
 			case "next":
-				this.state.activePage < this.state.pagesNumber - 2
+				this.state.activePage < pagesNumber - 2
 					? (newActivePage = this.state.activePage + 1)
-					: (newActivePage = this.state.pagesNumber - 1);
+					: (newActivePage = pagesNumber - 1);
 				break;
 			default:
 				break;
@@ -138,6 +158,31 @@ class Diet extends React.Component {
 		);
 		return (
 			<div className="d-flex flex-grow-1 no-gutters bg-rich-black flex-column">
+				<Modal
+					isOpen={this.state.showDeleteConfirm}
+					toggle={this.rejectDeleteHandler}
+					onReject={this.rejectDeleteHandler}
+					onSubmit={this.deleteMealHandler}
+					btn1="TAK"
+					btn2="NIE"
+					title="Uwaga"
+				>
+					<div className={`container no-gutters mx-auto text-center`}>
+						Czy na pewno chcesz usunąć ten przepis?
+					</div>
+				</Modal>
+				<Modal
+					isOpen={Boolean(this.props.error)}
+					toggle={this.props.onClearError}
+					onReject={this.props.onClearError}
+					onSubmit={this.props.onClearError}
+					btn1="OK"
+					title="Błąd"
+				>
+					<div className={`container no-gutters mx-auto text-center`}>
+						{getErrorMsg(this.props.error)}
+					</div>
+				</Modal>
 				<div className="h-100">
 					<Container className="my-3 border border-ash-gray rounded bg-ash-gray">
 						<InputGroup
@@ -168,14 +213,22 @@ class Diet extends React.Component {
 							</Col>
 							<Col className="pl-0 d-flex flex-column" xs="8">
 								<div className="container py-2 border border-ash-gray rounded">
-									<MealsList history={this.props.history} />
+									<MealsList
+										deleteMeal={(title) => this.setMealToDeleteHandler(title)}
+										pagination={{
+											activePage: this.state.activePage,
+											recordsAmount: this.state.recordsPerPage,
+										}}
+									/>
 								</div>
 								<div>
 									<Pagination
 										className="d-flex justify-content-center pagination-celadon-blue"
 										size="sm"
 										currentPage={this.state.activePage}
-										pagesCount={this.state.pagesNumber} //here will be calculation based on number of records
+										pagesCount={Math.ceil(
+											this.props.recordsNumber / this.state.recordsPerPage
+										)} //here will be calculation based on number of records
 										handlePageClick={(e, page) =>
 											this.pageClickHandler("page", page)
 										}
@@ -194,11 +247,22 @@ class Diet extends React.Component {
 	}
 }
 
+const mapStateToProps = (state, ownState) => {
+	return {
+		isLoading: state.meals.isLoading,
+		error: state.meals.errorMessage,
+		recordsNumber: state.meals.meals.length,
+	};
+};
+
 const mapDispatchToProps = (dispatch) => {
 	return {
 		onGetMeals: (activeCategory, query) =>
 			dispatch(actions.getMeals(activeCategory, query)),
+		onDeleteMeal: (category, title) =>
+			dispatch(actions.deleteMeal(category, title)),
+		onClearError: () => dispatch(actions.clearError()),
 	};
 };
 
-export default connect(null, mapDispatchToProps)(Diet);
+export default connect(mapStateToProps, mapDispatchToProps)(Diet);

@@ -1,12 +1,6 @@
 .Background {
-  background-image: url('../../../IMG/LoginPage.jpg');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-}
-
-@media (min-width: 500px) {
-  .Modal {
-    width: 75%;
-  }
+	background-image: url("../../../IMG/LoginPage.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
 }

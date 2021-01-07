@@ -8,6 +8,9 @@ import {
 	ADD_MEAL_START,
 	ADD_MEAL_SUCCESS,
 	ADD_MEAL_FAIL,
+	DELETE_MEAL_START,
+	DELETE_MEAL_SUCCESS,
+	DELETE_MEAL_FAIL,
 } from "./actionTypes";
 import dietsApi from "../../apis/diets";
 
@@ -43,6 +46,7 @@ export const getMeals = (category, query) => {
 			})
 			.catch((err) => {
 				if (err.response) dispatch(getMealsFail(err.response.data));
+				else if (Object.keys(err).length === 0) dispatch(getMealsSuccess([]));
 				else dispatch(getMealsFail("Coś poszło nie tak"));
 			});
 	};
@@ -111,6 +115,41 @@ export const addMeal = (category, data, title) => {
 			.catch((err) => {
 				if (err.response) dispatch(addMealFail(err.response.data));
 				else dispatch(addMealFail("Coś poszło nie tak"));
+			});
+	};
+};
+
+export const deleteMealStart = () => {
+	return {
+		type: DELETE_MEAL_START,
+	};
+};
+
+export const deleteMealFail = (error) => {
+	console.log(error);
+	return { type: DELETE_MEAL_FAIL, error };
+};
+
+export const deleteMealSuccess = (mealData) => {
+	return { type: DELETE_MEAL_SUCCESS, mealData };
+};
+
+export const deleteMeal = (category, title) => {
+	return (dispatch, getState) => {
+		dispatch(deleteMealStart());
+		const authData = getState("auth");
+		console.log(authData);
+		dietsApi
+			.delete(`/przepisy/${category}/${title}.json?auth=${authData.auth.token}`)
+			//startAt, limit, orderBy
+			.then((response) => {
+				console.log(response);
+				dispatch(deleteMealSuccess(response.data));
+				dispatch(getMeals(category));
+			})
+			.catch((err) => {
+				if (err.response) dispatch(deleteMealFail(err.response.data.error));
+				else dispatch(deleteMealFail("Coś poszło nie tak"));
 			});
 	};
 };

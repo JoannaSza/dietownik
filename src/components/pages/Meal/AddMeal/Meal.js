@@ -4,9 +4,11 @@ import * as actions from "../../../../store/actions";
 
 import { Container, Row, Col, Button, Spinner } from "reactstrap";
 import { updateObject, checkValidity } from "../../../../shared/utility";
+import { getErrorMsg } from "./getErrorMsg";
 
 import Input from "../../../UI/InputGroup";
 import Ingredients from "../Ingredients";
+import Modal from "../../../UI/Modal/Modal";
 
 class Meal extends React.Component {
 	state = {
@@ -39,7 +41,7 @@ class Meal extends React.Component {
 				validation: {
 					required: true,
 				},
-				valid: false,
+				valid: true,
 				errorMsg: "",
 			},
 			description: {
@@ -60,24 +62,32 @@ class Meal extends React.Component {
 		submitted: false,
 		action: "new",
 		dataLoaded: false,
+		dataSaved: false,
+		inputsAreValid: false,
 	};
 
 	componentDidMount = () => {
 		const mealTitle = this.props.match.params.title;
 		const category = this.props.match.params.category;
-		this.props.onGetMeal(category, mealTitle);
 		if (mealTitle && category) {
+			this.props.onGetMeal(category, mealTitle);
 			const updatedTitle = updateObject(this.state.inputs.title, {
 				value: mealTitle,
+				valid: true,
 			});
 			const updatedCategory = updateObject(this.state.inputs.category, {
 				value: category,
+				valid: true,
 			});
 			const updatedInputs = updateObject(this.state.inputs, {
 				title: updatedTitle,
 				category: updatedCategory,
 			});
-			this.setState({ inputs: updatedInputs, action: "edit" });
+			this.setState({
+				inputs: updatedInputs,
+				action: "edit",
+				inputsAreValid: true,
+			});
 		}
 	};
 
@@ -90,6 +100,7 @@ class Meal extends React.Component {
 		) {
 			const updatedDescr = updateObject(this.state.inputs.description, {
 				value: this.props.meal.opis,
+				valid: true,
 			});
 			const updatedInputs = updateObject(this.state.inputs, {
 				description: updatedDescr,
@@ -99,6 +110,12 @@ class Meal extends React.Component {
 				ingredients: this.props.meal.produkty,
 				dataLoaded: true,
 			});
+		} else if (
+			this.state.submitted &&
+			this.props.isSaved &&
+			!this.state.dataSaved
+		) {
+			this.setState({ dataSaved: true });
 		}
 	};
 
@@ -165,14 +182,24 @@ class Meal extends React.Component {
 	submitHandler = () => {
 		const category = this.state.inputs.category.value;
 		if (this.state.inputsAreValid) {
+			// validate if products are not empty
+			const checkedProducts = Object.fromEntries(
+				Object.entries(this.state.ingredients).filter(
+					(entry) => entry[0] !== "" && entry[1] !== ""
+				)
+			);
 			const newData = {
 				ocena: 5,
 				opis: this.state.inputs.description.value,
-				produkty: this.state.ingredients,
+				produkty: checkedProducts,
 			};
-			console.log(newData);
 			this.props.onAddMeal(category, newData, this.state.inputs.title.value); //change firebase rules for write for this to work
-		} else this.setState({ submitted: true });
+		}
+		this.setState({ submitted: true });
+	};
+
+	dataSavedHandler = () => {
+		this.props.history.goBack();
 	};
 
 	render() {
@@ -196,6 +223,29 @@ class Meal extends React.Component {
 
 		return (
 			<div className="flex-grow-1 bg-rich-black">
+				<Modal
+					isOpen={Boolean(this.props.error)}
+					toggle={this.props.onClearError}
+					onReject={this.props.onClearError}
+					onSubmit={this.props.onClearError}
+					btn1="OK"
+					title="Błąd"
+				>
+					<div className={`container no-gutters mx-auto text-center`}>
+						{getErrorMsg(this.props.error)}
+					</div>
+				</Modal>
+				<Modal
+					isOpen={this.state.dataSaved}
+					toggle={this.dataSavedHandler}
+					onSubmit={this.dataSavedHandler}
+					btn1="OK"
+					title="Sukces"
+				>
+					<div className={`container no-gutters mx-auto text-center`}>
+						Dane zostały zapisane
+					</div>
+				</Modal>
 				<Container>
 					<Row className="mb-4">
 						<Col className="text-right">
@@ -250,7 +300,8 @@ const mapStateToProps = (state) => {
 	return {
 		meal: state.meals.meal,
 		isLoading: state.meals.isLoading,
-		errorMessage: state.meals.errorMessage,
+		isSaved: state.meals.isDone,
+		error: state.meals.errorMessage,
 	};
 };
 
@@ -259,6 +310,7 @@ const mapDispatchToProps = (dispatch) => {
 		onAddMeal: (category, data, title) =>
 			dispatch(actions.addMeal(category, data, title)),
 		onGetMeal: (category, title) => dispatch(actions.getMeal(category, title)),
+		onClearError: () => dispatch(actions.clearError()),
 	};
 };
 

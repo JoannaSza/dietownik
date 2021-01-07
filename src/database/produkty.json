@@ -1,0 +1,80 @@
+{
+	"chili": {
+		"kategoria": "przyprawy",
+		"jednostka": "-",
+		"kcalPerGram": 0,
+		"waga1szt": 1
+	},
+	"cytryna": {
+		"kategoria": "owoce",
+		"jednostka": "szt.",
+		"kcalPerGram": 0.29,
+		"waga1szt": 80
+	},
+	"imbir mielony": {
+		"kategoria": "przyprawy",
+		"jednostka": "-",
+		"kcalPerGram": 0,
+		"waga1szt": 1
+	},
+	"kolendra": {
+		"kategoria": "przyprawy",
+		"jednostka": "-",
+		"kcalPerGram": 0,
+		"waga1szt": 1
+	},
+	"komosa ryżowa": {
+		"kategoria": "sypkie",
+		"jednostka": "TBSP",
+		"kcalPerGram": 3.34,
+		"waga1szt": 15
+	},
+	"kurczak, filet": {
+		"kategoria": "mięso",
+		"jednostka": "porcja",
+		"kcalPerGram": 1,
+		"waga1szt": 100
+	},
+	"marchew": {
+		"kategoria": "warzywa",
+		"jednostka": "szt.",
+		"kcalPerGram": 0.2,
+		"waga1szt": 100
+	},
+	"papryka czerwona": {
+		"kategoria": "warzywa",
+		"jednostka": "szt.",
+		"kcalPerGram": 0.24,
+		"waga1szt": 140
+	},
+	"papryka słodka": {
+		"kategoria": "przyprawy",
+		"jednostka": "-",
+		"kcalPerGram": 0,
+		"waga1szt": 1
+	},
+	"pieprz": {
+		"kategoria": "przyprawy",
+		"jednostka": "-",
+		"kcalPerGram": 0,
+		"waga1szt": 1
+	},
+	"pomarańcza": {
+		"kategoria": "owoce",
+		"jednostka": "szt.",
+		"kcalPerGram": 0.32,
+		"waga1szt": 200
+	},
+	"sezam": {
+		"kategoria": "sypkie",
+		"jednostka": "TSP",
+		"kcalPerGram": 6.33,
+		"waga1szt": 5
+	},
+	"sól": {
+		"kategoria": "przyprawy",
+		"jednostka": "-",
+		"kcalPerGram": 0,
+		"waga1szt": 1
+	}
+}

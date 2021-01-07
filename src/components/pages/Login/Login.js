@@ -244,9 +244,7 @@ class Login extends React.Component {
 					btn1="OK"
 					title="Błąd"
 				>
-					<div
-						className={`container no-gutters mx-auto text-center ${styles.Modal}`}
-					>
+					<div className={`container no-gutters mx-auto text-center`}>
 						{getErrorMsg(this.props.error)}
 					</div>
 				</Modal>
