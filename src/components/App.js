@@ -12,6 +12,7 @@ import Recipes from "./pages/Recipes/Recipes";
 import Meal from "./pages/Meal/ShowMeal/Meal";
 import Login from "./pages/Login/Login";
 import AddMeal from "./pages/Meal/AddMeal/Meal";
+import ShoppingList from "./pages/ShoppingList/ShoppingList";
 
 class App extends React.Component {
 	state = { activePageIndex: 0 };
@@ -65,6 +66,7 @@ class App extends React.Component {
 						<Route path="/posilki" exact component={Recipes} />
 						<Route path="/posilki/:category/:title/edit" component={AddMeal} />
 						<Route path="/posilki/:category/:title" component={Meal} />
+						<Route path="/listaZakupow" exact component={ShoppingList} />
 					</Switch>
 				)}
 			</div>
