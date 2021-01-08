@@ -1,60 +1,52 @@
-import React, { useState } from "react";
-import {
-	TabContent,
-	TabPane,
-	Nav,
-	NavItem,
-	NavLink,
-	Card,
-	Button,
-	CardTitle,
-	CardText,
-	Row,
-	Col,
-} from "reactstrap";
-import classnames from "classnames";
+import React, { useState } from 'react';
+import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 
-const Example = (props) => {
-	const [activeTab, setActiveTab] = useState("1");
-	const toggle = (tab) => {
-		if (activeTab !== tab) setActiveTab(tab);
-	};
+class Tabs extends React.Component {
+  state = { activeTab: '1' };
 
-	const renderTabLinks =
-		props.tabNames.length !== 0
-			? props.tabNames.map((navTab, index) => (
-					<NavItem key={"tabNavItem-" + index}>
-						<NavLink
-							className={`btn btn-sm btn-outline-celadon-blue my-1 ${
-								activeTab === String(index + 1) ? "active" : ""
-							}`}
-							onClick={() => {
-								toggle(String(index + 1));
-							}}
-						>
-							{navTab}
-						</NavLink>
-					</NavItem>
-			  ))
-			: null;
-	console.log(props.children);
-	const renderTabContent =
-		props.children.length !== 0
-			? props.children.map((cont, index) => {
-					<TabPane tabId={String(index)} key={"tabCont" + index}>
-						{cont}
-					</TabPane>;
-			  })
-			: null;
+  toggle = (tab) => {
+    if (this.state.activeTab !== tab) this.setState({ activeTab: tab });
+  };
 
-	console.log(renderTabContent);
+  render() {
+    const renderTabLinks =
+      this.props.tabNames.length !== 0
+        ? this.props.tabNames.map((navTab, index) => (
+            <NavItem key={'tabNavItem-' + index}>
+              <NavLink
+                className={`btn btn-sm btn-outline-celadon-blue my-1 ${
+                  this.state.activeTab === String(index + 1) ? 'active' : ''
+                }`}
+                onClick={() => {
+                  this.toggle(String(index + 1));
+                }}
+              >
+                {navTab}
+              </NavLink>
+            </NavItem>
+          ))
+        : null;
+    console.log(this.props.children);
+    const renderTabContent =
+      this.props.children.length !== 0
+        ? this.props.children.map((cont, index) => (
+            <TabPane tabId={String(index + 1)} key={'tabCont' + index}>
+              {cont}
+            </TabPane>
+          ))
+        : null;
+    return (
+      <div>
+        <Nav tabs>{renderTabLinks}</Nav>
+        <TabContent
+          className='border border-light'
+          activeTab={this.state.activeTab}
+        >
+          {renderTabContent}
+        </TabContent>
+      </div>
+    );
+  }
+}
 
-	return (
-		<div>
-			<Nav tabs>{renderTabLinks}</Nav>
-			<TabContent activeTab={activeTab}>{renderTabContent}</TabContent>
-		</div>
-	);
-};
-
-export default Example;
+export default Tabs;
