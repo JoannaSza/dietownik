@@ -27,7 +27,10 @@ class Ingredient extends React.Component {
 				);
 			} else if (this.props.ingred.data) {
 				kcal = (
-					<td>{this.props.ingred.data.kcalPerGram * this.props.value} kcal</td>
+					<td>
+						{Math.round(this.props.ingred.data.kcalPerGram * this.props.value)}{" "}
+						kcal
+					</td>
 				);
 				pieces =
 					this.props.ingred.data.jednostka === "porcja" ? (

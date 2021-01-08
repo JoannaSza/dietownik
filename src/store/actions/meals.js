@@ -32,7 +32,6 @@ export const getMeals = (category, query) => {
 	return (dispatch) => {
 		dispatch(getMealsStart());
 		let apiQuery;
-
 		if (query)
 			apiQuery = `/przepisy/${category}.json?orderBy="$key"&startAt="${query}"`;
 		else apiQuery = `/przepisy/${category}.json?shallow=true`;

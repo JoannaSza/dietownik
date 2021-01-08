@@ -76,5 +76,41 @@
 		"jednostka": "-",
 		"kcalPerGram": 0,
 		"waga1szt": 1
+	},
+	"jajo": {
+		"kategoria": "nabiał",
+		"jednostka": "szt.",
+		"kcalPerGram": 1.4,
+		"waga1szt": 65
+	},
+	"olej kokosowy": {
+		"kategoria": "oleje",
+		"jednostka": "TBSP",
+		"kcalPerGram": 9,
+		"waga1szt": 15
+	},
+	"pomidor": {
+		"kategoria": "warzywa",
+		"jednostka": "szt.",
+		"kcalPerGram": 0.19,
+		"waga1szt": 170
+	},
+	"pomidory suszone": {
+		"kategoria": "przetwory",
+		"jednostka": "szt.",
+		"kcalPerGram": 2.13,
+		"waga1szt": 20
+	},
+	"rukola": {
+		"kategoria": "warzywa",
+		"jednostka": "porcja",
+		"kcalPerGram": 0.25,
+		"waga1szt": 20
+	},
+	"szynka z piersi indyka": {
+		"kategoria": "mięso",
+		"jednostka": "porcja",
+		"kcalPerGram": 0.8,
+		"waga1szt": 20
 	}
 }
