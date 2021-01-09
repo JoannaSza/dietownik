@@ -39,7 +39,7 @@ class Tabs extends React.Component {
       <div>
         <Nav tabs>{renderTabLinks}</Nav>
         <TabContent
-          className='border border-light'
+          className='border border-light rounded'
           activeTab={this.state.activeTab}
         >
           {renderTabContent}
