@@ -6,7 +6,7 @@ import { faChild } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
 
-import Ingredient from './Ingredient';
+import Ingredient from '../../shared/Ingredient';
 
 class Ingredients extends React.Component {
   state = {
