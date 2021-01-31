@@ -1,34 +1,42 @@
 body {
-	font-family: "Roboto", sans-serif;
-	line-height: 110%;
+  font-family: 'Roboto', sans-serif;
+  line-height: 110%;
 }
 
 .font-courgette {
-	font-family: "Courgette", cursive;
+  font-family: 'Courgette', cursive;
 }
 
 .carousel .carousel-indicators li {
-	width: 10px;
-	height: 10px;
-	border-radius: 100%;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
 }
 
 .smallScreen {
-	display: contents;
+  display: contents;
 }
 
 @media (min-width: 500px) {
-	.smallScreen {
-		display: none;
-	}
+  .smallScreen {
+    display: none;
+  }
 }
 
 @media (max-width: 499px) {
-	.bigScreen {
-		display: none;
-	}
+  .bigScreen {
+    display: none;
+  }
 }
 
 .carousel .carousel-item {
-	transition: 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+  transition: 0.4s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+:root {
+  --rich-black: #0e1116;
+  --ash-gray: #cbd4c2;
+  --snow: #fffcff;
+  --celadon-blue: #247ba0;
+  --khaki-web: #c3b299;
 }

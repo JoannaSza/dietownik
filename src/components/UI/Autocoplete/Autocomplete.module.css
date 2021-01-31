@@ -1,0 +1,30 @@
+.autocomplete {
+  /* position: fixed;
+  width: inherit; */
+  z-index: 2000;
+  margin: 0;
+  overflow-y: scroll;
+  height: 80px;
+  border-radius: 0.2rem;
+}
+
+.collapse {
+  position: absolute;
+  width: 100%;
+  z-index: 2000;
+  background-color: white;
+  border-bottom: 1px solid var(--ash-gray);
+  border-right: 1px solid var(--ash-gray);
+  border-left: 1px solid var(--ash-gray);
+  border-radius: 0.2rem;
+}
+
+.autocomplete td {
+  color: var(--khaki-web);
+  font-size: small;
+  border: none;
+}
+
+.autocomplete table {
+  border: none;
+}

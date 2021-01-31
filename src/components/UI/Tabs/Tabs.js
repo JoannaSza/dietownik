@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 
 class Tabs extends React.Component {
@@ -26,7 +26,6 @@ class Tabs extends React.Component {
             </NavItem>
           ))
         : null;
-    console.log(this.props.children);
     const renderTabContent =
       this.props.children.length !== 0
         ? this.props.children.map((cont, index) => (

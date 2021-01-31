@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Row, Col, Button } from 'reactstrap';
 import Accordion from '../../UI/Accordion/Accordion';
 import Ingredient from '../../shared/Ingredient';
@@ -9,6 +9,7 @@ const Cards = [
 ];
 
 const Own = () => {
+  const [testInput, setTestInput] = useState('');
   return (
     <div className='text-light'>
       <Row className='m-0'>
@@ -16,28 +17,29 @@ const Own = () => {
           <Container className='p-1 my-3 rounded bg-ash-gray'>
             <Row className='m-0'>
               <Col className='p-0'>
-                <Ingredient
-                  addNew='true'
-                  key={`ingredient--key`}
-                  title={'ingredient'}
-                  value={'400'}
-                  isSpice='false'
-                  // updateTitle={(event) =>
-                  //   this.updateIngredientHandler(event, ingredient, 'title')
-                  // }
-                  // updateValue={(event) =>
-                  //   this.updateIngredientHandler(event, ingredient, 'value')
-                  // }
-                  // deleteIngredient={(event) =>
-                  //   this.updateIngredientHandler(event, ingredient, 'delete')
-                  // }
-                  //addNextInput={this.props.addIngredient}
-                />
+                <table>
+                  <tbody>
+                    <Ingredient
+                      addNew='true'
+                      key={`ingredient--key`}
+                      title={testInput}
+                      value={''}
+                      isSpice='false'
+                      updateTitle={(value) => setTestInput(value)}
+
+                      // updateValue={(value) =>
+                      //   this.updateIngredientHandler(event, ingredient, 'value')
+                      // }
+                      // deleteIngredient={(event) =>
+                      //   this.updateIngredientHandler(event, ingredient, 'delete')
+                      // }
+                      //addNextInput={this.props.addIngredient}
+                    />
+                  </tbody>
+                </table>
               </Col>
               <Col xs='2' className='text-right p-0'>
-                <Button size='sm' className>
-                  Dodaj
-                </Button>
+                <Button size='sm'>Dodaj</Button>
               </Col>
             </Row>
           </Container>

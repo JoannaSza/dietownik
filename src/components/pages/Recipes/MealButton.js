@@ -1,4 +1,3 @@
-import { faFortAwesome } from '@fortawesome/free-brands-svg-icons';
 import React from 'react';
 import { Button, UncontrolledTooltip } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

@@ -1,268 +1,268 @@
-import React from "react";
-import { Container, Row, Col, Spinner } from "reactstrap";
+import React from 'react';
+import { Container, Row, Col } from 'reactstrap';
 import {
-	faSearch,
-	faTimesCircle,
-	faPlus,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+  faSearch,
+  faTimesCircle,
+  faPlus,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { connect } from "react-redux";
-import * as actions from "../../../store/actions";
+import { connect } from 'react-redux';
+import * as actions from '../../../store/actions';
 
-import { getErrorMsg } from "./getErrorMsg";
+import { getErrorMsg } from './getErrorMsg';
 
-import InputGroup from "../../UI/InputGroup";
-import Filters from "./Filters";
-import Footer from "./Footer";
-import MealsList from "./MealsList";
-import mealStyle from "./Meal.module.css";
-import Pagination from "../../UI/PaginationEl";
-import Modal from "../../UI/Modal/Modal";
+import InputGroup from '../../UI/InputGroup';
+import Filters from './Filters';
+import Footer from './Footer';
+import MealsList from './MealsList';
+import mealStyle from './Meal.module.css';
+import Pagination from '../../UI/PaginationEl';
+import Modal from '../../UI/Modal/Modal';
 
-import { updateObject } from "../../../shared/utility";
+import { updateObject } from '../../../shared/utility';
 
 class Diet extends React.Component {
-	state = {
-		searchbar: {
-			prepend: faSearch,
-			value: "",
-			elementConfig: {
-				type: "text",
-				placeholder: "Szukaj",
-			},
-		},
-		filters: {
-			meal: "śniadanie",
-			temp: "",
-		},
-		activePage: 1,
-		recordsPerPage: 15,
-		showDeleteConfirm: false,
-		mealToDelete: null,
-	};
+  state = {
+    searchbar: {
+      prepend: faSearch,
+      value: '',
+      elementConfig: {
+        type: 'text',
+        placeholder: 'Szukaj',
+      },
+    },
+    filters: {
+      meal: 'śniadanie',
+      temp: '',
+    },
+    activePage: 1,
+    recordsPerPage: 15,
+    showDeleteConfirm: false,
+    mealToDelete: null,
+  };
 
-	componentDidMount = () => {
-		const category = this.props.match.params.category;
-		let filters = { ...this.state.filters };
-		let newActivePage;
+  componentDidMount = () => {
+    const category = this.props.match.params.category;
+    let filters = { ...this.state.filters };
+    let newActivePage;
 
-		//set meal category
-		if (category) {
-			this.props.onGetMeals(category);
-			filters = updateObject(this.state.filters, { meal: category });
-		} else this.props.onGetMeals(this.state.filters.meal);
+    //set meal category
+    if (category) {
+      this.props.onGetMeals(category);
+      filters = updateObject(this.state.filters, { meal: category });
+    } else this.props.onGetMeals(this.state.filters.meal);
 
-		//set page for pagination
-		const searchParams = new URLSearchParams(this.props.location.search);
+    //set page for pagination
+    const searchParams = new URLSearchParams(this.props.location.search);
 
-		//get page param and set it as newActivePage - if exists else 0
-		newActivePage = searchParams.get("page");
-		newActivePage = newActivePage ? +newActivePage : 0;
+    //get page param and set it as newActivePage - if exists else 0
+    newActivePage = searchParams.get('page');
+    newActivePage = newActivePage ? +newActivePage : 0;
 
-		this.props.history.push(`/posilki/${filters.meal}`);
-		this.setState({ filters: filters, activePage: newActivePage });
-	};
+    this.props.history.push(`/posilki/${filters.meal}`);
+    this.setState({ filters: filters, activePage: newActivePage });
+  };
 
-	componentDidUpdate = () => {
-		if (!this.props.match.params.category)
-			this.props.history.push(`/posilki/${this.state.filters.meal}`);
-	};
+  componentDidUpdate = () => {
+    if (!this.props.match.params.category)
+      this.props.history.push(`/posilki/${this.state.filters.meal}`);
+  };
 
-	clearSearchbar = () => {
-		this.setState({
-			searchbar: updateObject(this.state.searchbar, { value: "" }),
-		});
-	};
+  clearSearchbar = () => {
+    this.setState({
+      searchbar: updateObject(this.state.searchbar, { value: '' }),
+    });
+  };
 
-	inputChangedHandler = (event) => {
-		const value = event.target.value;
-		this.setState({
-			searchbar: updateObject(this.state.searchbar, {
-				value: value,
-			}),
-		});
-		this.props.onGetMeals(this.state.activeCategory, value);
-	};
+  inputChangedHandler = (event) => {
+    const value = event.target.value;
+    this.setState({
+      searchbar: updateObject(this.state.searchbar, {
+        value: value,
+      }),
+    });
+    this.props.onGetMeals(this.state.activeCategory, value);
+  };
 
-	filterChangeHandler = (filter, value) => {
-		this.setState({
-			filters: updateObject(this.state.filters, { [filter]: value }),
-		});
-		if (filter === "meal") {
-			this.props.onGetMeals(value);
+  filterChangeHandler = (filter, value) => {
+    this.setState({
+      filters: updateObject(this.state.filters, { [filter]: value }),
+    });
+    if (filter === 'meal') {
+      this.props.onGetMeals(value);
 
-			this.props.history.push(`/posilki/${value}`);
-		}
-	};
+      this.props.history.push(`/posilki/${value}`);
+    }
+  };
 
-	rejectDeleteHandler = () => {
-		this.setState({ showDeleteConfirm: false });
-	};
+  rejectDeleteHandler = () => {
+    this.setState({ showDeleteConfirm: false });
+  };
 
-	setMealToDeleteHandler = (title) => {
-		this.setState({ mealToDelete: title, showDeleteConfirm: true });
-	};
+  setMealToDeleteHandler = (title) => {
+    this.setState({ mealToDelete: title, showDeleteConfirm: true });
+  };
 
-	deleteMealHandler = () => {
-		this.props.onDeleteMeal(this.state.filters.meal, this.state.mealToDelete);
-		this.setState({ showDeleteConfirm: false });
-	};
+  deleteMealHandler = () => {
+    this.props.onDeleteMeal(this.state.filters.meal, this.state.mealToDelete);
+    this.setState({ showDeleteConfirm: false });
+  };
 
-	pageClickHandler = (cmd, target) => {
-		let newActivePage;
-		const pagesNumber = Math.ceil(
-			this.props.recordsNumber / this.state.recordsPerPage
-		);
-		switch (cmd) {
-			case "page":
-				newActivePage = target;
-				break;
-			case "prev":
-				this.state.activePage > 0
-					? (newActivePage = this.state.activePage - 1)
-					: (newActivePage = 0);
-				break;
-			case "next":
-				this.state.activePage < pagesNumber - 2
-					? (newActivePage = this.state.activePage + 1)
-					: (newActivePage = pagesNumber - 1);
-				break;
-			default:
-				break;
-		}
-		this.setState({ activePage: newActivePage });
+  pageClickHandler = (cmd, target) => {
+    let newActivePage;
+    const pagesNumber = Math.ceil(
+      this.props.recordsNumber / this.state.recordsPerPage
+    );
+    switch (cmd) {
+      case 'page':
+        newActivePage = target;
+        break;
+      case 'prev':
+        this.state.activePage > 0
+          ? (newActivePage = this.state.activePage - 1)
+          : (newActivePage = 0);
+        break;
+      case 'next':
+        this.state.activePage < pagesNumber - 2
+          ? (newActivePage = this.state.activePage + 1)
+          : (newActivePage = pagesNumber - 1);
+        break;
+      default:
+        break;
+    }
+    this.setState({ activePage: newActivePage });
 
-		const location = {
-			...this.props.location,
-			search: new URLSearchParams({
-				page: newActivePage,
-			}).toString(),
-		};
-		this.props.history.push(location);
-	};
+    const location = {
+      ...this.props.location,
+      search: new URLSearchParams({
+        page: newActivePage,
+      }).toString(),
+    };
+    this.props.history.push(location);
+  };
 
-	render() {
-		const renderAddMeal = (
-			<div
-				onClick={() => this.props.history.push("/posilki/nowy")}
-				className={`py-2 px-4 my-2 card-link rounded border border-ash-gray border-rounded w-100 text-justify ${mealStyle.AddButton}`}
-			>
-				<h5 className="mb-1 text-center text-light border-bottom border-light">
-					<small>Dodaj nowy posiłek </small>
-					<a href="#" className="px-2 py-0 btn text-celadon-blue">
-						<FontAwesomeIcon icon={faPlus} size="sm" />
-					</a>
-				</h5>
-			</div>
-		);
-		return (
-			<div className="d-flex flex-grow-1 no-gutters bg-rich-black flex-column">
-				<Modal
-					isOpen={this.state.showDeleteConfirm}
-					toggle={this.rejectDeleteHandler}
-					onReject={this.rejectDeleteHandler}
-					onSubmit={this.deleteMealHandler}
-					btn1="TAK"
-					btn2="NIE"
-					title="Uwaga"
-				>
-					<div className={`container no-gutters mx-auto text-center`}>
-						Czy na pewno chcesz usunąć ten przepis?
-					</div>
-				</Modal>
-				<Modal
-					isOpen={Boolean(this.props.error)}
-					toggle={this.props.onClearError}
-					onReject={this.props.onClearError}
-					onSubmit={this.props.onClearError}
-					btn1="OK"
-					title="Błąd"
-				>
-					<div className={`container no-gutters mx-auto text-center`}>
-						{getErrorMsg(this.props.error)}
-					</div>
-				</Modal>
-				<div className="h-100">
-					<Container className="my-3 border border-ash-gray rounded bg-ash-gray">
-						<InputGroup
-							className={"m-3"}
-							prepend={this.state.searchbar.prepend}
-							elementConfig={this.state.searchbar.elementConfig}
-							value={this.state.searchbar.value}
-							append={faTimesCircle}
-							appendOnClick={this.clearSearchbar}
-							changed={this.inputChangedHandler}
-							touched={false}
-						/>
-					</Container>
-					<Container>
-						<Row>
-							<Col className="pl-0 d-flex flex-column" xs="4">
-								<Filters
-									activeMeal={this.state.filters.meal}
-									onMealChange={(value) =>
-										this.filterChangeHandler("meal", value)
-									}
-									activeTemp={this.state.filters.temp}
-									onTempChange={(value) =>
-										this.filterChangeHandler("temp", value)
-									}
-								/>
-								{renderAddMeal}
-							</Col>
-							<Col className="pl-0 d-flex flex-column" xs="8">
-								<div className="container py-2 border border-ash-gray rounded">
-									<MealsList
-										deleteMeal={(title) => this.setMealToDeleteHandler(title)}
-										pagination={{
-											activePage: this.state.activePage,
-											recordsAmount: this.state.recordsPerPage,
-										}}
-									/>
-								</div>
-								<div>
-									<Pagination
-										className="d-flex justify-content-center pagination-celadon-blue"
-										size="sm"
-										currentPage={this.state.activePage}
-										pagesCount={Math.ceil(
-											this.props.recordsNumber / this.state.recordsPerPage
-										)} //here will be calculation based on number of records
-										handlePageClick={(e, page) =>
-											this.pageClickHandler("page", page)
-										}
-										handlePreviousClick={() => this.pageClickHandler("prev")}
-										handleNextClick={() => this.pageClickHandler("next")}
-									/>
-								</div>
-							</Col>
-						</Row>
-					</Container>
-				</div>
+  render() {
+    const renderAddMeal = (
+      <div
+        onClick={() => this.props.history.push('/posilki/nowy')}
+        className={`py-2 px-4 my-2 card-link rounded border border-ash-gray border-rounded w-100 text-justify ${mealStyle.AddButton}`}
+      >
+        <h5 className='mb-1 text-center text-light border-bottom border-light'>
+          <small>Dodaj nowy posiłek </small>
+          <a href='#p' className='px-2 py-0 btn text-celadon-blue'>
+            <FontAwesomeIcon icon={faPlus} size='sm' />
+          </a>
+        </h5>
+      </div>
+    );
+    return (
+      <div className='d-flex flex-grow-1 no-gutters bg-rich-black flex-column'>
+        <Modal
+          isOpen={this.state.showDeleteConfirm}
+          toggle={this.rejectDeleteHandler}
+          onReject={this.rejectDeleteHandler}
+          onSubmit={this.deleteMealHandler}
+          btn1='TAK'
+          btn2='NIE'
+          title='Uwaga'
+        >
+          <div className={`container no-gutters mx-auto text-center`}>
+            Czy na pewno chcesz usunąć ten przepis?
+          </div>
+        </Modal>
+        <Modal
+          isOpen={Boolean(this.props.error)}
+          toggle={this.props.onClearError}
+          onReject={this.props.onClearError}
+          onSubmit={this.props.onClearError}
+          btn1='OK'
+          title='Błąd'
+        >
+          <div className={`container no-gutters mx-auto text-center`}>
+            {getErrorMsg(this.props.error)}
+          </div>
+        </Modal>
+        <div className='h-100'>
+          <Container className='my-3 border border-ash-gray rounded bg-ash-gray'>
+            <InputGroup
+              className={'m-3'}
+              prepend={this.state.searchbar.prepend}
+              elementConfig={this.state.searchbar.elementConfig}
+              value={this.state.searchbar.value}
+              append={faTimesCircle}
+              appendOnClick={this.clearSearchbar}
+              changed={this.inputChangedHandler}
+              touched={false}
+            />
+          </Container>
+          <Container>
+            <Row>
+              <Col className='pl-0 d-flex flex-column' xs='4'>
+                <Filters
+                  activeMeal={this.state.filters.meal}
+                  onMealChange={(value) =>
+                    this.filterChangeHandler('meal', value)
+                  }
+                  activeTemp={this.state.filters.temp}
+                  onTempChange={(value) =>
+                    this.filterChangeHandler('temp', value)
+                  }
+                />
+                {renderAddMeal}
+              </Col>
+              <Col className='pl-0 d-flex flex-column' xs='8'>
+                <div className='container py-2 border border-ash-gray rounded'>
+                  <MealsList
+                    deleteMeal={(title) => this.setMealToDeleteHandler(title)}
+                    pagination={{
+                      activePage: this.state.activePage,
+                      recordsAmount: this.state.recordsPerPage,
+                    }}
+                  />
+                </div>
+                <div>
+                  <Pagination
+                    className='d-flex justify-content-center pagination-celadon-blue'
+                    size='sm'
+                    currentPage={this.state.activePage}
+                    pagesCount={Math.ceil(
+                      this.props.recordsNumber / this.state.recordsPerPage
+                    )} //here will be calculation based on number of records
+                    handlePageClick={(e, page) =>
+                      this.pageClickHandler('page', page)
+                    }
+                    handlePreviousClick={() => this.pageClickHandler('prev')}
+                    handleNextClick={() => this.pageClickHandler('next')}
+                  />
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </div>
 
-				<Footer />
-			</div>
-		);
-	}
+        <Footer />
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state, ownState) => {
-	return {
-		isLoading: state.meals.isLoading,
-		error: state.meals.errorMessage,
-		recordsNumber: state.meals.meals.length,
-	};
+  return {
+    isLoading: state.meals.isLoading,
+    error: state.meals.errorMessage,
+    recordsNumber: state.meals.meals.length,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		onGetMeals: (activeCategory, query) =>
-			dispatch(actions.getMeals(activeCategory, query)),
-		onDeleteMeal: (category, title) =>
-			dispatch(actions.deleteMeal(category, title)),
-		onClearError: () => dispatch(actions.clearError()),
-	};
+  return {
+    onGetMeals: (activeCategory, query) =>
+      dispatch(actions.getMeals(activeCategory, query)),
+    onDeleteMeal: (category, title) =>
+      dispatch(actions.deleteMeal(category, title)),
+    onClearError: () => dispatch(actions.clearError()),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Diet);

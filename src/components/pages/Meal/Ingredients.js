@@ -18,11 +18,11 @@ class Ingredients extends React.Component {
   };
 
   updateIngredientHandler = (event, ingredient, name) => {
-    event.preventDefault();
+    //event.preventDefault();
     const newData = {
       target: ingredient,
       name,
-      value: event.target.value,
+      value: event,
     };
     this.props.updateIngredient(newData);
   };
@@ -113,16 +113,10 @@ class Ingredients extends React.Component {
         </Row>
         <hr className='border-light rounded mx-1 mt-1' />
         <Row className='px-4'>
-          <small className='w-100'>
-            <Table
-              className='text-light overflow-auto'
-              borderless
-              hover
-              responsive
-              size='sm'
-            >
+          <small className='w-100' style={{ minHeight: '200px' }}>
+            <Table className='text-light' borderless hover size='sm'>
+              <thead>{listHeader}</thead>
               <tbody>
-                {listHeader}
                 {ingredientsList}
                 {this.props.add ? renderAddButton : null}
               </tbody>

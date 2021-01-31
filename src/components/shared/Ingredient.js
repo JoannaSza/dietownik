@@ -5,12 +5,42 @@ import { connect } from 'react-redux';
 import * as actions from '../../store/actions';
 
 import { Spinner, Input, Button } from 'reactstrap';
+import Autocomplete from '../UI/Autocoplete/Autocomplete';
+import produkty from '../../database/produkty.json';
 
 class Ingredient extends React.Component {
+  state = { searchTerm: '', ingredientTitle: '' };
   componentDidMount = () => {
     if (!this.props.isSpice && !this.props.addNew)
       this.props.onGetIngredData(this.props.title);
+    this.setState({ ingredientTitle: this.props.title });
   };
+
+  componentDidUpdate = (prevProps) => {
+    if (
+      prevProps.title !== this.props.title &&
+      this.state.ingredientTitle !== this.props.title
+    )
+      this.setState({ ingredientTitle: this.props.title });
+  };
+
+  inputUpdateTitle = (event) => {
+    this.setState({
+      searchTerm: event.target.value,
+      ingredientTitle: event.target.value,
+    });
+  };
+
+  autocompleteInput = (result) => {
+    this.props.updateTitle(result);
+    this.setState({ searchTerm: '', ingredientTitle: result });
+  };
+
+  titleBlurHandler = () => {
+    this.props.updateTitle(this.state.ingredientTitle);
+    this.setState({ searchTerm: '' });
+  };
+
   render() {
     let kcal, pieces;
     if (this.props.ingred) {
@@ -51,17 +81,26 @@ class Ingredient extends React.Component {
       renderIngredient = (
         <tr>
           <td className='d-flex'>
-            <Input
-              placeholder='title'
-              autoFocus
-              value={this.props.title}
-              onChange={(event) => this.props.updateTitle(event)}
-              bsSize='sm'
-            />
+            <Autocomplete
+              searchTerm={this.state.searchTerm}
+              elList={Object.keys(produkty)}
+              setResult={(result) => this.autocompleteInput(result)}
+            >
+              <Input
+                placeholder='title'
+                autoFocus
+                value={this.state.ingredientTitle}
+                onChange={(event) => this.inputUpdateTitle(event)}
+                bsSize='sm'
+                onBlur={() => this.titleBlurHandler()}
+              />
+            </Autocomplete>
             {this.props.deleteIngredient ? (
               <Button
                 size='sm'
-                onClick={(event) => this.props.deleteIngredient(event)}
+                onClick={(event) =>
+                  this.props.deleteIngredient(event.target.value)
+                }
               >
                 <FontAwesomeIcon icon={faTrash} />
               </Button>
@@ -73,7 +112,7 @@ class Ingredient extends React.Component {
             <Input
               placeholder='0'
               value={this.props.value}
-              onChange={(event) => this.props.updateValue(event)}
+              onChange={(event) => this.props.updateValue(event.target.value)}
               bsSize='sm'
               onKeyPress={(event) => {
                 if (event.key === 'Enter') this.props.addNextInput();

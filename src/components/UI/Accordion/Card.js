@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardText,
-  Button,
-  Collapse,
-} from 'reactstrap';
+import { Card, CardHeader, CardBody, Button, Collapse } from 'reactstrap';
 
 const MyCard = (props) => {
   return (
@@ -17,9 +10,7 @@ const MyCard = (props) => {
         </Button>
       </CardHeader>
       <Collapse isOpen={props.isOpen}>
-        <CardBody>
-          <CardText>{props.content}</CardText>
-        </CardBody>
+        <CardBody>{props.content}</CardBody>
       </Collapse>
     </Card>
   );
