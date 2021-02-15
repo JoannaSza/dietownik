@@ -5,7 +5,10 @@ const MyCard = (props) => {
   return (
     <Card color='rich-black'>
       <CardHeader className='p-0 m-0'>
-        <Button onClick={props.onExpand} className='w-100 m-0 font-weight-bold'>
+        <Button
+          onClick={props.onExpand}
+          className='w-100 m-0 font-weight-bold text-uppercase'
+        >
           {props.header}
         </Button>
       </CardHeader>
