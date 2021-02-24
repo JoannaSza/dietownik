@@ -3,7 +3,7 @@ import styles from './Autocomplete.module.css';
 import { Collapse, Table } from 'reactstrap';
 
 class Autocomplete extends React.Component {
-  state = { suggestions: [] };
+  state = { suggestions: [], currSuggestion: 0 };
 
   componentDidUpdate(prevProps) {
     if (
@@ -30,6 +30,37 @@ class Autocomplete extends React.Component {
     return resultArray;
   };
 
+  contains = (parent, child) => {
+    if (!child || !child.parentElement) return false;
+    if (child.parentElement === parent) return true;
+
+    return this.contains(parent, child.parentElement);
+  };
+
+  handleBlur = (e) => {
+    const target = e.relatedTarget;
+    const parent = e.currentTarget;
+    if (!this.contains(parent, target)) {
+      this.props.onBlur(e);
+    }
+  };
+
+  handleKeyboard = (e) => {
+    let newSuggestionIndex;
+    if (
+      e.keyCode === 40 &&
+      this.state.currSuggestion < this.state.suggestions.length - 1
+    )
+      newSuggestionIndex = this.state.currSuggestion + 1;
+    else if (e.keyCode === 38 && this.state.currSuggestion > 0)
+      newSuggestionIndex = this.state.currSuggestion - 1;
+    else if (e.keyCode === 13)
+      this.props.setResult(this.state.suggestions[this.state.currSuggestion]);
+
+    if (newSuggestionIndex !== undefined)
+      this.setState({ currSuggestion: newSuggestionIndex });
+  };
+
   render() {
     let renderSuggestions = [];
     const showSuggestions = Boolean(
@@ -37,15 +68,24 @@ class Autocomplete extends React.Component {
     );
 
     if (this.state.suggestions.length) {
-      renderSuggestions = this.state.suggestions.map((suggestion) => (
-        <tr key={suggestion} onClick={() => this.props.setResult(suggestion)}>
-          <td>{suggestion}</td>
+      renderSuggestions = this.state.suggestions.map((suggestion, index) => (
+        <tr
+          className={
+            index === this.state.currSuggestion ? `${styles.rowOnArrow}` : ''
+          }
+          key={suggestion}
+        >
+          <td onClick={() => this.props.setResult(suggestion)}>{suggestion}</td>
         </tr>
       ));
     }
 
     return (
-      <div className='position-relative'>
+      <div
+        className='position-relative'
+        onBlur={this.handleBlur}
+        onKeyDown={this.handleKeyboard}
+      >
         {this.props.children}
         <Collapse isOpen={showSuggestions} className={styles.collapse}>
           <div className={styles.autocomplete}>

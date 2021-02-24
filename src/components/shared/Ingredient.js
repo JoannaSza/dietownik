@@ -85,6 +85,7 @@ class Ingredient extends React.Component {
               searchTerm={this.state.searchTerm}
               elList={Object.keys(produkty)}
               setResult={(result) => this.autocompleteInput(result)}
+              onBlur={() => this.titleBlurHandler()}
             >
               <Input
                 placeholder='title'
@@ -92,7 +93,6 @@ class Ingredient extends React.Component {
                 value={this.state.ingredientTitle}
                 onChange={(event) => this.inputUpdateTitle(event)}
                 bsSize='sm'
-                onBlur={() => this.titleBlurHandler()}
               />
             </Autocomplete>
             {this.props.deleteIngredient ? (
@@ -115,7 +115,8 @@ class Ingredient extends React.Component {
               onChange={(event) => this.props.updateValue(event.target.value)}
               bsSize='sm'
               onKeyPress={(event) => {
-                if (event.key === 'Enter') this.props.addNextInput();
+                if (event.key === 'Enter' && this.props.addNew)
+                  this.props.addNextInput();
               }}
             />
           </td>
