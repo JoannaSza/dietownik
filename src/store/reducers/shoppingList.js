@@ -13,11 +13,13 @@ import {
   DELETE_SHOPPING_ITEM_FAIL,
 } from '../actions/actionTypes';
 
+import { omit } from '../../shared/utility';
+
 const initialState = {
   isLoading: false,
   errorMessage: null,
   shoppingList: {
-    own: null,
+    own: {},
   },
 };
 
@@ -32,7 +34,7 @@ const getShoppingListSuccess = (state, action) => ({
   isLoading: false,
   shoppingList: {
     ...state.shoppingList,
-    [action.category]: action.shoppingList,
+    [action.category]: action.shoppingList ? action.shoppingList : {},
   },
 });
 
@@ -63,6 +65,64 @@ const addShoppingItemSuccess = (state, action) => {
   };
 };
 
+const addShoppingItemFail = (state, action) => ({
+  ...state,
+  errorMessage: action.error,
+});
+
+const deleteShoppingListSuccess = (state, action) => ({
+  ...state,
+  isLoading: false,
+  shoppingList: {
+    ...state.shoppingList,
+    [action.listType]: {},
+  },
+});
+
+const deleteShoppingListStart = (state, action) => ({
+  ...state,
+  isLoading: true,
+});
+
+const deleteShoppingListFail = (state, action) => ({
+  ...state,
+  isLoading: false,
+  errorMessage: action.error,
+});
+
+const deleteShoppingItemSuccess = (state, action) => {
+  const newCategory = omit(
+    state.shoppingList[action.listType][action.category],
+    action.itemName
+  );
+  let newListType;
+  if (Object.keys(newCategory).length > 0)
+    newListType = {
+      ...state.shoppingList[action.listType],
+      [action.category]: newCategory,
+    };
+  else newListType = omit(state.shoppingList[action.listType], action.category);
+  return {
+    ...state,
+    isLoading: false,
+    shoppingList: {
+      ...state.shoppingList,
+      [action.listType]: newListType,
+    },
+  };
+};
+
+const deleteShoppingItemStart = (state, action) => ({
+  ...state,
+  isLoading: true,
+});
+
+const deleteShoppingItemFail = (state, action) => ({
+  ...state,
+  isLoading: false,
+  errorMessage: action.error,
+});
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_SHOPPING_LIST_START:
@@ -73,6 +133,22 @@ const reducer = (state = initialState, action) => {
       return getShoppingListFail(state, action);
     case ADD_SHOPPING_ITEM_SUCCESS:
       return addShoppingItemSuccess(state, action);
+    case ADD_SHOPPING_ITEM_START:
+      return addShoppingItemStart(state, action);
+    case ADD_SHOPPING_ITEM_FAIL:
+      return addShoppingItemFail(state, action);
+    case DELETE_SHOPPING_LIST_SUCCESS:
+      return deleteShoppingListSuccess(state, action);
+    case DELETE_SHOPPING_LIST_START:
+      return deleteShoppingListStart(state, action);
+    case DELETE_SHOPPING_LIST_FAIL:
+      return deleteShoppingListFail(state, action);
+    case DELETE_SHOPPING_ITEM_SUCCESS:
+      return deleteShoppingItemSuccess(state, action);
+    case DELETE_SHOPPING_ITEM_START:
+      return deleteShoppingItemStart(state, action);
+    case DELETE_SHOPPING_ITEM_FAIL:
+      return deleteShoppingItemFail(state, action);
     default:
       return state;
   }

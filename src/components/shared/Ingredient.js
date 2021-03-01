@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
@@ -7,6 +8,13 @@ import * as actions from '../../store/actions';
 import { Spinner, Input, Button } from 'reactstrap';
 import Autocomplete from '../UI/Autocoplete/Autocomplete';
 import produkty from '../../database/produkty.json';
+
+export var myEnum = {
+  a: 1,
+  b: 2,
+  c: 4,
+  d: 8,
+};
 
 class Ingredient extends React.Component {
   state = { searchTerm: '', ingredientTitle: '' };
@@ -41,7 +49,27 @@ class Ingredient extends React.Component {
     this.setState({ searchTerm: '' });
   };
 
+  clickHandler = (event) => {
+    if (this.props.onClick) this.props.onClick(event);
+  };
+
   render() {
+    const activeColumns = this.props.activeColumns
+      ? this.props.activeColumns
+      : [true, true, true, true];
+
+    const deleteButton = this.props.deleteIngredient ? (
+      <Button
+        size='sm'
+        onClick={(event) => this.props.deleteIngredient(event)}
+        className='py-0 px-1'
+      >
+        <FontAwesomeIcon icon={faTrash} />
+      </Button>
+    ) : (
+      ''
+    );
+
     let kcal, pieces;
     if (this.props.ingred) {
       if (this.props.ingred.isLoading) {
@@ -57,21 +85,25 @@ class Ingredient extends React.Component {
         );
       } else if (this.props.ingred.data) {
         kcal = (
-          <td>
+          <td className='text-right'>
             {Math.round(this.props.ingred.data.kcalPerGram * this.props.value)}{' '}
             kcal
           </td>
         );
         pieces =
           this.props.ingred.data.jednostka === 'porcja' ? (
-            <td>porcja</td>
+            <td className='text-right'>porcja</td>
           ) : (
-            <td>{`${(
+            <td className='text-right'>{`${(
               this.props.value / this.props.ingred.data.waga1szt
             ).toFixed(2)} [${this.props.ingred.data.jednostka}]`}</td>
           );
       } else if (this.props.ingred.errorMessage) {
-        kcal = <td colSpan='2'>{this.props.ingred.errorMessage}</td>;
+        kcal = (
+          <td colSpan='2' className='text-right'>
+            {this.props.ingred.errorMessage}
+          </td>
+        );
       }
     }
 
@@ -79,7 +111,7 @@ class Ingredient extends React.Component {
 
     if (this.props.addNew) {
       renderIngredient = (
-        <tr>
+        <tr onClick={this.clickHandler}>
           <td className='d-flex'>
             <Autocomplete
               searchTerm={this.state.searchTerm}
@@ -95,27 +127,20 @@ class Ingredient extends React.Component {
                 bsSize='sm'
               />
             </Autocomplete>
-            {this.props.deleteIngredient ? (
-              <Button
-                size='sm'
-                onClick={(event) =>
-                  this.props.deleteIngredient(event.target.value)
-                }
-              >
-                <FontAwesomeIcon icon={faTrash} />
-              </Button>
-            ) : (
-              ''
-            )}
+            {deleteButton}
           </td>
           <td>
             <Input
               placeholder='0'
               value={this.props.value}
-              onChange={(event) => this.props.updateValue(event.target.value)}
+              onChange={(event) => this.props.updateValue(+event.target.value)}
               bsSize='sm'
               onKeyPress={(event) => {
-                if (event.key === 'Enter' && this.props.addNew)
+                if (
+                  event.key === 'Enter' &&
+                  this.props.addNew &&
+                  this.props.addNextInput
+                )
                   this.props.addNextInput();
               }}
             />
@@ -124,20 +149,33 @@ class Ingredient extends React.Component {
       );
     } else if (this.props.isSpice) {
       renderIngredient = (
-        <tr>
+        <tr onClick={this.clickHandler}>
           <th scope='row'>{this.props.title}</th>
-          <td colSpan='3'>
+          <td colSpan='3' className='text-right'>
             <small>{this.props.value.join(', ')}</small>
           </td>
         </tr>
       );
     } else {
       renderIngredient = (
-        <tr>
-          <th scope='row'>{this.props.title}</th>
-          <td>{this.props.value} g</td>
-          {kcal}
-          {pieces}
+        <tr onClick={this.clickHandler}>
+          {activeColumns[0] ? (
+            <th scope='row' className='w-50'>
+              {this.props.title}
+            </th>
+          ) : (
+            ''
+          )}
+          {activeColumns[1] ? (
+            <td className='text-right'>
+              {this.props.value + ' g '}
+              {deleteButton}
+            </td>
+          ) : (
+            ''
+          )}
+          {activeColumns[2] ? kcal : null}
+          {activeColumns[3] ? pieces : null}
         </tr>
       );
     }
@@ -155,3 +193,22 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Ingredient);
+
+Ingredient.propTypes = {
+  title: PropTypes.string.isRequired,
+  updateTitle: PropTypes.func,
+
+  value: PropTypes.number.isRequired,
+  updateValue: PropTypes.func,
+
+  isSpice: PropTypes.bool,
+
+  addNew: PropTypes.bool,
+  addNextInput: PropTypes.func,
+
+  deleteIngredient: PropTypes.func,
+
+  activeColumns: PropTypes.arrayOf(PropTypes.bool),
+
+  onClick: PropTypes.func,
+};

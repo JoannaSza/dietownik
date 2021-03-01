@@ -147,9 +147,8 @@ class Meal extends React.Component {
     let ingredients;
     //target, name, value
     if (ingredient.name === 'value') {
-      const newValue = ingredient.value.length ? +ingredient.value : 0;
       ingredients = { ...this.state.ingredients };
-      ingredients[ingredient.target] = newValue;
+      ingredients[ingredient.target] = ingredient.value;
     } else if (ingredient.name === 'title') {
       const keys = Object.keys(this.state.ingredients);
       keys.forEach((key, index) => {

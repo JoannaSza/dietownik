@@ -14,4 +14,9 @@ export { getMeals, getMeal, addMeal, deleteMeal } from './meals';
 
 export { getIngred } from './ingredients';
 
-export { getShoppingList, addShoppingItem } from './shoppingList';
+export {
+  getShoppingList,
+  addShoppingItem,
+  deleteShoppingList,
+  deleteShoppingItem,
+} from './shoppingList';

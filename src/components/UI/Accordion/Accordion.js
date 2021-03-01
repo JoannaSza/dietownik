@@ -16,7 +16,7 @@ class Accordion extends React.Component {
           <Card
             key={'card-' + index}
             onExpand={() => this.expandHandler(index)}
-            isOpen={this.state.active === index}
+            isOpen={true} //this.state.active === index}
             header={card.header}
             content={card.content}
           />

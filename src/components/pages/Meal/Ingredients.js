@@ -17,12 +17,12 @@ class Ingredients extends React.Component {
     this.setState({ mealsAmount: event.target.value });
   };
 
-  updateIngredientHandler = (event, ingredient, name) => {
+  updateIngredientHandler = (value, ingredient, name) => {
     //event.preventDefault();
     const newData = {
       target: ingredient,
       name,
-      value: event,
+      value,
     };
     this.props.updateIngredient(newData);
   };
@@ -33,7 +33,7 @@ class Ingredients extends React.Component {
       ingredientsList = this.props.data
         ? Object.keys(this.props.data).map((ingredient, index) => (
             <Ingredient
-              addNew='true'
+              addNew={true}
               key={`ingredient-${index}-key`}
               title={ingredient}
               value={
@@ -42,15 +42,19 @@ class Ingredients extends React.Component {
                   ? this.props.data[ingredient] * this.state.mealsAmount
                   : this.props.data[ingredient]
               }
-              isSpice='false'
-              updateTitle={(event) =>
-                this.updateIngredientHandler(event, ingredient, 'title')
+              isSpice={false}
+              updateTitle={(value) =>
+                this.updateIngredientHandler(value, ingredient, 'title')
               }
-              updateValue={(event) =>
-                this.updateIngredientHandler(event, ingredient, 'value')
+              updateValue={(value) =>
+                this.updateIngredientHandler(value, ingredient, 'value')
               }
               deleteIngredient={(event) =>
-                this.updateIngredientHandler(event, ingredient, 'delete')
+                this.updateIngredientHandler(
+                  event.target.value,
+                  ingredient,
+                  'delete'
+                )
               }
               addNextInput={this.props.addIngredient}
             />

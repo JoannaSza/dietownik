@@ -14,8 +14,9 @@ import {
 } from './actionTypes';
 import dietsApi from '../../apis/diets';
 
-export const getShoppingList = (userId, type) => {
-  return (dispatch) => {
+export const getShoppingList = (type) => {
+  return (dispatch, getState) => {
+    const userId = getState('auth').auth.userId;
     dispatch(getShoppingListStart());
     dietsApi
       .get(`/usersData/lists/${userId}/${type}.json`)
@@ -52,13 +53,46 @@ export const getShoppingListFail = (error) => {
   };
 };
 
-export const deleteShoppingList = (userId, type) => {};
+export const deleteShoppingList = (type) => {
+  return (dispatch, getState) => {
+    dispatch(deleteShoppingListStart());
+    const stateData = getState('auth');
+    dietsApi
+      .delete(
+        `/usersData/lists/${stateData.auth.userId}/${type}.json?auth=${stateData.auth.token}`
+      )
+      .then((response) => {
+        dispatch(deleteShoppingListSuccess(type, response.data));
+      })
+      .catch((err) => {
+        if (err.response) dispatch(deleteShoppingListFail(err.response.data));
+        else if (Object.keys(err).length === 0)
+          dispatch(deleteShoppingListSuccess([]));
+        else dispatch(deleteShoppingListFail('Coś poszło nie tak'));
+      });
+  };
+};
 
-export const deleteShoppingListStart = () => {};
-export const deleteShoppingListSuccess = () => {};
-export const deleteShoppingListFail = (error) => {};
+export const deleteShoppingListStart = () => {
+  return {
+    type: DELETE_SHOPPING_LIST_START,
+  };
+};
+export const deleteShoppingListSuccess = (listType, itemData) => {
+  return {
+    type: DELETE_SHOPPING_LIST_SUCCESS,
+    listType,
+    itemData,
+  };
+};
+export const deleteShoppingListFail = (error) => {
+  return {
+    type: DELETE_SHOPPING_LIST_FAIL,
+    error,
+  };
+};
 
-export const addShoppingItem = (userId, type, category, itemData) => {
+export const addShoppingItem = (type, category, itemData) => {
   return (dispatch, getState) => {
     dispatch(addShoppingItemStart());
     const stateData = getState('auth');
@@ -74,7 +108,7 @@ export const addShoppingItem = (userId, type, category, itemData) => {
 
     dietsApi
       .patch(
-        `/usersData/lists/${userId}/${type}/${category}.json?auth=${stateData.auth.token}`,
+        `/usersData/lists/${stateData.auth.userId}/${type}/${category}.json?auth=${stateData.auth.token}`,
         itemData
       )
       .then((response) => {
@@ -104,8 +138,42 @@ export const addShoppingItemFail = (error) => {
   return { type: ADD_SHOPPING_ITEM_FAIL, error };
 };
 
-export const deleteShoppingItem = (userId, type, category, itemName) => {};
+export const deleteShoppingItem = (type, category, itemName) => {
+  return (dispatch, getState) => {
+    dispatch(deleteShoppingItemStart());
+    const stateData = getState('auth');
+    dietsApi
+      .delete(
+        `/usersData/lists/${stateData.auth.userId}/${type}/${category}/${itemName}.json?auth=${stateData.auth.token}`
+      )
+      .then((response) => {
+        dispatch(deleteShoppingItemSuccess(type, category, itemName));
+      })
+      .catch((err) => {
+        if (err.response) dispatch(deleteShoppingItemFail(err.response.data));
+        else if (Object.keys(err).length === 0)
+          dispatch(deleteShoppingItemSuccess([]));
+        else dispatch(deleteShoppingItemFail('Coś poszło nie tak'));
+      });
+  };
+};
 
-export const deleteShoppingItemStart = () => {};
-export const deleteShoppingItemSuccess = () => {};
-export const deleteShoppingItemFail = (error) => {};
+export const deleteShoppingItemStart = () => {
+  return {
+    type: DELETE_SHOPPING_ITEM_START,
+  };
+};
+export const deleteShoppingItemSuccess = (listType, category, itemName) => {
+  return {
+    type: DELETE_SHOPPING_ITEM_SUCCESS,
+    listType,
+    category,
+    itemName,
+  };
+};
+export const deleteShoppingItemFail = (error) => {
+  return {
+    type: DELETE_SHOPPING_ITEM_FAIL,
+    error,
+  };
+};
