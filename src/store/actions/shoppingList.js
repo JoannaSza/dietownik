@@ -115,6 +115,7 @@ export const addShoppingItem = (type, category, itemData) => {
         dispatch(addShoppingItemSuccess(type, category, response.data));
       })
       .catch((err) => {
+        console.log(err);
         if (err.response) dispatch(addShoppingItemFail(err.response.data));
         else dispatch(addShoppingItemFail('Coś poszło nie tak'));
       });

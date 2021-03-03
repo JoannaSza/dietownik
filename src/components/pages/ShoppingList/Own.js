@@ -30,12 +30,9 @@ class Own extends React.Component {
       const ingredient = this.props.ingreds[this.state.ingredient.title];
       if (ingredient.isLoading) console.log('loading');
       else if (ingredient.data && this.state.ingredient.title.length > 0) {
-        this.props.onAddShoppingItem(
-          this.props.userId,
-          'own',
-          [ingredient.data.kategoria],
-          { [this.state.ingredient.title]: this.state.ingredient.value }
-        ); //userId, type, category, itemData
+        this.props.onAddShoppingItem('own', [ingredient.data.kategoria], {
+          [this.state.ingredient.title]: this.state.ingredient.value,
+        }); //userId, type, category, itemData
         this.setState({
           ingredient: {
             title: '',
@@ -116,7 +113,7 @@ class Own extends React.Component {
             </Container>
           </Col>
         </Row>
-        <ItemsTable shoppingList={this.props.shoppingList} />
+        <ItemsTable shoppingList={this.props.shoppingList} listType='own' />
       </div>
     );
   }

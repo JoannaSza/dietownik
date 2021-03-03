@@ -49,11 +49,16 @@ const addShoppingItemStart = (state, action) => ({
 });
 
 const addShoppingItemSuccess = (state, action) => {
-  const newCategoryData = {
-    ...state.shoppingList[action.listType][action.category],
-    ...action.itemData,
-  };
-
+  let newCategoryData = {};
+  if (state.shoppingList[action.listType])
+    newCategoryData = {
+      ...state.shoppingList[action.listType][action.category],
+      ...action.itemData,
+    };
+  else
+    newCategoryData = {
+      ...action.itemData,
+    };
   const newListData = {
     ...state.shoppingList[action.listType],
     [action.category]: newCategoryData,

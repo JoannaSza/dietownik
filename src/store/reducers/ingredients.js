@@ -30,6 +30,7 @@ const getIngredSuccess = (state, action) => ({
   [action.payload.title]: {
     ...state[action.payload.title],
     isLoading: false,
+    foundTitle: action.payload.foundTitle,
     data: action.payload.data,
   },
 });

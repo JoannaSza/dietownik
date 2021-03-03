@@ -36,27 +36,32 @@ const ItemsTable = (props) => {
       return { header: category, content };
     });
   }
+
   return (
     <div>
       <Row>
         <Col sm='12'>
-          <Accordion cards={renderCards} />
+          {renderCards ? <Accordion cards={renderCards} /> : ''}
         </Col>
       </Row>
-      <Row>
-        <Col sm='12' className='text-center'>
-          <hr className='bg-light mt-3 mb-2 mx-5' />
-          <Button size='sm' className='mb-2 border border-danger'>
-            <FontAwesomeIcon icon={faTrash} />
-            <span
-              className='pl-1'
-              onClick={() => this.props.onDeleteShoppingList('own')}
-            >
-              Wyczyść listę
-            </span>
-          </Button>
-        </Col>
-      </Row>
+      {props.shoppingList && Object.keys(props.shoppingList).length > 0 ? (
+        <Row>
+          <Col sm='12' className='text-center'>
+            <hr className='bg-light mt-3 mb-2 mx-5' />
+            <Button size='sm' className='mb-2 border border-danger'>
+              <FontAwesomeIcon icon={faTrash} />
+              <span
+                className='pl-1'
+                onClick={() => props.onDeleteShoppingList(props.listType)}
+              >
+                Wyczyść listę
+              </span>
+            </Button>
+          </Col>
+        </Row>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
