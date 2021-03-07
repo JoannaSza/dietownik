@@ -20,3 +20,5 @@ export {
   deleteShoppingList,
   deleteShoppingItem,
 } from './shoppingList';
+
+export { getDiet, addCard, deleteCard, editCard } from './diet';

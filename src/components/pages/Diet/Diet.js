@@ -1,14 +1,25 @@
 import React from 'react';
 import { Transition } from 'react-transition-group';
 import { connect } from 'react-redux';
+import * as actions from '../../../store/actions';
 
 import Card from './Card';
 import Carousel from '../../UI/Carousel/Carousel';
+import { Spinner } from 'reactstrap';
 
 import styles from './Diet.module.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
+
+import {
+  defaultStyle,
+  defaultStyle2,
+  defaultStyle3,
+  transitionStyles,
+  transitionStyles2,
+  transitionStyles3,
+} from './DietTransitions';
 
 const weekDaysPl = [
   'Niedziela',
@@ -48,6 +59,10 @@ class Diet extends React.Component {
     ],
   };
 
+  componentDidMount = () => {
+    this.props.onGetDiet();
+  };
+
   deleteCardHandler = (index) => {
     const newCards = this.state.cards.filter((el, idx) => {
       return idx !== index;
@@ -71,15 +86,15 @@ class Diet extends React.Component {
 
   addCardHandler = (event) => {
     event.stopPropagation();
-    const today = new Date();
-    const newCards = [...this.state.cards, this.formatDate(today)];
-    this.setState({ cards: newCards });
+    this.props.onAddCard();
+    // const today = new Date();
+    // const newCards = [...this.state.cards, this.formatDate(today)];
+    // this.setState({ cards: newCards });
   };
 
-  dayChangeHandler = (day, index) => {
-    const newCards = [...this.state.cards];
-    newCards[index] = this.formatDate(day);
-    this.setState({ cards: newCards });
+  dayChangeHandler = (day, oldDay) => {
+    day = new Date(day.getTime() + Math.abs(day.getTimezoneOffset() * 60000));
+    this.props.onEditCardDate(oldDay, day.toISOString().split('T')[0]);
   };
 
   showCardHandler = (index) => {
@@ -87,54 +102,66 @@ class Diet extends React.Component {
   };
 
   render() {
+    const mainDivClasses = `flex-grow-1 d-flex flex-wrap justify-content-around align-items-center ${
+      this.props.isSmallScreen ? styles.DietMobile : styles.Diet
+    }`;
+
+    const addDayCard = (
+      <Card
+        key='addDayCard'
+        day={{
+          name: (
+            <FontAwesomeIcon
+              icon={faPlus}
+              size='lg'
+              onClick={this.addCardHandler}
+            />
+          ),
+          date: '',
+        }}
+        collapse={true}
+      />
+    );
+
+    let cardsData;
+    if (this.props.dietData) {
+      cardsData = Object.keys(this.props.dietData).map((day) => {
+        return {
+          ...this.formatDate(new Date(day)),
+          dayString: day,
+          data: this.props.dietData[day],
+        };
+      });
+    }
     const renderCards = (collapsed) => {
-      const cards = this.state.cards.map((card, index) => (
-        <Card
-          key={`${collapsed}-${index}`}
-          day={card.day}
-          dayChange={(day) => this.dayChangeHandler(day, index)}
-          collapse={collapsed}
-          onCollapse={() => this.setState({ areCardsCollapsed: true })}
-          onDelete={() => this.deleteCardHandler(index)}
-          onShow={() => this.showCardHandler(index)}
-        />
-      ));
-      if (collapsed)
-        cards.push(
+      let cards = [];
+      if (cardsData) {
+        cards = cardsData.map((card, index) => (
           <Card
-            key={renderCards.length}
-            day={{
-              name: (
-                <FontAwesomeIcon
-                  icon={faPlus}
-                  size='lg'
-                  onClick={this.addCardHandler}
-                />
-              ),
-              date: '',
-            }}
-            collapse={true}
+            key={`${collapsed}-${index}`}
+            day={card.day}
+            data={card.data}
+            dayChange={(day) => this.dayChangeHandler(day, card.dayString)}
+            collapse={collapsed}
+            onCollapse={() => this.setState({ areCardsCollapsed: true })}
+            onDelete={() => this.props.onDeleteCard(card.dayString)}
+            onShow={() => this.showCardHandler(index)}
           />
-        );
-      return cards;
+        ));
+        if (collapsed)
+          //add additional card with plus sign
+          cards.push(addDayCard);
+        return cards;
+      } else {
+        cards.push(addDayCard);
+        return cards;
+      }
     };
-
-    const defaultStyle = {
-      position: 'static',
-      opacity: '100%',
-      transitionProperty: 'opacity',
-      transitionDuration: '1000ms',
-    };
-
-    const transitionStyles = {
-      entering: { opacity: '100%' },
-      entered: { opacity: '100%' },
-      exiting: { opacity: '0%' },
-      exited: { opacity: '0%', position: 'absolute', top: '-100%' },
-    };
-
     const renderNotCollapsed = (
-      <Transition in={!this.state.areCardsCollapsed} timeout={1000}>
+      <Transition
+        in={!this.state.areCardsCollapsed && !this.props.isLoading}
+        timeout={1000}
+      >
         {(state) => (
           <div
             className={
@@ -159,23 +186,11 @@ class Diet extends React.Component {
       </Transition>
     );
 
-    const defaultStyle2 = {
-      position: 'absolute',
-      top: '0%',
-      opacity: '0%',
-      transitionProperty: 'opacity',
-      transitionDuration: '1000ms',
-    };
-
-    const transitionStyles2 = {
-      entering: { opacity: '100%' },
-      entered: { opacity: '100%' },
-      exiting: { opacity: '0%' },
-      exited: { opacity: '0%', top: '-100%' },
-    };
-
     const renderCollapsed = (
-      <Transition in={this.state.areCardsCollapsed} timeout={1000}>
+      <Transition
+        in={this.state.areCardsCollapsed && !this.props.isLoading}
+        timeout={1000}
+      >
         {(state) => (
           <div
             key='renderCollapsed'
@@ -189,23 +204,47 @@ class Diet extends React.Component {
       </Transition>
     );
 
-    return (
-      <div
-        className={`flex-grow-1 d-flex flex-wrap justify-content-around align-items-center ${
-          this.props.isSmallScreen ? styles.DietMobile : styles.Diet
-        }`}
-      >
+    const renderSpinner = (
+      <Transition in={this.props.isLoading} timeout={1000}>
+        {(state) => (
+          <div
+            key='renderSpinner'
+            style={{ ...defaultStyle3, ...transitionStyles3[state] }}
+          >
+            <Spinner className={styles.spinner} />
+          </div>
+        )}
+      </Transition>
+    );
+    const renderContent = (
+      <div className={mainDivClasses}>
+        {renderSpinner}
         {renderNotCollapsed}
         {renderCollapsed}
       </div>
     );
+
+    return renderContent;
   }
 }
 
 const mapStateToProps = (state) => {
   return {
     isSmallScreen: state.window.isSmall,
+    isLoading: state.diet.isLoading,
+    error: state.diet.error,
+    dietData: state.diet.diet,
   };
 };
 
-export default connect(mapStateToProps)(Diet);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onGetDiet: () => dispatch(actions.getDiet()),
+    onAddCard: () => dispatch(actions.addCard()),
+    onDeleteCard: (cardDate) => dispatch(actions.deleteCard(cardDate)),
+    onEditCardDate: (oldDate, newDate) =>
+      dispatch(actions.editCard(oldDate, newDate)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Diet);

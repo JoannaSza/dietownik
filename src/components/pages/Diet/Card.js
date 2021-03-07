@@ -16,12 +16,23 @@ import styles from './Card.module.css';
 
 class Card extends React.Component {
   state = { showCalendar: false };
+
   toggleCalendar = () => {
     this.setState((prevState) => ({ showCalendar: !prevState.showCalendar }));
   };
 
   hideCalendar = () => {
     if (this.state.showCalendar) this.setState({ showCalendar: false });
+  };
+
+  deleteHandler = (event) => {
+    event.stopPropagation();
+    this.props.onDelete();
+  };
+
+  dateChangeHandler = (newDate) => {
+    this.props.dayChange(newDate);
+    this.setState({ showCalendar: false });
   };
 
   render() {
@@ -33,20 +44,23 @@ class Card extends React.Component {
       'kolacja',
     ];
 
-    const deleteHandler = (event) => {
-      event.stopPropagation();
-      this.props.onDelete();
-    };
-
-    const dateChangeHandler = (newDate) => {
-      this.props.dayChange(newDate);
-      this.setState({ showCalendar: false });
-    };
+    // if (this.props.data)
+    //   categoryNames = Object.keys(this.props.data).map((key) => ({
+    //     [key]: this.props.data[key]
+    //   }))
+    // else categoryNames =
+    //   const categoryNames = this.props.data
+    //     ? Object.keys(this.props.data)
+    //     : ['śniadanie', 'II śniadanie', 'obiad', 'podwieczorek', 'kolacja'];
 
     const renderMeals = () => {
-      return categoryNames.map((categoryName, idx) => (
-        <Meal key={idx} title={categoryName} />
-      ));
+      return categoryNames.map((categoryName, idx) => {
+        let meal;
+        if (this.props.data && this.props.data[categoryName])
+          meal = this.props.data[categoryName];
+        else meal = 'Nie wybrano posiłku';
+        return <Meal key={idx} title={categoryName} meal={meal} />;
+      });
     };
 
     ///////collapse
@@ -61,7 +75,7 @@ class Card extends React.Component {
       if (this.props.day.date) {
         cardButtons = (
           <div className='col text-right pr-2 d-flex justify-content-end'>
-            <div className='p-2' onClick={deleteHandler}>
+            <div className='p-2' onClick={this.deleteHandler}>
               <FontAwesomeIcon icon={faTrash} size='lg' />
             </div>
           </div>
@@ -105,7 +119,7 @@ class Card extends React.Component {
             <Calendar
               key='calendar'
               value={new Date()}
-              onChange={(date) => dateChangeHandler(date)}
+              onChange={(date) => this.dateChangeHandler(date)}
               minDate={new Date()}
             />
           </div>
@@ -118,12 +132,6 @@ class Card extends React.Component {
         className={cardClasses}
         onClick={this.props.collapse ? () => this.props.onShow() : null}
       >
-        {/* W widoku komórkowym - nazwa dnia tygodnia 
-      wędruje na środek, navbar zwija sie do burger 
-      button po lewej stronie - wtedy znika problem height=100 - navbar
-            
-      Pomyśleć nad menu 3 kropkowym zamiast kalendarza*/}
-
         <div
           className={`container px-2 py-2 bg-dark text-light border border-dark ${
             this.props.collapse ? 'rounded' : ''

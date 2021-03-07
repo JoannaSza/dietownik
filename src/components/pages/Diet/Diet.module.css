@@ -34,3 +34,9 @@
   left: 100%;
   display: none;
 }
+
+.spinner {
+  width: 6rem;
+  height: 6rem;
+  border-width: 0.75rem;
+}

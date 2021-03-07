@@ -29,10 +29,7 @@ const Meal = (props) => {
         </div>
       </div>
       <div className='pl-3 text-justify'>
-        <small>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt.
-        </small>
+        <small>{props.meal}</small>
       </div>
     </div>
   );

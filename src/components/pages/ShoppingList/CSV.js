@@ -6,7 +6,7 @@ import * as actions from '../../../store/actions';
 import ItemsTable from './ItemsTable';
 
 class CSV extends React.Component {
-  state = { areaContent: '', items: [] };
+  state = { areaContent: '', items: [], isListCreated: false };
 
   componentDidMount = () => {
     this.props.onGetShoppingList('csv');
@@ -25,28 +25,29 @@ class CSV extends React.Component {
         if (!item[1]) item[1] = 0;
         return item;
       });
-      this.setState({ items });
+      this.setState({ items, isListCreated: false });
+    }
+  };
+
+  //create shopping list
+  createShoppingList = () => {
+    if (this.props.ingreds && this.state.items.length > 0) {
+      const ingreds = this.props.ingreds;
+      this.state.items.forEach((item) => {
+        const ingred = ingreds[item[0]];
+        if (!ingred.isLoading) {
+          let category;
+          category = ingred.data ? ingred.data.kategoria : 'inne';
+          const itemData = { [item[0]]: +item[1] };
+          this.props.onAddShoppingItem('csv', category, itemData);
+        }
+      });
+      this.setState({ isListCreated: true });
     }
   };
 
   render() {
-    //create shopping list
-    const createShoppingList = () => {
-      if (this.props.ingreds && this.state.items.length > 0) {
-        const ingreds = this.props.ingreds;
-        this.state.items.forEach((item) => {
-          const ingred = ingreds[item[0]];
-          if (!ingred.isLoading) {
-            let category;
-            category = ingred.data ? ingred.data.kategoria : 'inne';
-            const itemData = { [item[0]]: +item[1] };
-            this.props.onAddShoppingItem('csv', category, itemData);
-          }
-        });
-      }
-    };
-
-    //  createShoppingList(); cannot be called here - calls onAddShoppingItem non-stop
+    if (!this.state.isListCreated) this.createShoppingList();
 
     return (
       <div>

@@ -16,10 +16,10 @@ import dietsApi from '../../apis/diets';
 
 export const getShoppingList = (type) => {
   return (dispatch, getState) => {
-    const userId = getState('auth').auth.userId;
+    const userId = getState().auth.userId;
     dispatch(getShoppingListStart());
     dietsApi
-      .get(`/usersData/lists/${userId}/${type}.json`)
+      .get(`/usersData/${userId}/lists/${type}.json`)
       //startAt, limit, orderBy
       .then((response) => {
         const shoppingList = response.data;
@@ -59,7 +59,7 @@ export const deleteShoppingList = (type) => {
     const stateData = getState('auth');
     dietsApi
       .delete(
-        `/usersData/lists/${stateData.auth.userId}/${type}.json?auth=${stateData.auth.token}`
+        `/usersData/${stateData.auth.userId}/lists/${type}.json?auth=${stateData.auth.token}`
       )
       .then((response) => {
         dispatch(deleteShoppingListSuccess(type, response.data));
@@ -108,7 +108,7 @@ export const addShoppingItem = (type, category, itemData) => {
 
     dietsApi
       .patch(
-        `/usersData/lists/${stateData.auth.userId}/${type}/${category}.json?auth=${stateData.auth.token}`,
+        `/usersData/${stateData.auth.userId}/lists/${type}/${category}.json?auth=${stateData.auth.token}`,
         itemData
       )
       .then((response) => {
@@ -145,7 +145,7 @@ export const deleteShoppingItem = (type, category, itemName) => {
     const stateData = getState('auth');
     dietsApi
       .delete(
-        `/usersData/lists/${stateData.auth.userId}/${type}/${category}/${itemName}.json?auth=${stateData.auth.token}`
+        `/usersData/${stateData.auth.userId}/lists/${type}/${category}/${itemName}.json?auth=${stateData.auth.token}`
       )
       .then((response) => {
         dispatch(deleteShoppingItemSuccess(type, category, itemName));
