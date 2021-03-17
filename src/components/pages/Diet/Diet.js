@@ -2,6 +2,7 @@ import React from 'react';
 import { Transition } from 'react-transition-group';
 import { connect } from 'react-redux';
 import * as actions from '../../../store/actions';
+import { sortByDate } from '../../../shared/utility';
 
 import Card from './Card';
 import Carousel from '../../UI/Carousel/Carousel';
@@ -125,13 +126,15 @@ class Diet extends React.Component {
 
     let cardsData;
     if (this.props.dietData) {
-      cardsData = Object.keys(this.props.dietData).map((day) => {
+      cardsData = sortByDate(Object.keys(this.props.dietData)).map((day) => {
+        console.log(day);
         return {
           ...this.formatDate(new Date(day)),
           dayString: day,
           data: this.props.dietData[day],
         };
       });
+      console.log(cardsData);
     }
     const renderCards = (collapsed) => {
       let cards = [];

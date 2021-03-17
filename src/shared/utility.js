@@ -14,6 +14,13 @@ export const omit = (obj, omitKey) => {
   }, {});
 };
 
+export const sortByDate = (arr) => {
+  const sorter = (a, b) => {
+    return new Date(a) - new Date(b);
+  };
+  return arr.sort(sorter);
+};
+
 export const checkValidity = (value, rules) => {
   let valid = true;
   let ruleValid = true;
