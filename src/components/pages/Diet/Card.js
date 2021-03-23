@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { Transition } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -35,6 +36,11 @@ class Card extends React.Component {
     this.setState({ showCalendar: false });
   };
 
+  cardClickHandler = (e) => {
+    if (this.props.collapse && this.props.onShow) this.props.onShow();
+    else if (this.props.onClick) this.props.onClick(e);
+  };
+
   render() {
     const categoryNames = [
       'śniadanie',
@@ -59,7 +65,14 @@ class Card extends React.Component {
         if (this.props.data && this.props.data[categoryName])
           meal = this.props.data[categoryName];
         else meal = 'Nie wybrano posiłku';
-        return <Meal key={idx} title={categoryName} meal={meal} />;
+        return (
+          <Meal
+            onClick={() => this.props.history.push(`/posilki/${categoryName}`)}
+            key={idx}
+            title={categoryName}
+            meal={meal}
+          />
+        );
       });
     };
 
@@ -83,14 +96,14 @@ class Card extends React.Component {
       } else cardButtons = <div className='col'></div>;
     } else {
       cardClasses = this.props.isSmallScreen
-        ? 'vh-100 d-flex flex-column overflow-auto'
+        ? 'vh-100 vw-100 d-flex flex-column overflow-auto'
         : `container rounded mx-2 my-4 p-0 bg-light d-flex flex-column overflow-auto ${styles.bigScreenCard}`;
       cardButtons = (
         <div className='col text-right pr-2 d-flex justify-content-end'>
-          <div className='pr-4' onClick={this.toggleCalendar}>
+          <div className='pr-4 buttonHover' onClick={this.toggleCalendar}>
             <FontAwesomeIcon icon={faCalendarAlt} />
           </div>
-          <div className='' onClick={this.props.onCollapse}>
+          <div className='buttonHover' onClick={this.props.onCollapse}>
             <FontAwesomeIcon icon={faWindowRestore} />
           </div>
         </div>
@@ -129,8 +142,8 @@ class Card extends React.Component {
 
     return (
       <div
-        className={cardClasses}
-        onClick={this.props.collapse ? () => this.props.onShow() : null}
+        className={`${cardClasses} ${this.props.className}`}
+        onClick={this.cardClickHandler}
       >
         <div
           className={`container px-2 py-2 bg-dark text-light border border-dark ${
@@ -169,4 +182,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Card);
+export default connect(mapStateToProps)(withRouter(Card));

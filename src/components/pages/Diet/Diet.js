@@ -88,9 +88,6 @@ class Diet extends React.Component {
   addCardHandler = (event) => {
     event.stopPropagation();
     this.props.onAddCard();
-    // const today = new Date();
-    // const newCards = [...this.state.cards, this.formatDate(today)];
-    // this.setState({ cards: newCards });
   };
 
   dayChangeHandler = (day, oldDay) => {
@@ -109,19 +106,23 @@ class Diet extends React.Component {
 
     const addDayCard = (
       <Card
+        onClick={this.addCardHandler}
+        className={`${this.props.isSmallScreen ? '' : 'buttonHover'} w-80`}
         key='addDayCard'
         day={{
           name: (
-            <FontAwesomeIcon
-              icon={faPlus}
-              size='lg'
-              onClick={this.addCardHandler}
-            />
+            <div className='w-100'>
+              <FontAwesomeIcon icon={faPlus} size='lg' />
+            </div>
           ),
           date: '',
         }}
         collapse={true}
       />
+    );
+
+    const orderBreaker = (
+      <div key='orderBreaker' style={{ height: 0, flexBasis: '100%' }}></div>
     );
 
     let cardsData;
@@ -151,9 +152,12 @@ class Diet extends React.Component {
             onShow={() => this.showCardHandler(index)}
           />
         ));
-        if (collapsed)
-          //add additional card with plus sign
+        if (collapsed) {
           cards.push(addDayCard);
+        } else if (!this.props.isSmallScreen) {
+          cards.push(orderBreaker);
+          cards.push(addDayCard);
+        }
         return cards;
       } else {
         cards.push(addDayCard);

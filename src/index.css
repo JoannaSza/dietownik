@@ -40,3 +40,12 @@ body {
   --celadon-blue: #247ba0;
   --khaki-web: #c3b299;
 }
+
+.buttonHover {
+  transition: transform 0.3s;
+}
+
+.buttonHover:hover {
+  cursor: pointer;
+  transform: scale(1.15);
+}
