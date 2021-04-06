@@ -1,4 +1,5 @@
 import React from 'react';
+import OverflowTip from '../../UI/OverflowTip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -31,9 +32,14 @@ const Meal = (props) => {
           </span>
         </div> */}
       </div>
-      <div className='pl-3 text-justify'>
-        <small>{props.meal}</small>
-      </div>
+      <OverflowTip tooltip={props.meal}>
+        <div
+          className='pl-3 text-justify'
+          style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}
+        >
+          <small>{props.meal}</small>
+        </div>
+      </OverflowTip>
     </div>
   );
 };

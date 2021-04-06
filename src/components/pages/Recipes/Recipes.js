@@ -40,19 +40,23 @@ class Diet extends React.Component {
     recordsPerPage: 15,
     showDeleteConfirm: false,
     mealToDelete: null,
+    chosenDate: null,
   };
 
   componentDidMount = () => {
     const category = this.props.match.params.category;
     let filters = { ...this.state.filters };
     let newActivePage;
-
+    const queryparams = new URLSearchParams(this.props.history.location.search);
+    const chosenDate = queryparams.get('date');
     //set meal category
     if (category) {
       this.props.onGetMeals(category);
       filters = updateObject(this.state.filters, { meal: category });
-    } else this.props.onGetMeals(this.state.filters.meal);
-
+    } else {
+      this.props.history.push(`/posilki/${filters.meal}`);
+      this.props.onGetMeals(this.state.filters.meal);
+    }
     //set page for pagination
     const searchParams = new URLSearchParams(this.props.location.search);
 
@@ -60,8 +64,11 @@ class Diet extends React.Component {
     newActivePage = searchParams.get('page');
     newActivePage = newActivePage ? +newActivePage : 0;
 
-    this.props.history.push(`/posilki/${filters.meal}`);
-    this.setState({ filters: filters, activePage: newActivePage });
+    this.setState({
+      filters: filters,
+      activePage: newActivePage,
+      chosenDate: chosenDate,
+    });
   };
 
   componentDidUpdate = () => {

@@ -41,6 +41,13 @@ class Card extends React.Component {
     else if (this.props.onClick) this.props.onClick(e);
   };
 
+  mealClickHandler = (categoryName) => {
+    this.props.history.push({
+      pathname: `/posilki/${categoryName}`,
+      search: `date=${this.props.day.date}`,
+    });
+  };
+
   render() {
     const categoryNames = [
       'śniadanie',
@@ -67,7 +74,7 @@ class Card extends React.Component {
         else meal = 'Nie wybrano posiłku';
         return (
           <Meal
-            onClick={() => this.props.history.push(`/posilki/${categoryName}`)}
+            onClick={() => this.mealClickHandler(categoryName)}
             key={idx}
             title={categoryName}
             meal={meal}

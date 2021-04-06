@@ -42,6 +42,8 @@ const MealsList = (props) => {
           <Meal
             key={'meal' + index}
             meal={meal}
+            onChooseMeal={() => console.log(meal)}
+            mealChosen={true}
             onViewClick={() => viewClickHandler(meal)}
             onEditClick={() => editClickHandler(meal)}
             onDeleteClick={() => deleteClickHandler(meal)}
