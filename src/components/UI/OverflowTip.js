@@ -22,8 +22,7 @@ class OverflowTip extends Component {
 
   render() {
     const tooltipID =
-      'TooltipTarget-' +
-      this.props.tooltip.split(' ').join('-').split('.').join('');
+      'TooltipTarget-' + this.props.tooltip.replace(/[^A-Za-z0-9]/g, '-');
     return (
       <div
         style={{

@@ -146,7 +146,6 @@ class Card extends React.Component {
         )}
       </Transition>
     );
-
     return (
       <div
         className={`${cardClasses} ${this.props.className}`}
@@ -163,7 +162,9 @@ class Card extends React.Component {
             <div className='col text-center'>
               <h5 className='mb-0'>{this.props.day.name}</h5>
               <h6 className='text-muted m-0'>
-                <small>{this.props.day.date}</small>
+                <small>
+                  {this.props.day.date.split('-').reverse().join('.')}
+                </small>
               </h6>
             </div>
             {cardButtons}

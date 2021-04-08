@@ -82,6 +82,37 @@ const deleteCardFail = (state, action) => ({
   error: action.error,
 });
 
+const addCardMealStart = (state, action) => ({
+  ...state,
+  isLoading: true,
+});
+
+const addCardMealSuccess = (state, action) => {
+  const newDay =
+    state.diet && state.diet[action.mealData.date]
+      ? {
+          ...state.diet[action.mealData.date],
+          [action.mealData.category]: action.mealData.title,
+        }
+      : {};
+
+  const newDiet = state.diet
+    ? { ...state.diet, [action.mealData.date]: newDay }
+    : { [action.mealData.date]: newDay };
+
+  return {
+    ...state,
+    isLoading: false,
+    diet: newDiet,
+  };
+};
+
+const addCardMealFail = (state, action) => ({
+  ...state,
+  isLoading: false,
+  error: action.error,
+});
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_DIET_START:
@@ -102,6 +133,12 @@ const reducer = (state = initialState, action) => {
       return deleteCardSuccess(state, action);
     case DELETE_CARD_FAIL:
       return deleteCardFail(state, action);
+    case ADD_CARD_MEAL_START:
+      return addCardMealStart(state, action);
+    case ADD_CARD_MEAL_SUCCESS:
+      return addCardMealSuccess(state, action);
+    case ADD_CARD_MEAL_FAIL:
+      return addCardMealFail(state, action);
     default:
       return state;
   }

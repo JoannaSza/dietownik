@@ -142,3 +142,37 @@ export const editCard = (oldDate, newDate) => {
     dispatch(deleteCard(oldDate));
   };
 };
+
+export const addCardMeal = (date, category, title) => {
+  return (dispatch, getState) => {
+    const state = getState();
+    dispatch(addCardMealStart());
+    dietsApi
+      .patch(
+        `usersData/${state.auth.userId}/diet/${date}.json?auth=${state.auth.token}`,
+        { [category]: title }
+      )
+      .then((response) => {
+        dispatch(addCardMealSuccess(date, category, title));
+      })
+      .catch((err) => {
+        if (err.response) dispatch(addCardMealFail(err.response.data));
+        else if (Object.keys(err).length === 0) dispatch(deleteCardSuccess({}));
+        else dispatch(addCardMealFail('Coś poszło nie tak'));
+      });
+  };
+};
+
+const addCardMealStart = () => ({
+  type: ADD_CARD_MEAL_START,
+});
+
+const addCardMealSuccess = (date, category, title) => ({
+  type: ADD_CARD_MEAL_SUCCESS,
+  mealData: { date, category, title },
+});
+
+const addCardMealFail = (error) => ({
+  type: ADD_CARD_MEAL_FAIL,
+  error,
+});

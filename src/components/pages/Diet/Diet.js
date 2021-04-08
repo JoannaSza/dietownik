@@ -80,7 +80,7 @@ class Diet extends React.Component {
     return {
       day: {
         name: weekDaysPl[date.getDay()],
-        date: date ? `${day}.${month}.${date.getFullYear()}` : '',
+        date: date ? `${date.getFullYear()}-${month}-${day}` : '',
       },
     };
   };
@@ -128,14 +128,11 @@ class Diet extends React.Component {
     let cardsData;
     if (this.props.dietData) {
       cardsData = sortByDate(Object.keys(this.props.dietData)).map((day) => {
-        console.log(day);
         return {
           ...this.formatDate(new Date(day)),
-          dayString: day,
           data: this.props.dietData[day],
         };
       });
-      console.log(cardsData);
     }
     const renderCards = (collapsed) => {
       let cards = [];
@@ -145,10 +142,10 @@ class Diet extends React.Component {
             key={`${collapsed}-${index}`}
             day={card.day}
             data={card.data}
-            dayChange={(day) => this.dayChangeHandler(day, card.dayString)}
+            dayChange={(day) => this.dayChangeHandler(day, card.day.date)}
             collapse={collapsed}
             onCollapse={() => this.setState({ areCardsCollapsed: true })}
-            onDelete={() => this.props.onDeleteCard(card.dayString)}
+            onDelete={() => this.props.onDeleteCard(card.day.date)}
             onShow={() => this.showCardHandler(index)}
           />
         ));

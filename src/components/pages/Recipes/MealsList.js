@@ -20,7 +20,12 @@ const MealsList = (props) => {
     props.deleteMeal(meal);
   };
 
+  const chooseMealHandler = (meal) => {
+    props.onChooseMeal(meal);
+  };
+
   const renderMeals = () => {
+    console.log(props);
     if (props.isLoading)
       return (
         <div className='m-auto pt-5 text-center'>
@@ -42,8 +47,8 @@ const MealsList = (props) => {
           <Meal
             key={'meal' + index}
             meal={meal}
-            onChooseMeal={() => console.log(meal)}
-            mealChosen={true}
+            onChooseMeal={() => chooseMealHandler(meal)}
+            mealChosen={meal === props.chosenMeal}
             onViewClick={() => viewClickHandler(meal)}
             onEditClick={() => editClickHandler(meal)}
             onDeleteClick={() => deleteClickHandler(meal)}

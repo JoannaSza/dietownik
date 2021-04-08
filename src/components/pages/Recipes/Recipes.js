@@ -22,7 +22,7 @@ import Modal from '../../UI/Modal/Modal';
 
 import { updateObject } from '../../../shared/utility';
 
-class Diet extends React.Component {
+class Recipes extends React.Component {
   state = {
     searchbar: {
       prepend: faSearch,
@@ -49,8 +49,9 @@ class Diet extends React.Component {
     let newActivePage;
     const queryparams = new URLSearchParams(this.props.history.location.search);
     const chosenDate = queryparams.get('date');
-    //set meal category
+    if (chosenDate && !this.props.diet) this.props.onGetDiet();
     if (category) {
+      //set meal category
       this.props.onGetMeals(category);
       filters = updateObject(this.state.filters, { meal: category });
     } else {
@@ -116,6 +117,15 @@ class Diet extends React.Component {
     this.setState({ showDeleteConfirm: false });
   };
 
+  chooseMealHandler = (meal) => {
+    if (this.state.chosenDate)
+      this.props.onAddCardMeal(
+        this.state.chosenDate,
+        this.state.filters.meal,
+        meal
+      );
+  };
+
   pageClickHandler = (cmd, target) => {
     let newActivePage;
     const pagesNumber = Math.ceil(
@@ -150,6 +160,7 @@ class Diet extends React.Component {
   };
 
   render() {
+    console.log(this.state);
     const renderAddMeal = (
       <div
         onClick={() => this.props.history.push('/posilki/nowy')}
@@ -226,6 +237,17 @@ class Diet extends React.Component {
                       activePage: this.state.activePage,
                       recordsAmount: this.state.recordsPerPage,
                     }}
+                    chosenMeal={
+                      this.props.diet &&
+                      this.state.chosenDate &&
+                      this.state.filters.meal &&
+                      this.props.diet[this.state.chosenDate]
+                        ? this.props.diet[this.state.chosenDate][
+                            this.state.filters.meal
+                          ]
+                        : null
+                    }
+                    onChooseMeal={(meal) => this.chooseMealHandler(meal)}
                   />
                 </div>
                 <div>
@@ -259,17 +281,21 @@ const mapStateToProps = (state, ownState) => {
     isLoading: state.meals.isLoading,
     error: state.meals.errorMessage,
     recordsNumber: state.meals.meals.length,
+    diet: state.diet.diet,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    onGetDiet: () => dispatch(actions.getDiet()),
     onGetMeals: (activeCategory, query) =>
       dispatch(actions.getMeals(activeCategory, query)),
     onDeleteMeal: (category, title) =>
       dispatch(actions.deleteMeal(category, title)),
     onClearError: () => dispatch(actions.clearError()),
+    onAddCardMeal: (date, category, title) =>
+      dispatch(actions.addCardMeal(date, category, title)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Diet);
+export default connect(mapStateToProps, mapDispatchToProps)(Recipes);
