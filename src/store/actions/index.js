@@ -18,6 +18,7 @@ export {
   getShoppingList,
   addShoppingItem,
   deleteShoppingList,
+  generateShoppingList,
   deleteShoppingItem,
 } from './shoppingList';
 

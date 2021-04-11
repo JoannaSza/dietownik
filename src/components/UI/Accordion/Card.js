@@ -13,7 +13,7 @@ const MyCard = (props) => {
         </Button>
       </CardHeader>
       <Collapse isOpen={props.isOpen}>
-        <CardBody>{props.content}</CardBody>
+        <CardBody className='pt-1 px-3 pb-0'>{props.content}</CardBody>
       </Collapse>
     </Card>
   );

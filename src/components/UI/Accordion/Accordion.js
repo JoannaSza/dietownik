@@ -3,11 +3,30 @@ import Card from './Card';
 
 class Accordion extends React.Component {
   state = {
-    active: -1,
+    openedCards: [],
+  };
+
+  componentDidMount = () => {
+    this.updateOpenedCardsNumber();
+  };
+
+  componentDidUpdate = (prevProps) => {
+    if (prevProps.cards.length !== this.props.cards.length) {
+      this.updateOpenedCardsNumber();
+    }
+  };
+
+  updateOpenedCardsNumber = () => {
+    const newOpenedCards = new Array(this.props.cards.length);
+    newOpenedCards.fill(false, 0);
+    newOpenedCards[0] = true;
+    this.setState({ openedCards: [...newOpenedCards] });
   };
 
   expandHandler = (index) => {
-    this.setState({ active: index });
+    const newOpenedCards = [...this.state.openedCards];
+    newOpenedCards[index] = !newOpenedCards[index];
+    this.setState({ openedCards: [...newOpenedCards] });
   };
 
   render() {
@@ -16,7 +35,7 @@ class Accordion extends React.Component {
           <Card
             key={'card-' + index}
             onExpand={() => this.expandHandler(index)}
-            isOpen={true} //this.state.active === index}
+            isOpen={this.state.openedCards[index]}
             header={card.header}
             content={card.content}
           />

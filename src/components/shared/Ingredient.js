@@ -198,7 +198,7 @@ Ingredient.propTypes = {
   title: PropTypes.string.isRequired,
   updateTitle: PropTypes.func,
 
-  value: PropTypes.number.isRequired,
+  value: PropTypes.oneOfType([PropTypes.number.isRequired, PropTypes.array]),
   updateValue: PropTypes.func,
 
   isSpice: PropTypes.bool,

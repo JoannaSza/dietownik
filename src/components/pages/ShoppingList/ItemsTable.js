@@ -28,7 +28,7 @@ const ItemsTable = (props) => {
         )
       );
       const content = (
-        <Table className='text-light' borderless hover size='sm'>
+        <Table className='text-light mb-1' borderless hover size='sm'>
           <tbody>{products}</tbody>
         </Table>
       );

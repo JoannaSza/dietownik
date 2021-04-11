@@ -5,6 +5,9 @@ import {
   DELETE_SHOPPING_LIST_START,
   DELETE_SHOPPING_LIST_SUCCESS,
   DELETE_SHOPPING_LIST_FAIL,
+  GENERATE_SHOPPING_LIST_START,
+  GENERATE_SHOPPING_LIST_SUCCESS,
+  GENERATE_SHOPPING_LIST_FAIL,
   ADD_SHOPPING_ITEM_START,
   ADD_SHOPPING_ITEM_SUCCESS,
   ADD_SHOPPING_ITEM_FAIL,
@@ -95,6 +98,30 @@ const deleteShoppingListFail = (state, action) => ({
   errorMessage: action.error,
 });
 
+const generateShoppingListSuccess = (state, action) => ({
+  ...state,
+  isLoading: false,
+  ingredients: action.ingredients,
+});
+
+const generateShoppingListStart = (state, action) => {
+  let newShoppingList = { ...state.shoppingList };
+  newShoppingList = omit(newShoppingList, 'diet');
+  let newState = { ...state };
+  newState = omit(newState, 'shoppingList');
+  return {
+    newState,
+    isLoading: true,
+    shoppingList: newShoppingList,
+  };
+};
+
+const generateShoppingListFail = (state, action) => ({
+  ...state,
+  isLoading: false,
+  errorMessage: action.error,
+});
+
 const deleteShoppingItemSuccess = (state, action) => {
   const newCategory = omit(
     state.shoppingList[action.listType][action.category],
@@ -148,6 +175,12 @@ const reducer = (state = initialState, action) => {
       return deleteShoppingListStart(state, action);
     case DELETE_SHOPPING_LIST_FAIL:
       return deleteShoppingListFail(state, action);
+    case GENERATE_SHOPPING_LIST_SUCCESS:
+      return generateShoppingListSuccess(state, action);
+    case GENERATE_SHOPPING_LIST_START:
+      return generateShoppingListStart(state, action);
+    case GENERATE_SHOPPING_LIST_FAIL:
+      return generateShoppingListFail(state, action);
     case DELETE_SHOPPING_ITEM_SUCCESS:
       return deleteShoppingItemSuccess(state, action);
     case DELETE_SHOPPING_ITEM_START:
