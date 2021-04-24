@@ -12,6 +12,9 @@ import {
   ADD_CARD_MEAL_START,
   ADD_CARD_MEAL_SUCCESS,
   ADD_CARD_MEAL_FAIL,
+  EDIT_CARD_LOCK_START,
+  EDIT_CARD_LOCK_SUCCESS,
+  EDIT_CARD_LOCK_FAIL,
 } from '../actions/actionTypes';
 import { omit } from '../../shared/utility';
 
@@ -49,6 +52,27 @@ const addCardSuccess = (state, action) => {
   const newDiet = state.diet
     ? { ...state.diet, ...action.newCard }
     : { ...action.newCard };
+  return {
+    ...state,
+    isLoading: false,
+    diet: newDiet,
+  };
+};
+
+const editCardLockFail = (state, action) => ({
+  ...state,
+  isLoading: false,
+  error: action.error,
+});
+
+const editCardLockStart = (state, action) => ({
+  ...state,
+  isLoading: true,
+});
+
+const editCardLockSuccess = (state, action) => {
+  const newCard = { ...state.diet[action.day], isLocked: action.isLocked };
+  const newDiet = { ...state.diet, [action.day]: newCard };
   return {
     ...state,
     isLoading: false,
@@ -139,6 +163,12 @@ const reducer = (state = initialState, action) => {
       return addCardMealSuccess(state, action);
     case ADD_CARD_MEAL_FAIL:
       return addCardMealFail(state, action);
+    case EDIT_CARD_LOCK_START:
+      return editCardLockStart(state, action);
+    case EDIT_CARD_LOCK_SUCCESS:
+      return editCardLockSuccess(state, action);
+    case EDIT_CARD_LOCK_FAIL:
+      return editCardLockFail(state, action);
     default:
       return state;
   }

@@ -112,15 +112,18 @@ export const generateShoppingList = (multiplier) => {
         //check what if there is no diet !!!!
         Object.keys(response.data).forEach((dietDay) => {
           //here we get one day
-          Object.keys(response.data[dietDay]).forEach((category) => {
-            const meal = response.data[dietDay][category]; //meal title as string
-            if (
-              meals.hasOwnProperty(category) &&
-              meals[category].hasOwnProperty(meal)
-            ) {
-              meals[category][meal]++;
-            } else meals[category] = { ...meals[category], [meal]: 1 };
-            /* 
+          if (!response.data[dietDay].isLocked) {
+            console.log(dietDay);
+            Object.keys(response.data[dietDay]).forEach((category) => {
+              if (category !== 'isLocked') {
+                const meal = response.data[dietDay][category]; //meal title as string
+                if (
+                  meals.hasOwnProperty(category) &&
+                  meals[category].hasOwnProperty(meal)
+                ) {
+                  meals[category][meal]++;
+                } else meals[category] = { ...meals[category], [meal]: 1 };
+                /* 
             meals = {
               category1: {
                 meal1: 2,
@@ -132,7 +135,9 @@ export const generateShoppingList = (multiplier) => {
               }
             }
             */
-          });
+              }
+            });
+          }
         });
 
         //3 for every day, for every meal -> take ingredients, multiply, add to other ingredients
@@ -179,7 +184,6 @@ export const generateShoppingList = (multiplier) => {
           const shoppingList = {};
           Object.keys(ingredients).forEach((ingredient) => {
             const ingrData = getIngredBody(ingredient);
-            //here add some more code ;) TBD!!!!!!!!!
             if (ingrData) {
               shoppingList[ingrData[0].kategoria] = {
                 ...shoppingList[ingrData[0].kategoria],
@@ -276,11 +280,15 @@ const saveShoppingListFail = (error) => {
   };
 };
 
-export const addShoppingItem = (type, category, itemData) => {
+export const addShoppingItem = (type, itemData) => {
   return (dispatch, getState) => {
     dispatch(addShoppingItemStart());
     const stateData = getState('auth');
     const nameOfItem = Object.keys(itemData)[0];
+    const itemDatabaseData = getIngredBody(nameOfItem);
+    let category;
+    if (itemDatabaseData) category = itemDatabaseData[0].kategoria;
+    else category = 'inne';
     if (
       stateData.shoppingList.shoppingList[type] &&
       stateData.shoppingList.shoppingList[type][category] &&

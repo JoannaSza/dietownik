@@ -23,7 +23,6 @@ const ItemsTable = (props) => {
               e.stopPropagation();
               props.onDeleteSoppingItem(props.listType, category, ingred);
             }}
-            onClick={() => console.log('onclick')}
           />
         )
       );

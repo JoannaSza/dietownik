@@ -22,4 +22,11 @@ export {
   deleteShoppingItem,
 } from './shoppingList';
 
-export { getDiet, addCard, deleteCard, editCard, addCardMeal } from './diet';
+export {
+  getDiet,
+  addCard,
+  deleteCard,
+  editCard,
+  addCardMeal,
+  editCardLock,
+} from './diet';

@@ -11,6 +11,9 @@ import {
   ADD_CARD_MEAL_START,
   ADD_CARD_MEAL_SUCCESS,
   ADD_CARD_MEAL_FAIL,
+  EDIT_CARD_LOCK_START,
+  EDIT_CARD_LOCK_SUCCESS,
+  EDIT_CARD_LOCK_FAIL,
 } from './actionTypes';
 
 import dietsApi from '../../apis/diets';
@@ -99,6 +102,42 @@ const addCardSuccess = (newCard) => ({
 
 const addCardFail = (error) => ({
   type: ADD_CARD_FAIL,
+  error,
+});
+
+export const editCardLock = (cardDate, isLocked) => {
+  return (dispatch, getState) => {
+    dispatch(editCardLockStart());
+    const state = getState();
+    dietsApi
+      .patch(
+        `usersData/${state.auth.userId}/diet/${cardDate}.json?auth=${state.auth.token}`,
+        { isLocked: isLocked }
+      )
+      .then((response) => {
+        dispatch(editCardLockSuccess(cardDate, isLocked));
+      })
+      .catch((err) => {
+        if (err.response) dispatch(editCardLockFail(err.response.data));
+        else if (Object.keys(err).length === 0)
+          dispatch(editCardLockSuccess({}));
+        else dispatch(editCardLockFail('Coś poszło nie tak'));
+      });
+  };
+};
+
+const editCardLockStart = () => ({
+  type: EDIT_CARD_LOCK_START,
+});
+
+const editCardLockSuccess = (cardDate, isLocked) => ({
+  type: EDIT_CARD_LOCK_SUCCESS,
+  day: cardDate,
+  isLocked,
+});
+
+const editCardLockFail = (error) => ({
+  type: EDIT_CARD_LOCK_FAIL,
   error,
 });
 

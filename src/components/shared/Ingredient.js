@@ -120,6 +120,7 @@ class Ingredient extends React.Component {
               onBlur={() => this.titleBlurHandler()}
             >
               <Input
+                style={{ minWidth: '120px' }}
                 placeholder='title'
                 autoFocus
                 value={this.state.ingredientTitle}
@@ -131,6 +132,7 @@ class Ingredient extends React.Component {
           </td>
           <td>
             <Input
+              style={{ minWidth: '50px' }}
               placeholder='0'
               value={this.props.value}
               onChange={(event) => this.props.updateValue(+event.target.value)}

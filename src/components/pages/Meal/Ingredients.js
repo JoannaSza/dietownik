@@ -78,10 +78,12 @@ class Ingredients extends React.Component {
         : null;
     }
     const listHeader = (
-      <tr className='border-bottom text-uppercase'>
-        <th scope='row'>nazwa</th>
+      <tr className='border-bottom text-uppercase text-right'>
+        <th className='text-left' scope='row'>
+          nazwa
+        </th>
         <th>waga</th>
-        <th>kaloryczność</th>
+        <th>kcal</th>
         <th>ilość</th>
       </tr>
     );
@@ -117,7 +119,7 @@ class Ingredients extends React.Component {
         </Row>
         <hr className='border-light rounded mx-1 mt-1' />
         <Row className='px-4'>
-          <small className='w-100' style={{ minHeight: '200px' }}>
+          <small className='w-100 overflow-auto' style={{ minHeight: '200px' }}>
             <Table className='text-light' borderless hover size='sm'>
               <thead>{listHeader}</thead>
               <tbody>

@@ -143,6 +143,9 @@ class Diet extends React.Component {
             day={card.day}
             data={card.data}
             dayChange={(day) => this.dayChangeHandler(day, card.day.date)}
+            onEditLock={(isLocked) =>
+              this.props.onEditCardLock(card.day.date, isLocked)
+            }
             collapse={collapsed}
             onCollapse={() => this.setState({ areCardsCollapsed: true })}
             onDelete={() => this.props.onDeleteCard(card.day.date)}
@@ -248,6 +251,8 @@ const mapDispatchToProps = (dispatch) => {
     onDeleteCard: (cardDate) => dispatch(actions.deleteCard(cardDate)),
     onEditCardDate: (oldDate, newDate) =>
       dispatch(actions.editCard(oldDate, newDate)),
+    onEditCardLock: (cardDate, isLocked) =>
+      dispatch(actions.editCardLock(cardDate, isLocked)),
   };
 };
 

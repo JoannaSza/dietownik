@@ -7,6 +7,8 @@ import {
   faCalendarAlt,
   faTrash,
   faWindowRestore,
+  faLock,
+  faLockOpen,
 } from '@fortawesome/free-solid-svg-icons';
 
 import Calendar from 'react-calendar';
@@ -29,6 +31,11 @@ class Card extends React.Component {
   deleteHandler = (event) => {
     event.stopPropagation();
     this.props.onDelete();
+  };
+
+  editLockHandler = (event) => {
+    event.stopPropagation();
+    this.props.onEditLock(!this.props.data.isLocked);
   };
 
   dateChangeHandler = (newDate) => {
@@ -107,6 +114,13 @@ class Card extends React.Component {
         : `container rounded mx-2 my-4 p-0 bg-light d-flex flex-column overflow-auto ${styles.bigScreenCard}`;
       cardButtons = (
         <div className='col text-right pr-2 d-flex justify-content-end'>
+          <div className='pr-4 buttonHover' onClick={this.editLockHandler}>
+            {this.props.data.isLocked ? (
+              <FontAwesomeIcon icon={faLock} />
+            ) : (
+              <FontAwesomeIcon icon={faLockOpen} />
+            )}
+          </div>
           <div className='pr-4 buttonHover' onClick={this.toggleCalendar}>
             <FontAwesomeIcon icon={faCalendarAlt} />
           </div>

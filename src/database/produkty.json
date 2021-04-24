@@ -23,7 +23,7 @@
     "kcalPerGram": 0,
     "waga1szt": 1
   },
-  "komosa ryżowa (quinoa)": {
+  "komosa ryżowa": {
     "kategoria": "sypkie",
     "jednostka": "TBSP",
     "kcalPerGram": 3.34,
@@ -173,550 +173,610 @@
     "kcalPerGram": 0,
     "waga1szt": 1
   },
-  "Ananas": {
+  "ananas": {
     "kategoria": "owoce",
     "jednostka": "szt.",
     "kcalPerGram": 0.55,
     "waga1szt": 720
   },
-  "Awokado": {
+  "awokado": {
     "kategoria": "owoce",
     "jednostka": "szt.",
     "kcalPerGram": 1.69,
     "waga1szt": 140
   },
-  "Bakłażan": {
+  "bakłażan": {
     "kategoria": "warzywa",
     "jednostka": "szt.",
     "kcalPerGram": 0.26,
     "waga1szt": 240
   },
-  "Banan": {
+  "banan": {
     "kategoria": "owoce",
     "jednostka": "szt.",
     "kcalPerGram": 0.97,
     "waga1szt": 120
   },
-  "Cebula": {
+  "cebula": {
     "kategoria": "warzywa",
     "jednostka": "szt.",
     "kcalPerGram": 0.33,
     "waga1szt": 200
   },
-  "Cynamon": {
+  "cynamon": {
     "kategoria": "przyprawy",
     "jednostka": "-",
     "kcalPerGram": 0,
     "waga1szt": 1
   },
-  "Czekolada gorzka, min. 80% kakao": {
+  "czekolada gorzka, min. 80proc kakao": {
     "kategoria": "słodycze",
     "jednostka": "porcja",
     "kcalPerGram": 6.45,
     "waga1szt": 10
   },
-  "Czosnek": {
+  "czosnek": {
     "kategoria": "warzywa",
     "jednostka": "ząbek",
     "kcalPerGram": 1.52,
     "waga1szt": 5
   },
-  "Daktyle suszone": {
+  "daktyle suszone": {
     "kategoria": "owoce suszone",
     "jednostka": "porcja",
     "kcalPerGram": 2.77,
     "waga1szt": 27
   },
-  "Dorsz surowy filet": {
+  "dorsz surowy filet": {
     "kategoria": "mięso",
     "jednostka": "porcja",
     "kcalPerGram": 0.78,
     "waga1szt": 100
   },
-  "Dynia świeża lub mrożona": {
+  "dynia świeża lub mrożona": {
     "kategoria": "warzywa",
     "jednostka": "szt.",
     "kcalPerGram": 0.33,
     "waga1szt": 840
   },
-  "Dynia, pestki": {
+  "dynia, pestki": {
     "kategoria": "sypkie",
     "jednostka": "porcja",
     "kcalPerGram": 5.72,
     "waga1szt": 10
   },
-  "Fasola szparagowa": {
+  "fasola szparagowa": {
     "kategoria": "warzywa",
     "jednostka": "porcja",
     "kcalPerGram": 0.27,
     "waga1szt": 100
   },
-  "Indyk, filet": {
+  "indyk, filet": {
     "kategoria": "mięso",
     "jednostka": "porcja",
     "kcalPerGram": 0.84,
     "waga1szt": 100
   },
-  "Gałka muszkatołowa": {
+  "gałka muszkatołowa": {
     "kategoria": "przyprawy",
     "jednostka": "-",
     "kcalPerGram": 0,
     "waga1szt": 1
   },
-  "Imbir": {
+  "imbir": {
     "kategoria": "warzywa",
     "jednostka": "porcja",
     "kcalPerGram": 0.8,
     "waga1szt": 100
   },
-  "Imbir marynowany": {
+  "imbir marynowany": {
     "kategoria": "przetwory",
     "jednostka": "-",
     "kcalPerGram": 0.61,
     "waga1szt": 15
   },
-  "Jabłko": {
+  "jabłko": {
     "kategoria": "owoce",
     "jednostka": "szt.",
     "kcalPerGram": 0.5,
     "waga1szt": 140
   },
-  "Jogurt naturalny": {
+  "jogurt naturalny": {
     "kategoria": "nabiał",
     "jednostka": "porcja",
     "kcalPerGram": 0.6,
     "waga1szt": 150
   },
-  "Kabanosy drobiowe (np. pikok pure z lidla, konspol z biedronki)": {
+  "kabanosy drobiowe  pikok pure z lidla, konspol z biedronki": {
     "kategoria": "mięso",
     "jednostka": "szt.",
     "kcalPerGram": 2.42,
     "waga1szt": 45
   },
-  "Kakao w proszku": {
+  "kakao w proszku": {
     "kategoria": "przyprawy",
     "jednostka": "TSP",
     "kcalPerGram": 4.4,
     "waga1szt": 5
   },
-  "Karob": {
+  "karob": {
     "kategoria": "przyprawy",
     "jednostka": "-",
     "kcalPerGram": 0,
     "waga1szt": 1
   },
-  "Kasza gryczana": {
+  "kasza gryczana": {
     "kategoria": "sypkie",
     "jednostka": "TBSP",
     "kcalPerGram": 3.53,
     "waga1szt": 13
   },
-  "Kasza jaglana": {
+  "kasza jaglana": {
     "kategoria": "sypkie",
     "jednostka": "TBSP",
     "kcalPerGram": 3.48,
     "waga1szt": 13
   },
-  "Kiwi": {
+  "kiwi": {
     "kategoria": "owoce",
     "jednostka": "szt.",
     "kcalPerGram": 0.6,
     "waga1szt": 75
   },
-  "Koper": {
+  "koper": {
     "kategoria": "warzywa",
     "jednostka": "porcja",
     "kcalPerGram": 0,
     "waga1szt": 1
   },
-  "Kurkuma": {
+  "kurkuma": {
     "kategoria": "przyprawy",
     "jednostka": "-",
     "kcalPerGram": 0,
     "waga1szt": 1
   },
-  "Łosoś surowy": {
+  "łosoś surowy": {
     "kategoria": "mięso",
     "jednostka": "porcja",
     "kcalPerGram": 1.29,
     "waga1szt": 100
   },
-  "Makaron bezglutenowy, np.kukurydziany, ryżowy, gryczany": {
+  "makaron bezglutenowy, kukurydziany, ryżowy, gryczany": {
     "kategoria": "sypkie",
     "jednostka": "porcja",
     "kcalPerGram": 3.64,
     "waga1szt": 100
   },
-  "Makrela wędzona": {
+  "makrela wędzona": {
     "kategoria": "mięso",
     "jednostka": "porcja",
     "kcalPerGram": 1.53,
     "waga1szt": 100
   },
-  "Mandarynka": {
+  "mandarynka": {
     "kategoria": "owoce",
     "jednostka": "szt.",
     "kcalPerGram": 0.45,
     "waga1szt": 65
   },
-  "Mango": {
+  "mango": {
     "kategoria": "owoce",
     "jednostka": "szt.",
     "kcalPerGram": 0.69,
     "waga1szt": 280
   },
-  "Masło": {
+  "masło": {
     "kategoria": "nabiał",
     "jednostka": "TSP",
     "kcalPerGram": 7.4,
     "waga1szt": 5
   },
-  "Masło orzechowe bez soli": {
+  "masło orzechowe bez soli": {
     "kategoria": "przetwory",
     "jednostka": "TSP",
     "kcalPerGram": 6,
     "waga1szt": 5
   },
-  "Mąka jaglana": {
+  "mąka jaglana": {
     "kategoria": "sypkie",
     "jednostka": "TBSP",
     "kcalPerGram": 3.8,
     "waga1szt": 10
   },
-  "Mięso mielone z szynki wieprzowej": {
+  "mięso mielone z szynki wieprzowej": {
     "kategoria": "mięso",
     "jednostka": "porcja",
     "kcalPerGram": 2.24,
     "waga1szt": 100
   },
-  "Migdały": {
+  "migdały": {
     "kategoria": "owoce suszone",
     "jednostka": "porcja",
     "kcalPerGram": 5.7,
     "waga1szt": 10
   },
-  "Miód": {
+  "miód": {
     "kategoria": "przetwory",
     "jednostka": "TSP",
     "kcalPerGram": 3.25,
     "waga1szt": 12
   },
-  "Mleko migdałowe": {
+  "mleko migdałowe": {
     "kategoria": "napoje",
     "jednostka": "porcja",
     "kcalPerGram": 0.17,
     "waga1szt": 220
   },
-  "Mleko roślinne / ryżowe, owsiane, migdałowe, kokosowe": {
+  "mleko roślinne  ryżowe, owsiane, migdałowe, kokosowe": {
     "kategoria": "napoje",
     "jednostka": "porcja",
     "kcalPerGram": 0.5,
     "waga1szt": 220
   },
-  "Mleko ryżowe": {
+  "mleko ryżowe": {
     "kategoria": "napoje",
     "jednostka": "porcja",
     "kcalPerGram": 0.5,
     "waga1szt": 220
   },
-  "Morela suszona": {
+  "morela suszona": {
     "kategoria": "owoce suszone",
     "jednostka": "porcja",
     "kcalPerGram": 2.8,
     "waga1szt": 10
   },
-  "Morwa suszona": {
+  "morwa suszona": {
     "kategoria": "owoce suszone",
     "jednostka": "porcja",
     "kcalPerGram": 0.4,
     "waga1szt": 10
   },
-  "Musztarda": {
+  "musztarda": {
     "kategoria": "przyprawy",
     "jednostka": "TSP",
     "kcalPerGram": 1.6,
     "waga1szt": 10
   },
-  "Natka pietruszki": {
+  "natka pietruszki": {
     "kategoria": "warzywa",
     "jednostka": "porcja",
     "kcalPerGram": 0.33,
     "waga1szt": 10
   },
-  "Naturalny jogurt kokosowy (np.: planton dostępny m.in. w lidlu)": {
+  "naturalny jogurt kokosowy  planton dostępny m.in. w lidlu": {
     "kategoria": "nabiał",
     "jednostka": "porcja",
     "kcalPerGram": 0.6,
     "waga1szt": 160
   },
-  "Ocet balsamiczny": {
+  "ocet balsamiczny": {
     "kategoria": "oleje",
     "jednostka": "TSP",
     "kcalPerGram": 0.8,
     "waga1szt": 5
   },
-  "Ocet ryżowy": {
+  "ocet ryżowy": {
     "kategoria": "oleje",
     "jednostka": "TSP",
     "kcalPerGram": 0.17,
     "waga1szt": 5
   },
-  "Ocet winny": {
+  "ocet winny": {
     "kategoria": "oleje",
     "jednostka": "TSP",
     "kcalPerGram": 0.33,
     "waga1szt": 5
   },
-  "Ogórek": {
+  "ogórek": {
     "kategoria": "warzywa",
     "jednostka": "szt.",
     "kcalPerGram": 0.1,
     "waga1szt": 50
   },
-  "Ogórek konserwowy": {
+  "ogórek konserwowy": {
     "kategoria": "przetwory",
     "jednostka": "szt.",
     "kcalPerGram": 0.12,
     "waga1szt": 50
   },
-  "Olej lniany": {
+  "olej lniany": {
     "kategoria": "oleje",
     "jednostka": "TSP",
     "kcalPerGram": 8.8,
     "waga1szt": 5
   },
-  "Olej rzepakowy uniwersalny": {
+  "olej rzepakowy uniwersalny": {
     "kategoria": "oleje",
     "jednostka": "TSP",
     "kcalPerGram": 8.8,
     "waga1szt": 5
   },
-  "Oliwki czarne marynowane": {
+  "oliwki czarne marynowane": {
     "kategoria": "przetwory",
     "jednostka": "porcja",
     "kcalPerGram": 1.13,
     "waga1szt": 15
   },
-  "Orzechy nerkowca": {
+  "orzechy nerkowca": {
     "kategoria": "owoce suszone",
     "jednostka": "porcja",
     "kcalPerGram": 5.5,
     "waga1szt": 15
   },
-  "Orzechy laskowe": {
+  "orzechy laskowe": {
     "kategoria": "owoce suszone",
     "jednostka": "porcja",
     "kcalPerGram": 3.2,
     "waga1szt": 15
   },
-  "Orzechy pekan": {
+  "orzechy pekan": {
     "kategoria": "owoce suszone",
     "jednostka": "porcja",
     "kcalPerGram": 5.7,
     "waga1szt": 15
   },
-  "Papryka mielona": {
+  "papryka mielona": {
     "kategoria": "przyprawy",
     "jednostka": "-",
     "kcalPerGram": 0,
     "waga1szt": 1
   },
-  "Pieczarki surowe": {
+  "pieczarki surowe": {
     "kategoria": "warzywa",
     "jednostka": "szt.",
     "kcalPerGram": 0.15,
     "waga1szt": 20
   },
-  "Pieprz czarny": {
+  "pieprz czarny": {
     "kategoria": "przyprawy",
     "jednostka": "-",
     "kcalPerGram": 0,
     "waga1szt": 1
   },
-  "Pieprz ziołowy": {
+  "pieprz ziołowy": {
     "kategoria": "przyprawy",
     "jednostka": "-",
     "kcalPerGram": 0,
     "waga1szt": 1
   },
-  "Pietruszka, korzeń": {
+  "pietruszka, korzeń": {
     "kategoria": "warzywa",
     "jednostka": "szt.",
     "kcalPerGram": 0.28,
     "waga1szt": 20
   },
-  "Pietruszka, liście": {
+  "pietruszka, liście": {
     "kategoria": "warzywa",
     "jednostka": "porcja",
     "kcalPerGram": 0.4,
     "waga1szt": 15
   },
-  "Płatki jaglane": {
+  "płatki jaglane": {
     "kategoria": "sypkie",
     "jednostka": "TBSP",
     "kcalPerGram": 3.53,
     "waga1szt": 10
   },
-  "Płatki jaglane / owsiane": {
+  "płatki jaglane  owsiane": {
     "kategoria": "sypkie",
     "jednostka": "TBSP",
     "kcalPerGram": 3.53,
     "waga1szt": 10
   },
-  "Płatki owsiane": {
+  "płatki owsiane": {
     "kategoria": "sypkie",
     "jednostka": "TBSP",
     "kcalPerGram": 3.53,
     "waga1szt": 10
   },
-  "Polędwica wieprzowa, surowa": {
+  "polędwica wieprzowa, surowa": {
     "kategoria": "mięso",
     "jednostka": "porcja",
     "kcalPerGram": 1.03,
     "waga1szt": 100
   },
-  "Por": {
+  "por": {
     "kategoria": "warzywa",
     "jednostka": "szt.",
     "kcalPerGram": 0.14,
     "waga1szt": 140
   },
-  "Przecier pomidorowy": {
+  "przecier pomidorowy": {
     "kategoria": "przetwory",
     "jednostka": "porcja",
     "kcalPerGram": 0.9,
     "waga1szt": 10
   },
-  "Ryż basmati": {
+  "ryż basmati": {
     "kategoria": "sypkie",
     "jednostka": "porcja",
     "kcalPerGram": 3.5,
     "waga1szt": 100
   },
-  "Rzodkiewka": {
+  "rzodkiewka": {
     "kategoria": "warzywa",
     "jednostka": "szt.",
     "kcalPerGram": 0.1,
     "waga1szt": 15
   },
-  "Sałata lodowa/ rukola/ roszponka/ mix sałat": {
+  "sałata lodowa rukola roszponka mix sałat": {
     "kategoria": "warzywa",
     "jednostka": "porcja",
     "kcalPerGram": 0.13,
     "waga1szt": 20
   },
-  "Sałatka ze świeżych warzyw na bazie sałaty": {
+  "sałatka ze świeżych warzyw na bazie sałaty": {
     "kategoria": "warzywa",
     "jednostka": "porcja",
     "kcalPerGram": 0.24,
     "waga1szt": 100
   },
-  "Seler": {
+  "seler": {
     "kategoria": "warzywa",
     "jednostka": "szt.",
     "kcalPerGram": 0.15,
     "waga1szt": 325
   },
-  "Ser kremowy bez tłuszczu np.: bieluch light": {
+  "ser kremowy bez tłuszczu  bieluch light": {
     "kategoria": "nabiał",
     "jednostka": "porcja",
     "kcalPerGram": 1.07,
     "waga1szt": 30
   },
-  "Sezam nasiona": {
+  "sezam nasiona": {
     "kategoria": "sypkie",
     "jednostka": "TSP",
     "kcalPerGram": 6.4,
     "waga1szt": 5
   },
-  "Sos teriyaki": {
+  "sos teriyaki": {
     "kategoria": "przyprawy",
     "jednostka": "-",
     "kcalPerGram": 0,
     "waga1szt": 1
   },
-  "Szczypiorek": {
+  "szczypiorek": {
     "kategoria": "warzywa",
     "jednostka": "porcja",
     "kcalPerGram": 0,
     "waga1szt": 1
   },
-  "Szynka z indyka": {
+  "szynka z indyka": {
     "kategoria": "mięso",
     "jednostka": "porcja",
     "kcalPerGram": 0.8,
     "waga1szt": 50
   },
-  "Tahini": {
+  "tahini": {
     "kategoria": "przyprawy",
     "jednostka": "TSP",
     "kcalPerGram": 6,
     "waga1szt": 5
   },
-  "Tuńczyk w wodzie": {
+  "tuńczyk w wodzie": {
     "kategoria": "przetwory",
     "jednostka": "porcja",
     "kcalPerGram": 0.97,
     "waga1szt": 120
   },
-  "Tymianek": {
+  "tymianek": {
     "kategoria": "przyprawy",
     "jednostka": "-",
     "kcalPerGram": 0,
     "waga1szt": 1
   },
-  "Tymianek świeży": {
+  "tymianek świeży": {
     "kategoria": "warzywa",
     "jednostka": "porcja",
     "kcalPerGram": 0,
     "waga1szt": 1
   },
-  "Ulubione kiełki": {
+  "ulubione kiełki": {
     "kategoria": "warzywa",
     "jednostka": "porcja",
     "kcalPerGram": 0.25,
     "waga1szt": 20
   },
-  "Wiórki kokosowe": {
+  "wiórki kokosowe": {
     "kategoria": "owoce suszone",
     "jednostka": "TBSP",
     "kcalPerGram": 6,
     "waga1szt": 6
   },
-  "Wodorosty nori": {
+  "wodorosty nori": {
     "kategoria": "przetwory",
     "jednostka": "porcja",
     "kcalPerGram": 3.67,
     "waga1szt": 3
   },
-  "Wołowina": {
+  "wołowina": {
     "kategoria": "mięso",
     "jednostka": "porcja",
     "kcalPerGram": 1.21,
     "waga1szt": 100
   },
-  "Wołowina, mielona": {
+  "wołowina, mielona": {
     "kategoria": "mięso",
     "jednostka": "porcja",
     "kcalPerGram": 1.13,
     "waga1szt": 100
   },
-  "Ziemniaki": {
+  "ziemniaki": {
     "kategoria": "warzywa",
     "jednostka": "szt.",
     "kcalPerGram": 0.6,
     "waga1szt": 75
   },
-  "Żelatyna": {
+  "żelatyna": {
     "kategoria": "przyprawy",
     "jednostka": "TSP",
     "kcalPerGram": 3.4,
     "waga1szt": 10
   },
-  "Żurawina suszona": {
+  "żurawina suszona": {
     "kategoria": "owoce suszone",
     "jednostka": "TBSP",
     "kcalPerGram": 3.08,
     "waga1szt": 12
+  },
+  "brokuł": {
+    "kategoria": "warzywa",
+    "jednostka": "szt.",
+    "kcalPerGram": 0.31,
+    "waga1szt": 500
+  },
+  "fasola konserwowa": {
+    "kategoria": "przetwory",
+    "jednostka": "TBSP",
+    "kcalPerGram": 0.87,
+    "waga1szt": 20
+  },
+  "otręby gryczane": {
+    "kategoria": "sypkie",
+    "jednostka": "TSP",
+    "kcalPerGram": 3.39,
+    "waga1szt": 4
+  },
+  "ryż brązowy": {
+    "kategoria": "sypkie",
+    "jednostka": "TBSP",
+    "kcalPerGram": 3.58,
+    "waga1szt": 10
+  },
+  "seler naciowy": {
+    "kategoria": "warzywa",
+    "jednostka": "szt.",
+    "kcalPerGram": 0.17,
+    "waga1szt": 400
+  },
+  "wafle ryżowe": {
+    "kategoria": "pieczywo",
+    "jednostka": "szt.",
+    "kcalPerGram": 3.9,
+    "waga1szt": 10
+  },
+  "szynka z piersi kurczaka": {
+    "kategoria": "mięso",
+    "jednostka": "porcja",
+    "kcalPerGram": 1.23,
+    "waga1szt": 15
+  },
+  "ziele angielskie": {
+    "kategoria": "przyprawy",
+    "jednostka": "-",
+    "kcalPerGram": 0,
+    "waga1szt": 1
+  },
+  "zioła prowansalskie": {
+    "kategoria": "przyprawy",
+    "jednostka": "-",
+    "kcalPerGram": 0,
+    "waga1szt": 1
+  },
+  "łosoś wędzony": {
+    "kategoria": "mięso",
+    "jednostka": "porcja",
+    "kcalPerGram": 1.62,
+    "waga1szt": 100
   }
 }

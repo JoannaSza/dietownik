@@ -81,10 +81,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onGetIngredData: (title) => dispatch(actions.getIngred(title)),
     onGetShoppingList: (type) => dispatch(actions.getShoppingList(type)),
-    onAddShoppingItem: (type, category, itemData) =>
-      dispatch(actions.addShoppingItem(type, category, itemData)),
     onGenerateShoppingList: (multiplier) =>
       dispatch(actions.generateShoppingList(multiplier)),
   };
