@@ -147,9 +147,11 @@ class Meal extends React.Component {
     let ingredients;
     //target, name, value
     if (ingredient.name === 'value') {
+      //change ingredient amount
       ingredients = { ...this.state.ingredients };
       ingredients[ingredient.target] = ingredient.value;
     } else if (ingredient.name === 'title') {
+      //update or add new ingredient
       const keys = Object.keys(this.state.ingredients);
       keys.forEach((key, index) => {
         if (key !== ingredient.target)
@@ -222,7 +224,6 @@ class Meal extends React.Component {
     });
 
     const renderDescription = renderInputs.pop();
-
     return (
       <div className='flex-grow-1 bg-rich-black'>
         <Modal

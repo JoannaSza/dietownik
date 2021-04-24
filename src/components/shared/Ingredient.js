@@ -17,7 +17,7 @@ export var myEnum = {
 };
 
 class Ingredient extends React.Component {
-  state = { searchTerm: '', ingredientTitle: '' };
+  state = { searchTerm: '', ingredientTitle: 'placeholder' };
   componentDidMount = () => {
     if (!this.props.isSpice && !this.props.addNew)
       this.props.onGetIngredData(this.props.title);
@@ -45,7 +45,8 @@ class Ingredient extends React.Component {
   };
 
   titleBlurHandler = () => {
-    this.props.updateTitle(this.state.ingredientTitle);
+    if (this.state.ingredientTitle !== 'placeholder')
+      this.props.updateTitle(this.state.ingredientTitle);
     this.setState({ searchTerm: '' });
   };
 
