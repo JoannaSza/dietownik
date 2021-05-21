@@ -113,7 +113,6 @@ export const generateShoppingList = (multiplier) => {
         Object.keys(response.data).forEach((dietDay) => {
           //here we get one day
           if (!response.data[dietDay].isLocked) {
-            console.log(dietDay);
             Object.keys(response.data[dietDay]).forEach((category) => {
               if (category !== 'isLocked') {
                 const meal = response.data[dietDay][category]; //meal title as string

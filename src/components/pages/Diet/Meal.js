@@ -23,6 +23,11 @@ const Meal = (props) => {
             </span>
           </div>
         </div>
+        <div className='text-right' onClick={props.onClickEdit}>
+          <span className='mr-3 text-secondary'>
+            <FontAwesomeIcon icon={faPen} />
+          </span>
+        </div>
         {/* <div className='text-right'>
           <span className='mr-3 text-secondary'>
             <FontAwesomeIcon icon={faPen} />

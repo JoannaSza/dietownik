@@ -22,7 +22,7 @@ export const authInitStart = () => {
     const storageData = browserStorageGet(['notLogout'], 'local');
     const browserStorageArea = storageData.notLogout ? 'local' : 'session';
     const authData = browserStorageGet(
-      ['token', 'expirationDate', 'userId'],
+      ['token', 'refreshToken', 'expirationDate', 'userId'],
       browserStorageArea
     );
     authData['notLogout'] = storageData.notLogout === 'true';
@@ -36,6 +36,15 @@ export const authInitStart = () => {
         .then(() => {
           gAuth = window.gapi.auth2.getAuthInstance();
           dispatch(authInit(gAuth, authData));
+          if (authData.token) {
+            dispatch(
+              checkAuthTimeout(
+                new Date(authData.expirationDate).getTime() -
+                  new Date().getTime(),
+                authData.notLogout
+              )
+            );
+          }
         });
     });
   };
@@ -63,12 +72,13 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (token, userId, refreshToken) => {
+export const authSuccess = (token, userId, refreshToken, expirationDate) => {
   return {
     type: AUTH_SUCCESS,
     idToken: token,
     userId: userId,
     refreshToken: refreshToken,
+    expirationDate: expirationDate,
   };
 };
 
@@ -81,8 +91,11 @@ export const authFail = (error) => {
 
 export const logout = () => {
   return (dispatch, getState) => {
-    browserStorageRemove(['token', 'expirationDate'], 'local');
-    browserStorageRemove(['token', 'expirationDate'], 'session');
+    browserStorageRemove(['token', 'refreshToken', 'expirationDate'], 'local');
+    browserStorageRemove(
+      ['token', 'refreshToken', ' expirationDate'],
+      'session'
+    );
     const state = getState('auth');
     state.auth.gAuth.signOut();
     dispatch(logoutCont());
@@ -95,11 +108,63 @@ export const logoutCont = () => {
   };
 };
 
-export const checkAuthTimeout = (expirationTime) => {
+export const checkAuthTimeout = (expirationTime, notLogout) => {
   return (dispatch) => {
     setTimeout(() => {
-      dispatch(logout());
+      if (notLogout) {
+        dispatch(refreshToken());
+      } else dispatch(logout());
     }, expirationTime);
+  };
+};
+
+const refreshToken = () => {
+  return (dispatch, getState) => {
+    const refreshToken = getState().auth.refreshToken;
+    const authData = {
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+    };
+    authAPI
+      .post('token', authData)
+      .then((response) => {
+        console.log(response);
+        const expirationDate = new Date(
+          new Date().getTime() + response.data.expires_in * 1000
+        );
+        const state = getState('auth');
+        const browserStorageArea = state.auth.notLogout ? 'local' : 'session';
+        browserStorageSave(
+          {
+            token: response.data.id_token,
+            refreshToken: response.data.refresh_token,
+            expirationDate: expirationDate,
+            userId: response.data.user_id,
+          },
+          browserStorageArea
+        );
+        dispatch(
+          checkAuthTimeout(
+            new Date(expirationDate).getTime() - new Date().getTime(),
+            state.auth.notLogout
+          )
+        );
+        dispatch(
+          authSuccess(
+            response.data.id_token,
+            response.data.user_id,
+            response.data.refresh_token,
+            expirationDate
+          )
+        );
+      })
+      .catch((err) => {
+        if (err) console.log(err);
+        if (err.response) {
+          console.log(err.response.data.error.message);
+          dispatch(authFail(err.response.data.error.message));
+        } else dispatch(authFail('Login failed'));
+      });
   };
 };
 
@@ -141,16 +206,24 @@ export const auth = (user, password, method) => {
         browserStorageSave(
           {
             token: response.data.idToken,
+            refreshToken: response.data.refreshToken,
             expirationDate: expirationDate,
             userId: response.data.localId,
           },
           browserStorageArea
         );
         dispatch(
+          checkAuthTimeout(
+            new Date(expirationDate).getTime() - new Date().getTime(),
+            state.auth.notLogout
+          )
+        );
+        dispatch(
           authSuccess(
             response.data.idToken,
             response.data.localId,
-            response.data.refreshToken
+            response.data.refreshToken,
+            expirationDate
           )
         );
       })

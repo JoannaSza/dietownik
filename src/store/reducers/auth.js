@@ -29,6 +29,7 @@ const authInit = (state, action) =>
   updateObject(state, {
     gAuth: action.gAuth,
     token: action.authData.token,
+    refreshToken: action.authData.refreshToken,
     expDate: action.authData.expirationDate,
     notLogout: action.authData.notLogout,
     userId: action.authData.userId,
@@ -45,6 +46,7 @@ const authSuccess = (state, action) =>
     token: action.idToken,
     userId: action.userId,
     refreshToken: action.refreshToken,
+    expDate: action.expirationDate,
     error: null,
     loading: false,
   });
