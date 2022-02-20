@@ -15,6 +15,7 @@ import {
   EDIT_CARD_LOCK_START,
   EDIT_CARD_LOCK_SUCCESS,
   EDIT_CARD_LOCK_FAIL,
+  CHANGE_ACTIVE_CARD_INDEX,
 } from '../actions/actionTypes';
 import { omit } from '../../shared/utility';
 
@@ -22,6 +23,7 @@ const initialState = {
   isLoading: false,
   error: null,
   diet: null,
+  activeCardIndex: 0,
 };
 
 const getDietStart = (state, action) => ({
@@ -137,6 +139,11 @@ const addCardMealFail = (state, action) => ({
   error: action.error,
 });
 
+const changeActiveCardIndex = (state, action) => ({
+  ...state,
+  activeCardIndex: action.newIndex,
+});
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_DIET_START:
@@ -169,6 +176,8 @@ const reducer = (state = initialState, action) => {
       return editCardLockSuccess(state, action);
     case EDIT_CARD_LOCK_FAIL:
       return editCardLockFail(state, action);
+    case CHANGE_ACTIVE_CARD_INDEX:
+      return changeActiveCardIndex(state, action);
     default:
       return state;
   }

@@ -41,6 +41,7 @@ class Recipes extends React.Component {
     showDeleteConfirm: false,
     mealToDelete: null,
     chosenDate: null,
+    isMealChoosing: false,
   };
 
   componentDidMount = () => {
@@ -75,6 +76,8 @@ class Recipes extends React.Component {
   componentDidUpdate = () => {
     if (!this.props.match.params.category)
       this.props.history.push(`/posilki/${this.state.filters.meal}`);
+    if (this.state.isMealChoosing && !this.props.isChoosingMealLoading)
+      this.props.history.push(`/`);
   };
 
   clearSearchbar = () => {
@@ -118,12 +121,14 @@ class Recipes extends React.Component {
   };
 
   chooseMealHandler = (meal) => {
-    if (this.state.chosenDate)
+    if (this.state.chosenDate) {
       this.props.onAddCardMeal(
         this.state.chosenDate,
         this.state.filters.meal,
         meal
       );
+      this.setState({ isMealChoosing: true });
+    }
   };
 
   pageClickHandler = (cmd, target) => {
@@ -279,6 +284,7 @@ class Recipes extends React.Component {
 const mapStateToProps = (state, ownState) => {
   return {
     isLoading: state.meals.isLoading,
+    isChoosingMealLoading: state.diet.isLoading,
     error: state.meals.errorMessage,
     recordsNumber: state.meals.meals.length,
     diet: state.diet.diet,

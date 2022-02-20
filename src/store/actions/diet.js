@@ -14,6 +14,7 @@ import {
   EDIT_CARD_LOCK_START,
   EDIT_CARD_LOCK_SUCCESS,
   EDIT_CARD_LOCK_FAIL,
+  CHANGE_ACTIVE_CARD_INDEX,
 } from './actionTypes';
 
 import dietsApi from '../../apis/diets';
@@ -214,4 +215,9 @@ const addCardMealSuccess = (date, category, title) => ({
 const addCardMealFail = (error) => ({
   type: ADD_CARD_MEAL_FAIL,
   error,
+});
+
+export const changeActiveCardIndex = (newIndex) => ({
+  type: CHANGE_ACTIVE_CARD_INDEX,
+  newIndex,
 });

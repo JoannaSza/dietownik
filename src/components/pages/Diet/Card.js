@@ -49,7 +49,7 @@ class Card extends React.Component {
   };
 
   mealClickHandler = (categoryName, meal) => {
-    if (meal === 'Nie wybrano posiłku') {
+    if (meal === 'Nie wybrano posiłku.') {
       this.props.history.push({
         pathname: `/posilki/${categoryName}`,
         search: `date=${this.props.day.date}`,

@@ -29,4 +29,5 @@ export {
   editCard,
   addCardMeal,
   editCardLock,
+  changeActiveCardIndex,
 } from './diet';

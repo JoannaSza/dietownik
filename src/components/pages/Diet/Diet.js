@@ -35,7 +35,6 @@ const weekDaysPl = [
 class Diet extends React.Component {
   state = {
     cardsAmount: 0,
-    activeCard: 0,
     areCardsCollapsed: false,
     date: new Date(),
     cards: [
@@ -96,7 +95,8 @@ class Diet extends React.Component {
   };
 
   showCardHandler = (index) => {
-    this.setState({ activeCard: index });
+    this.props.onChangeActiveCard(index);
+    //this.setState({ activeCard: index });
   };
 
   render() {
@@ -182,8 +182,8 @@ class Diet extends React.Component {
             {this.props.isSmallScreen ? (
               <Carousel
                 items={renderCards(false)}
-                onIndexChange={(index) => this.setState({ activeCard: index })}
-                activeIndex={this.state.activeCard}
+                onIndexChange={(index) => this.props.onChangeActiveCard(index)}
+                activeIndex={this.props.activeCard}
               />
             ) : (
               renderCards(false)
@@ -241,6 +241,7 @@ const mapStateToProps = (state) => {
     isLoading: state.diet.isLoading,
     error: state.diet.error,
     dietData: state.diet.diet,
+    activeCard: state.diet.activeCardIndex,
   };
 };
 
@@ -253,6 +254,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.editCard(oldDate, newDate)),
     onEditCardLock: (cardDate, isLocked) =>
       dispatch(actions.editCardLock(cardDate, isLocked)),
+    onChangeActiveCard: (newIndex) =>
+      dispatch(actions.changeActiveCardIndex(newIndex)),
   };
 };
 
